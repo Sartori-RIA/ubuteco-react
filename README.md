@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## About the project:
+
+Rewriting the repo https://github.com/Sartori-RIA/ubuteco_spa from Angular + NGRX + Material Design to NextJS + React + Redux + Tailwind
+
+
 ## Getting Started
 
 First, run the development server:
