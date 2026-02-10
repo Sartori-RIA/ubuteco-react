@@ -1,4 +1,6 @@
 import * as React from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 // util simples para concatenar classes (substitui clsx/twMerge se quiser)
 function cn(...classes: Array<string | undefined | false>) {
@@ -36,17 +38,17 @@ const sizeStyles: Record<ButtonSize, string> = {
 };
 
 export function Button({
-                         className,
-                         variant = "default",
-                         size = "md",
-                         leftIcon,
-                         rightIcon,
-                         loading = false,
-                         disabled,
-                         children,
-                         type,
-                         ...props
-                       }: ButtonProps) {
+                                 className,
+                                 variant = "default",
+                                 size = "md",
+                                 leftIcon,
+                                 rightIcon,
+                                 loading = false,
+                                 disabled,
+                                 children,
+                                 type,
+                                 ...props
+                               }: ButtonProps) {
   const isIconOnly = size === "icon";
 
   return (
@@ -84,4 +86,18 @@ export function Button({
   );
 }
 
-export default Button;
+export function EditButton() {
+  return (
+    <Button variant="ghost">
+      <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
+    </Button>
+  )
+}
+
+export function DestroyButton() {
+  return (
+    <Button variant="ghost">
+      <FontAwesomeIcon color="red" icon={faTrash}/>
+    </Button>
+  )
+}
