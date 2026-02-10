@@ -1,3 +1,5 @@
+"use client"
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
@@ -33,4 +35,19 @@ export function SearchInput({className, onChange}: {
     `}
     />
   </div>
+}
+
+export function Input({
+                 label,
+                 children,
+               }: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1">
+      <label className="text-sm font-medium text-gray-700">{label}</label>
+      {children}
+    </div>
+  );
 }

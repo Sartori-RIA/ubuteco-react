@@ -20,7 +20,7 @@ interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   loading?: boolean;
-  onClick: onClickType
+  onClick?: onClickType
 }
 
 const baseStyles =
@@ -92,10 +92,12 @@ export function Button({
   );
 }
 
-export function EditButton({onClick}: { onClick: onClickType }) {
+export function EditButton({url}: { url: string }) {
   return (
-    <Button onClick={onClick} variant="ghost">
-      <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
+    <Button variant="ghost">
+      <Link href={url}>
+        <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
+      </Link>
     </Button>
   )
 }
@@ -108,19 +110,32 @@ export function DestroyButton({onClick}: { onClick: onClickType }) {
   )
 }
 
-export function AddButton({onClick}: { onClick: onClickType }) {
+export function AddButton({url}: { url: string }) {
   return (
-    <Button onClick={onClick} variant="outline">
-      <FontAwesomeIcon icon={faPlus}/>
+    <Button variant="outline">
+      <Link href={url}>
+        <FontAwesomeIcon icon={faPlus}/>
+      </Link>
     </Button>
   )
 }
 
-export function LinkButton({url}: { url: string }) {
+export function OpenButton({url}: { url: string }) {
   return (
-    <Link className={cn(baseStyles, variantStyles['ghost'], sizeStyles['md'])}
-          href={url}>
-      <FontAwesomeIcon icon={faEye}/>
-    </Link>
+    <Button variant="ghost">
+      <Link href={url}>
+        <FontAwesomeIcon icon={faEye}/>
+      </Link>
+    </Button>
+  )
+}
+
+export function LinkButton({url, children}: { url: string, children: React.ReactNode }) {
+  return (
+    <Button variant="ghost">
+      <Link href={url}>
+        {children}
+      </Link>
+    </Button>
   )
 }
