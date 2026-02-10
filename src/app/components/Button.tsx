@@ -1,22 +1,26 @@
+"use client"
+
 import * as React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faEdit, faEye, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
-// util simples para concatenar classes (substitui clsx/twMerge se quiser)
 function cn(...classes: Array<string | undefined | false>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export type ButtonVariant = "default" | "outline" | "secondary" | "ghost" | "danger";
-export type ButtonSize = "sm" | "md" | "lg" | "icon";
+type ButtonVariant = "default" | "outline" | "secondary" | "ghost" | "danger";
+type ButtonSize = "sm" | "md" | "lg" | "icon";
+type onClickType = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
-export interface ButtonProps
+interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   loading?: boolean;
+  onClick: onClickType
 }
 
 const baseStyles =
@@ -38,17 +42,18 @@ const sizeStyles: Record<ButtonSize, string> = {
 };
 
 export function Button({
-                                 className,
-                                 variant = "default",
-                                 size = "md",
-                                 leftIcon,
-                                 rightIcon,
-                                 loading = false,
-                                 disabled,
-                                 children,
-                                 type,
-                                 ...props
-                               }: ButtonProps) {
+                         className,
+                         variant = "default",
+                         size = "md",
+                         leftIcon,
+                         rightIcon,
+                         loading = false,
+                         disabled,
+                         children,
+                         type,
+                         onClick,
+                         ...props
+                       }: ButtonProps) {
   const isIconOnly = size === "icon";
 
   return (
@@ -63,6 +68,7 @@ export function Button({
       )}
       aria-busy={loading || undefined}
       {...props}
+      onClick={onClick}
     >
       {loading && (
         <span
@@ -86,18 +92,35 @@ export function Button({
   );
 }
 
-export function EditButton() {
+export function EditButton({onClick}: { onClick: onClickType }) {
   return (
-    <Button variant="ghost">
+    <Button onClick={onClick} variant="ghost">
       <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
     </Button>
   )
 }
 
-export function DestroyButton() {
+export function DestroyButton({onClick}: { onClick: onClickType }) {
   return (
-    <Button variant="ghost">
+    <Button onClick={onClick} variant="ghost">
       <FontAwesomeIcon color="red" icon={faTrash}/>
     </Button>
+  )
+}
+
+export function AddButton({onClick}: { onClick: onClickType }) {
+  return (
+    <Button onClick={onClick} variant="outline">
+      <FontAwesomeIcon icon={faPlus}/>
+    </Button>
+  )
+}
+
+export function LinkButton({url}: { url: string }) {
+  return (
+    <Link className={cn(baseStyles, variantStyles['ghost'], sizeStyles['md'])}
+          href={url}>
+      <FontAwesomeIcon icon={faEye}/>
+    </Link>
   )
 }

@@ -1,10 +1,9 @@
+"use client"
+
 import {Beer, BeerStyle, Maker} from "@/app/types";
-import {Button, Card, DestroyButton, EditButton} from "@/app/components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye, faPlus} from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 import {truncateWords} from "@/app/lib";
-import Image from "next/image";
+import {useState} from "react";
+import {ProductCard, ProductList} from "@/app/components/Product";
 
 const beer_styles: BeerStyle[] = [
   {id: 1, name: "lager"}
@@ -36,51 +35,28 @@ const beers_mock: Beer[] = Array.from({length: 100}, (_, index: number): Beer =>
   }
 )
 
-function BeerLine({beer}: { beer: Beer }) {
-  return (
-    <Card title={beer.name} className="min-h-[200px] flex flex-col justify-between">
-      <div className="grid xs:grid-cols-1 grid-cols-2 gap-1">
-        <p className="text-sm text-gray-500 break-words">
-          <strong>Style</strong>: {beer.beer_style?.name} <br/>
-          <strong>Maker</strong>: {beer.maker?.name} <br/>
-          <strong>Alcohol</strong>: {beer.alcohol}&nbsp;<strong>IBU</strong>: {beer.ibu}
-          <br/>
-          <br/>
-          {truncateWords(beer.description || "", 50)}
-        </p>
-        {beer.image && (<div>
-          <Image src={beer.image?.thumb.url} width={100} height={100} alt={beer.name}/>
-        </div>)}
-      </div>
-      <div className="flex justify-end">
-        <Link href={`/beers/${beer.id}`}><FontAwesomeIcon icon={faEye}/></Link>
-        <EditButton/>
-        <DestroyButton/>
-      </div>
-    </Card>
-  )
-}
-
 export default function Page() {
+  const [search, setSearch] = useState('');
   return (<>
-      <div className="space-y-6">
-        <div className="flex justify-between space-between">
-          <h1 className="text-3xl">Beers</h1>
-
-          <Button variant="outline"><FontAwesomeIcon icon={faPlus}/></Button>
-        </div>
-        <br/>
-        <div className="
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            xl:grid-cols-3
-            2xl:grid-cols-4
-            gap-6"
-        >
-          {beers_mock.map((beer: Beer) => <BeerLine key={beer.name} beer={beer}/>)}
-        </div>
-      </div>
+      <ProductList title={`Beer`} onSearch={setSearch}>
+        {beers_mock.map((product: Beer) => (
+          <ProductCard key={product.name}
+                       url={`/beers/${product.id}`}
+                       product={product}
+                       onEdit={() => alert("edit message")}
+                       onDestroy={() => alert("delete message")}
+          >
+            <>
+              <strong>Style</strong>: {product.beer_style?.name} <br/>
+              <strong>Maker</strong>: {product.maker?.name} <br/>
+              <strong>Alcohol</strong>: {product.alcohol}&nbsp;<strong>IBU</strong>: {product.ibu}
+              <br/>
+              <br/>
+              {truncateWords(product.description || "", 50)}
+            </>
+          </ProductCard>
+        ))}
+      </ProductList>
     </>
   )
 }
