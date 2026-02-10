@@ -38,7 +38,7 @@ const beers_mock: Beer[] = Array.from({length: 100}, (_, index: number): Beer =>
 export default function Page() {
   const [search, setSearch] = useState('');
   return (<>
-      <ProductList title={`Beer`} onSearch={setSearch}>
+      <ProductList title={`Beer ${search}`} onSearch={setSearch}>
         {beers_mock.map((product: Beer) => (
           <ProductCard key={product.name}
                        url={`/beers/${product.id}`}

@@ -72,7 +72,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             </div>
 
             <div className="p-4 border-t">
-              <Button className="w-full rounded-2xl flex items-center gap-2">
+              <Button onClick={() => alert("logout")} className="w-full rounded-2xl flex items-center gap-2">
                 <FontAwesomeIcon icon={faRightFromBracket}/> Logout
               </Button>
             </div>
