@@ -11,7 +11,7 @@ export interface Beer extends Product {
   beer_style?: BeerStyle;
   beer_style_id?: number;
   ibu: number;
-  alcohol?: number;
+  abv: number;
   description?: string;
   maker?: Maker;
   maker_id?: number;

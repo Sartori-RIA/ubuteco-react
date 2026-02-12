@@ -1,10 +1,10 @@
-import {BaseModel, Image} from "@/app/types/base";
+import {BaseModel, PictureFromS3} from "@/app/types/base";
 
 export interface Organization extends BaseModel {
   name?: string;
   cnpj?: string;
   phone?: string;
-  logo?: Image;
+  logo?: PictureFromS3;
   theme_id?: number;
   user_id?: number;
 }

@@ -5,6 +5,7 @@ import "./globals.css";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import SidebarLayout from "@/app/components/SidebarLayout";
+
 config.autoAddCss = false
 
 const robotoSans = Roboto({

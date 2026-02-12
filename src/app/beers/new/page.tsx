@@ -1,31 +1,57 @@
 "use client"
 
 import {BeerForm} from "@/app/beers/components";
-import React from "react";
-import {Beer} from "@/app/types";
+import React, {useEffect, useState} from "react";
+import {beersService, beerStylesService, makersService} from "@/app/services";
+import {Beer, BeerStyle, Maker} from "@/app/types";
+import {ApiError, ApiErrorMessages} from "@/app/services/api-fetch";
+import {redirect} from "next/navigation";
 
 export default function Page() {
-  const handleSubmit = (data: Partial<Beer>) => {
-    console.log("SAVED", data);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<ApiErrorMessages>({});
+  const [beerStyles, setBeerStyles] = useState<BeerStyle[]>([]);
+  const [makers, setMakers] = useState<Maker[]>([]);
+
+  useEffect(() => {
+    beerStylesService.index().then((res) => setBeerStyles(res));
+    makersService.index().then((res) => setMakers(res));
+  }, []);
+
+  async function createBeer(formData: FormData) {
+    setLoading(true);
+    let response: Beer | null = null;
+    try {
+      response = await beersService.create(formData);
+    } catch (error) {
+      setLoading(false);
+      if (error instanceof ApiError) {
+        console.log({t: error.data});
+        if (error.status === 422) {
+          setErrors(error.data);
+        }
+        if (error.status === 401) {
+          console.log("not authenticated");
+        }
+        if (error.status === 403) {
+          console.log("not authorized");
+        }
+      }
+      return;
+    }
+    setLoading(false);
+    if (response) {
+      redirect(`/beers/${response.id}`);
+    }
   }
 
   return (
     <BeerForm
-      onSubmit={handleSubmit}
+      action={createBeer}
       submitLabel="Save Beer"
-      beerStyles={
-        [
-          {id: 1, name: "lager1"},
-          {id: 2, name: "lager2"},
-          {id: 3, name: "lager3"}
-        ]
-      }
-      makers={
-        [
-          {id: 1, name: "maker1"},
-          {id: 1, name: "maker2"},
-          {id: 1, name: "maker3"},
-        ]
-      }
+      beerStyles={beerStyles}
+      loading={loading}
+      errors={errors}
+      makers={makers}
     />)
 }
