@@ -25,17 +25,8 @@ export default function Page() {
       response = await beersService.create(formData);
     } catch (error) {
       setLoading(false);
-      if (error instanceof ApiError) {
-        console.log({t: error.data});
-        if (error.status === 422) {
-          setErrors(error.data);
-        }
-        if (error.status === 401) {
-          console.log("not authenticated");
-        }
-        if (error.status === 403) {
-          console.log("not authorized");
-        }
+      if (error instanceof ApiError && error.status === 422) {
+        setErrors(error.data);
       }
       return;
     }

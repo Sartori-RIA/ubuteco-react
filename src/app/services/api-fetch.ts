@@ -1,3 +1,20 @@
+import {redirect} from "next/navigation";
+
+function handleUnauthorized() {
+  if (typeof window !== "undefined") {
+    window.location.href = "/login";
+  } else {
+    redirect("/login");
+  }
+}
+
+function handleForbidden() {
+  if (typeof window !== "undefined") {
+    window.location.href = "/forbidden";
+  } else {
+    redirect("/forbidden");
+  }
+}
 
 export type ApiErrorMessages = {
   [key: string]: string[];
@@ -36,14 +53,20 @@ export async function apiFetch<T>(
     ...options
   })
 
-  if (res.status === 204) {
-    return {} as T
-  }
-
-  const data = await res.json()
   if (!res.ok) {
-    throw new ApiError(res.status, data);
+    switch (res.status) {
+      case 401:
+        handleUnauthorized()
+        break
+      case 403:
+        handleForbidden()
+        break;
+      case 404:
+      default:
+        const data = await res.json()
+        throw new ApiError(res.status, data);
+    }
   }
 
-  return data as T
+  return await res.json() as T
 }
