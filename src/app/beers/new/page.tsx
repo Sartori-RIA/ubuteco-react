@@ -2,43 +2,31 @@
 
 import {BeerForm} from "@/app/beers/components";
 import React, {useEffect, useState} from "react";
-import {beersService, beerStylesService, makersService} from "@/app/services";
-import {Beer, BeerStyle, Maker} from "@/app/types";
-import {ApiError, ApiErrorMessages} from "@/app/services/api-fetch";
-import {redirect} from "next/navigation";
+import {beerStylesService, makersService} from "@/app/_services";
+import {BeerStyle, Maker} from "@/app/_types";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/_store";
+import {useAppDispatch} from "@/app/_store/hooks";
+import {createBeer} from "@/app/_features/beers/beersThunks";
 
 export default function Page() {
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<ApiErrorMessages>({});
   const [beerStyles, setBeerStyles] = useState<BeerStyle[]>([]);
   const [makers, setMakers] = useState<Maker[]>([]);
+  const {loading, errors} = useSelector((state: RootState) => state.beers);
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     beerStylesService.index().then((res) => setBeerStyles(res));
     makersService.index().then((res) => setMakers(res));
   }, []);
 
-  async function createBeer(formData: FormData) {
-    setLoading(true);
-    let response: Beer | null = null;
-    try {
-      response = await beersService.create(formData);
-    } catch (error) {
-      setLoading(false);
-      if (error instanceof ApiError && error.status === 422) {
-        setErrors(error.data);
-      }
-      return;
-    }
-    setLoading(false);
-    if (response) {
-      redirect(`/beers/${response.id}`);
-    }
+  async function handleCreateBeer(formData: FormData) {
+    dispatch(createBeer(formData))
   }
 
   return (
     <BeerForm
-      action={createBeer}
+      action={handleCreateBeer}
       submitLabel="Save Beer"
       beerStyles={beerStyles}
       loading={loading}

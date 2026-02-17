@@ -1,45 +1,42 @@
 "use client"
 
-import {Beer} from "@/app/types";
-import {truncateWords} from "@/app/lib";
-import {ProductCard, ProductList} from "@/app/components/Product";
-import {beersService} from "@/app/services";
+import {Beer} from "@/app/_types";
+import {truncateWords} from "@/app/_lib";
+import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect, useState} from "react";
-import {Toolbar} from "@/app/components";
-import { useRouter } from "next/navigation";
+import {Loading} from "@/app/_components";
+import {useRouter} from "next/navigation";
+import {deleteBeer, fetchBeers} from "@/app/_features/beers/beersThunks";
+import {RootState} from "@/app/_store";
+import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 
 export default function Page() {
-  const [beers, setBeers] = useState<Beer[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const {beers, loading} = useAppSelector((state: RootState) => state.beers);
   const router = useRouter();
+  const dispatch = useAppDispatch()
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    dispatch(fetchBeers(search));
+  }, [ search ]);
 
-  useEffect(() => {
-    if (!mounted) return;
-    beersService.index().then((res) => setBeers(res));
-  }, [mounted]);
-
-  if (!mounted) {
-    return (
-      <div className="space-y-6">
-        <Toolbar newUrl={'/beers/new'} title={'Beers'}/>
-      </div>);
+  function handleSearch(v?: string) {
+    setSearch(v || "")
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
-    await beersService.destroy(Number(id))
-
-    setBeers(prev => prev.filter(beer => beer.id !== id));
+    dispatch(deleteBeer(Number(id)))
     router.refresh();
   }
 
+  if (loading) {
+    return <Loading/>;
+  }
+
   return (
-    <ProductList title="Beers">
+    <ProductList onSearch={(v) => handleSearch(v)} title="Beers">
       {beers.map((product: Beer) => (
         <ProductCard
           key={product.id}

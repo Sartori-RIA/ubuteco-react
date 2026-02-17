@@ -1,24 +1,30 @@
 "use client"
 
 import {useParams} from "next/navigation";
-import {Card, Loading} from "@/app/components";
-import {Beer} from "@/app/types";
+import {Card, Loading} from "@/app/_components";
 import Image from "next/image";
-import React, {useEffect, useState} from "react";
-import {beersService} from "@/app/services";
-import {isPictureFromS3} from "@/app/lib";
+import React, {useEffect} from "react";
+import {isPictureFromS3} from "@/app/_lib";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/_store";
+import {useAppDispatch} from "@/app/_store/hooks";
+import {fetchBeerById} from "@/app/_features/beers/beersThunks";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
-  const [beer, setBeer] = useState<Beer | null>(null);
+  const dispatch = useAppDispatch()
+
+  const beer = useSelector((state: RootState) => state.beers.beers.find((beer) => beer.id === Number(id)));
+  const {loading} = useSelector((state: RootState) => state.beers);
 
   useEffect(() => {
-    beersService.show(Number(id)).then((res) => setBeer(res))
-  }, [id]);
+    if (id) {
+      dispatch(fetchBeerById(Number(id)))
+    }
+  }, [dispatch, id])
 
-  if (beer == null) {
-    return <Loading/>;
-  }
+  if (loading) return <Loading/>;
+  if (beer === undefined) return <h1>Not Found</h1>
 
   return (
     <Card title={beer.name}>

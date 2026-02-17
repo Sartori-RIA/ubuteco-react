@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
-import { Roboto, Roboto_Mono } from "next/font/google";
+"use client"
+
+import type {Metadata} from "next";
+import {Roboto, Roboto_Mono} from "next/font/google";
 import "./globals.css";
 
-import { config } from '@fortawesome/fontawesome-svg-core'
+import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import SidebarLayout from "@/app/components/SidebarLayout";
+import {Provider} from "react-redux";
+import {store} from "./store"
 
 config.autoAddCss = false
 
@@ -18,25 +22,27 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Ubuteco React App",
-  description: "Ubuteco React App",
-};
+// export const metadata: Metadata = {
+//   title: "Ubuteco React App",
+//   description: "Ubuteco React App",
+// };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
-      >
+    <body
+      className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
+    >
+    <Provider store={store}>
       <SidebarLayout>
         {children}
       </SidebarLayout>
-      </body>
+    </Provider>
+    </body>
     </html>
   );
 }

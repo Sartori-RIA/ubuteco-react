@@ -1,17 +1,16 @@
 "use client"
 
-import {Beer, BeerStyle, Maker} from "@/app/types";
+import {Beer, BeerStyle, Maker} from "@/app/_types";
 import React, {useState} from "react";
-import {Button, Card, FormErrors, Input} from "@/app/components";
+import {Button, Card, FormErrors, Input} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
-import {ApiErrorMessages} from "@/app/services/api-fetch";
 
 interface BeerFormProps {
   defaultValues?: Partial<Beer>;
   beerStyles?: BeerStyle[];
   makers?: Maker[];
-  errors?: ApiErrorMessages;
+  errors?: string[];
   action: (data: FormData) => Promise<void> | void;
   loading?: boolean;
   submitLabel?: string;
@@ -59,7 +58,6 @@ export function BeerForm({
                 className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
-                required
                 name="name"
               />
             </Input>
