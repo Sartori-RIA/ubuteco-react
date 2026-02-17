@@ -43,12 +43,13 @@ type Props2 = {
   children: React.ReactNode,
   title: string,
   onSearch?: (value?: string) => void
+  addProductUrl: string
 }
 
-export function ProductList({children, title, onSearch}: Props2) {
+export function ProductList({children, title, onSearch, addProductUrl}: Props2) {
   return (<>
       <div className="space-y-6">
-        <Toolbar title={title} newUrl={'/beers/new'} onSearch={(e) => onSearch ? onSearch(e.target.value) : {}}/>
+        <Toolbar title={title} newUrl={addProductUrl} onSearch={(e) => onSearch ? onSearch(e.target.value) : {}}/>
         <br/>
         <div className="
             grid

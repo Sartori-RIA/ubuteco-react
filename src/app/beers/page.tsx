@@ -36,7 +36,7 @@ export default function Page() {
   }
 
   return (
-    <ProductList onSearch={(v) => handleSearch(v)} title="Beers">
+    <ProductList addProductUrl="/beers/new" onSearch={(v) => handleSearch(v)} title="Beers">
       {beers.map((product: Beer) => (
         <ProductCard
           key={product.id}

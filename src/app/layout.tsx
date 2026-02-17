@@ -1,14 +1,13 @@
 "use client"
 
-import type {Metadata} from "next";
 import {Roboto, Roboto_Mono} from "next/font/google";
 import "./globals.css";
 
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import SidebarLayout from "@/app/components/SidebarLayout";
+import SidebarLayout from "@/app/_components/SidebarLayout";
 import {Provider} from "react-redux";
-import {store} from "./store"
+import {store} from "./_store"
 
 config.autoAddCss = false
 

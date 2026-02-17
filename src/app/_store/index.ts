@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import beerReducer from "@/app/_features/beers/beersSlice";
+import wineReducer from "@/app/_features/wines/winesSlice";
 
 
 export const store = configureStore({
   reducer: {
-    beers: beerReducer
+    beers: beerReducer,
+    wines: wineReducer
   },
 })
 
