@@ -1,17 +1,17 @@
-import {ApiMetaData, Wine} from "@/app/_types";
+import {ApiMetaData, Drink} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
-import {createWine, deleteWine, fetchWine, fetchWineById, updateWine} from './winesThunks'
+import {createDrink, deleteDrink, fetchDrink, fetchDrinkById, updateDrink} from './drinksThunks'
 
-interface WinesState {
-  wines: Wine[]
+interface DrinksState {
+  drinks: Drink[]
   loading: boolean
   errors?: string[]
   searchTerm: string,
   meta: ApiMetaData
 }
 
-const initialState: WinesState = {
-  wines: [],
+const initialState: DrinksState = {
+  drinks: [],
   loading: false,
   errors: undefined,
   searchTerm: '',
@@ -24,8 +24,8 @@ const initialState: WinesState = {
   }
 }
 
-const winesSlice = createSlice({
-  name: 'wines',
+const drinksSlice = createSlice({
+  name: 'drinks',
   initialState,
   reducers: {
     setSearchTerm(state, action) {
@@ -33,13 +33,13 @@ const winesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addAsyncThunk(fetchWine, {
+    builder.addAsyncThunk(fetchDrink, {
       pending: (state, action) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines = action.payload.data
+        state.drinks = action.payload.data
         state.meta = action.payload.meta
       },
       rejected: (state, action) => {
@@ -48,18 +48,18 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(fetchWineById, {
+    builder.addAsyncThunk(fetchDrinkById, {
       pending: (state, action) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        const existing = state.wines.find(b => b.id === action.payload.id)
+        const existing = state.drinks.find(b => b.id === action.payload.id)
 
         if (existing) {
           Object.assign(existing, action.payload)
         } else {
-          state.wines.push(action.payload)
+          state.drinks.push(action.payload)
         }
       },
       rejected: (state, action) => {
@@ -68,28 +68,28 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(createWine, {
+    builder.addAsyncThunk(createDrink, {
       pending: (state, action) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines.push(action.payload)
+        state.drinks.push(action.payload)
       },
       rejected: (state, action) => {
         state.loading = false
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(updateWine, {
+    builder.addAsyncThunk(updateDrink, {
       pending: (state, action) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        const index = state.wines.findIndex(b => b.id === action.payload.id)
+        const index = state.drinks.findIndex(b => b.id === action.payload.id)
         if (index !== -1) {
-          state.wines[index] = action.payload
+          state.drinks[index] = action.payload
         }
       },
       rejected: (state, action) => {
@@ -98,13 +98,13 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(deleteWine, {
+    builder.addAsyncThunk(deleteDrink, {
       pending: (state, action) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines = state.wines.filter(b => b.id !== action.payload)
+        state.drinks = state.drinks.filter(b => b.id !== action.payload)
       },
       rejected: (state, action) => {
         state.loading = false
@@ -115,5 +115,5 @@ const winesSlice = createSlice({
   }
 })
 
-export const {setSearchTerm} = winesSlice.actions
-export default winesSlice.reducer
+export const {setSearchTerm} = drinksSlice.actions
+export default drinksSlice.reducer

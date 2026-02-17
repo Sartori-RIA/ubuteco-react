@@ -47,6 +47,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
+          // @ts-expect-error: "the error exists!"
           state.errors = action.payload?.errors
         }
       })
@@ -67,6 +68,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
+          // @ts-expect-error: "the error exists!"
           state.errors = action.payload?.errors
         },
       })
@@ -96,6 +98,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
+          // @ts-expect-error: "the error exists!"
           state.errors = action.payload?.errors
         }
       })
@@ -109,6 +112,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
+          // @ts-expect-error: "the error exists!"
           state.errors = action.payload?.errors
         }
       })
