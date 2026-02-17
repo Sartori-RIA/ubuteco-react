@@ -8,37 +8,36 @@ import {isPictureFromS3} from "@/app/_lib";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {fetchDrinkById} from "@/app/_features/drinks/drinksThunks";
+import {fetchFoodById} from "@/app/_features/foods/foodsThunks";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
 
-  const drink = useSelector((state: RootState) => state.drinks.drinks.find((drink) => drink.id === Number(id)));
-  const {loading} = useSelector((state: RootState) => state.drinks);
+  const food = useSelector((state: RootState) => state.foods.foods.find((food) => food.id === Number(id)));
+  const {loading} = useSelector((state: RootState) => state.foods);
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchDrinkById(Number(id)))
+      dispatch(fetchFoodById(Number(id)))
     }
   }, [dispatch, id])
 
   if (loading) return <Loading/>;
-  if (drink === undefined) return <h1>Not Found</h1>
+  if (food === undefined) return <h1>Not Found</h1>
 
   return (
-    <Card title={drink.name}>
+    <Card title={food.name}>
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-2">
         <p>
-          <strong>Maker</strong>: {drink.maker?.name} <br/>
-          {drink.description}
+          <strong>Quantity in Stock</strong>: {food.quantity_stock} <br/>
         </p>
-        {drink.image && isPictureFromS3(drink.image) && (<div>
+        {food.image && isPictureFromS3(food.image) && (<div>
           <Image loading="eager"
-                 src={drink.image?.thumb?.url}
+                 src={food.image?.thumb?.url}
                  width={500}
                  height={400}
-                 alt={drink.name}
+                 alt={food.name}
                  unoptimized
           />
         </div>)}

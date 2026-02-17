@@ -1,4 +1,3 @@
-// features/wines/beersThunks.ts
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import {RejectValue, Wine} from "@/app/_types";
 import {ApiError, apiFetch, apiFetchPaginated} from "@/app/_services/api-fetch";

@@ -20,10 +20,6 @@ export default function Page() {
     dispatch(fetchBeers(search));
   }, [ search ]);
 
-  function handleSearch(v?: string) {
-    setSearch(v || "")
-  }
-
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
@@ -31,13 +27,10 @@ export default function Page() {
     router.refresh();
   }
 
-  if (loading) {
-    return <Loading/>;
-  }
-
   return (
-    <ProductList addProductUrl="/beers/new" onSearch={(v) => handleSearch(v)} title="Beers">
-      {beers.map((product: Beer) => (
+    <ProductList addProductUrl="/beers/new" onSearch={setSearch} title="Beers">
+      {loading && <Loading/> }
+      {!loading && beers.map((product: Beer) => (
         <ProductCard
           key={product.id}
           url={`/beers/${product.id}`}

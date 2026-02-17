@@ -1,9 +1,8 @@
-// features/foods/beersThunks.ts
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import {RejectValue, Food} from "@/app/_types";
 import {ApiError, apiFetch, apiFetchPaginated} from "@/app/_services/api-fetch";
 
-export const fetchFood = createAsyncThunk(
+export const fetchFoods = createAsyncThunk(
   'foods/fetchAll',
   async (search: string = "", {rejectWithValue}) => {
     try {

@@ -10,7 +10,7 @@ import {
   faCartShopping,
   faChair,
   faGear,
-  faGlassMartini,
+  faGlassMartini, faHamburger,
   faHouse,
   faIndustry,
   faRightFromBracket,
@@ -25,14 +25,20 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
 
   const menuItems = [
     {label: "Dashboard", icon: faHouse, link: "/"},
+
     {label: "Beers", icon: faBeer, link: "/beers"},
-    {label: "Dishes", icon: faUsers, link: "/dishes"},
     {label: "Drinks", icon: faGlassMartini, link: "/drinks"},
+    {label: "Wines", icon: faWineBottle, link: "/wines"},
+
+    {label: "Dishes", icon: faHamburger, link: "/dishes"},
+    {label: "Food", icon: faHamburger, link: "/foods"},
+
     {label: "Makers", icon: faIndustry, link: "/makers"},
+
     {label: "Orders", icon: faCartShopping, link: "/orders"},
     {label: "Organizations", icon: faBuilding, link: "/organizations"},
     {label: "Tables", icon: faChair, link: "/tables"},
-    {label: "Wines", icon: faWineBottle, link: "/wines"},
+
     {label: "Users", icon: faUsers, link: "/users"},
     {label: "Settings", icon: faGear, link: "/"},
   ];

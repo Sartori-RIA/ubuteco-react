@@ -1,4 +1,3 @@
-// features/beers/beersSlice.ts
 import {createSlice} from '@reduxjs/toolkit'
 
 import {createBeer, deleteBeer, fetchBeerById, fetchBeers, updateBeer,} from './beersThunks'

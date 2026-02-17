@@ -6,4 +6,5 @@ export interface Drink extends Product {
   maker?: Maker;
   maker_id?: number;
   flavor?: string;
+  abv?: number;
 }

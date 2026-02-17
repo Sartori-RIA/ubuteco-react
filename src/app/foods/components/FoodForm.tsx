@@ -1,40 +1,34 @@
 "use client"
 
-import {Maker, Wine, WineStyle} from "@/app/_types";
+import {Food} from "@/app/_types";
 import React, {useState} from "react";
 import {Button, Card, FormErrors, Input} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
 
-interface WineFormProps {
-  defaultValues?: Partial<Wine>;
-  wineStyles?: WineStyle[];
-  makers?: Maker[];
+interface FoodFormProps {
+  defaultValues?: Partial<Food>;
   errors?: string[];
   action: (data: FormData) => Promise<void> | void;
   loading?: boolean;
   submitLabel?: string;
 }
 
-export function WineForm({
+export function FoodForm({
                            defaultValues,
-                           wineStyles = [],
-                           makers = [],
                            action,
                            errors,
                            loading = false,
-                           submitLabel = "Save Wine",
-                         }: WineFormProps) {
+                           submitLabel = "Save Food",
+                         }: FoodFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
-  const [form, setForm] = useState<Partial<Wine>>({
+  const [form, setForm] = useState<Partial<Food>>({
     name: defaultValues?.name ?? "",
-    description: defaultValues?.description ?? "",
-    maker_id: defaultValues?.maker_id,
     price: defaultValues?.price ?? 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
   });
 
-  function setField<K extends keyof Wine>(key: K, value: Wine[K]) {
+  function setField<K extends keyof Food>(key: K, value: Food[K]) {
     setForm((prev) => ({...prev, [key]: value}));
   }
 
@@ -45,7 +39,7 @@ export function WineForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Wine" : "New Wine"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? "Update Food" : "New Food"} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
@@ -87,29 +81,6 @@ export function WineForm({
             </div>
           </div>
 
-          <Input label="Description">
-            <textarea
-              className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
-              rows={4}
-              name="description"
-              value={form.description ?? ""}
-              onChange={(e) => setField("description", e.target.value)}
-            />
-          </Input>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="ABV">
-              <input
-                type="number"
-                name="abv"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
-                value={form.abv ?? 0}
-                onChange={(e) => setField("abv", Number(e.target.value))}
-                required
-              />
-            </Input>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input label="Price">
               <input
@@ -131,44 +102,6 @@ export function WineForm({
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
             </Input>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {wineStyles.length > 0 && (
-              <Input label="Wine Style">
-                <select
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
-                  name="wine_style_id"
-                  value={form.wine_style_id ?? ""}
-                  onChange={(e) => setField("wine_style_id", Number(e.target.value))}
-                >
-                  <option value="">Select style</option>
-                  {wineStyles.map((style) => (
-                    <option key={style.id} value={style.id}>
-                      {style.name}
-                    </option>
-                  ))}
-                </select>
-              </Input>
-            )}
-
-            {makers.length > 0 && (
-              <Input label="Maker">
-                <select
-                  name="maker_id"
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
-                  value={form.maker_id ?? ""}
-                  onChange={(e) => setField("maker_id", Number(e.target.value))}
-                >
-                  <option value="">Select Maker</option>
-                  {makers.map((maker) => (
-                    <option key={maker.id} value={maker.id}>
-                      {maker.name}
-                    </option>
-                  ))}
-                </select>
-              </Input>
-            )}
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

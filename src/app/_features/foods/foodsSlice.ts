@@ -1,6 +1,6 @@
 import {ApiMetaData, Food} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
-import {createFood, deleteFood, fetchFood, fetchFoodById, updateFood} from './foodsThunks'
+import {createFood, deleteFood, fetchFoods, fetchFoodById, updateFood} from './foodsThunks'
 
 interface FoodsState {
   foods: Food[]
@@ -33,7 +33,7 @@ const foodsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addAsyncThunk(fetchFood, {
+    builder.addAsyncThunk(fetchFoods, {
       pending: (state, action) => {
         state.loading = true
       },

@@ -24,10 +24,6 @@ export default function Page() {
     return () => clearTimeout(timeout);
   }, [search, dispatch]);
 
-  function handleSearch(v?: string) {
-    setSearch(v || "")
-  }
-
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
@@ -36,7 +32,7 @@ export default function Page() {
   }
 
   return (
-    <ProductList addProductUrl="/wines/new" onSearch={(v) => handleSearch(v)} title="Wines">
+    <ProductList addProductUrl="/wines/new" onSearch={setSearch} title="Wines">
       {loading && <Loading/>}
       {!loading && wines.map((product: Wine) => (
         <ProductCard

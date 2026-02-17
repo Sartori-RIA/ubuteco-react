@@ -1,6 +1,6 @@
 "use client"
 
-import {Beer, Drink, Maker} from "@/app/_types";
+import {Drink, Maker} from "@/app/_types";
 import React, {useState} from "react";
 import {Button, Card, FormErrors, Input} from "@/app/_components";
 import {motion} from "motion/react";
@@ -21,10 +21,10 @@ export function DrinkForm({
                             action,
                             errors,
                             loading = false,
-                            submitLabel = "Save Beer",
+                            submitLabel = "Save Drink",
                           }: DrinkFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
-  const [form, setForm] = useState<Partial<Beer>>({
+  const [form, setForm] = useState<Partial<Drink>>({
     name: defaultValues?.name ?? "",
     description: defaultValues?.description ?? "",
     maker_id: defaultValues?.maker_id,
@@ -32,7 +32,7 @@ export function DrinkForm({
     quantity_stock: defaultValues?.quantity_stock ?? 0,
   });
 
-  function setField<K extends keyof Beer>(key: K, value: Beer[K]) {
+  function setField<K extends keyof Drink>(key: K, value: Drink[K]) {
     setForm((prev) => ({...prev, [key]: value}));
   }
 
@@ -43,7 +43,7 @@ export function DrinkForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Beer" : "New Beer"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? "Update Drink" : "New Drink"} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
@@ -96,17 +96,6 @@ export function DrinkForm({
           </Input>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="IBU">
-              <input
-                type="number"
-                name="ibu"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
-                value={form.ibu ?? 0}
-                onChange={(e) => setField("ibu", Number(e.target.value))}
-                required
-              />
-            </Input>
-
             <Input label="ABV">
               <input
                 type="number"
