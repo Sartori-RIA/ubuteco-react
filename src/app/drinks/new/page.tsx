@@ -1,34 +1,31 @@
 "use client"
 
-import {WineForm} from "@/app/wines/components";
+import {DrinkForm} from "@/app/drinks/components";
 import React, {useEffect, useState} from "react";
-import {beerStylesService, makersService} from "@/app/_services";
-import {Maker, WineStyle} from "@/app/_types";
+import {makersService} from "@/app/_services";
+import {Maker} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {createWine} from "@/app/_features/wines/winesThunks";
+import {createDrink} from "@/app/_features/drinks/drinksThunks";
 
 export default function Page() {
-  const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
   const [makers, setMakers] = useState<Maker[]>([]);
-  const {loading, errors} = useSelector((state: RootState) => state.wines);
+  const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    beerStylesService.index().then((res) => setWineStyles(res));
     makersService.index().then((res) => setMakers(res));
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(createWine(formData))
+    dispatch(createDrink(formData))
   }
 
   return (
-    <WineForm
+    <DrinkForm
       action={handleCreateBeer}
-      submitLabel="Save Wine"
-      wineStyles={wineStyles}
+      submitLabel="Save Drink"
       loading={loading}
       errors={errors}
       makers={makers}
