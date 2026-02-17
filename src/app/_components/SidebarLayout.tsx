@@ -19,9 +19,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {Button} from ".";
 import Link from "next/link";
+import {usePathname} from "next/navigation";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
+  const pathname = usePathname()
 
   const menuItems = [
     {label: "Dashboard", icon: faHouse, link: "/"},
@@ -42,6 +44,13 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     {label: "Users", icon: faUsers, link: "/users"},
     {label: "Settings", icon: faGear, link: "/"},
   ];
+
+  const linkClass = (path: string) =>
+    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+      pathname === path
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-gray-200"
+    }`
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -67,7 +76,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
                     <Link
                       href={item.link}
                       key={item.label}
-                      className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl hover:bg-gray-100 transition text-left"
+                      className={
+                      `flex items-center gap-3 w-full px-4 py-3 rounded-2xl hover:bg-gray-100 transition text-left ${linkClass(item.link)}`
+                    }
                     >
                       <FontAwesomeIcon icon={item.icon} className="text-base"/>
                       <span className="text-sm font-medium">{item.label}</span>
