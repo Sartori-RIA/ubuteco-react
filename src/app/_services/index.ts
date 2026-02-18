@@ -1,7 +1,3 @@
-export * from './beer-styles.service'
-export * from './makers.service'
 export * from './orders.service'
 export * from './organizations.service'
-export * from './tables.service'
 export * from './users.service'
-export * from './wine-styles.service'
