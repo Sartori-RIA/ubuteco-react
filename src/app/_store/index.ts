@@ -1,7 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit'
-import beerReducer from "@/app/_store/features/beers/beersSlice";
+import beersReducer from "@/app/_store/features/beers/beersSlice";
 import beerStylesReducer from "@/app/_store/features/beer_styles/beerStylesSlice";
-import wineReducer from "@/app/_store/features/wines/winesSlice";
+import winesReducer from "@/app/_store/features/wines/winesSlice";
+import wineStylesReducer from "@/app/_store/features/wine_styles/wineStylesSlice";
 import foodsReducer from "@/app/_store/features/foods/foodsSlice";
 import drinksReducer from "@/app/_store/features/drinks/drinksSlice";
 import dishesReducer from "@/app/_store/features/dishes/dishesSlice";
@@ -9,9 +10,10 @@ import tablesReducer from "@/app/_store/features/tables/tablesSlice";
 
 export const store = configureStore({
   reducer: {
-    beers: beerReducer,
+    beers: beersReducer,
     beerStyles: beerStylesReducer,
-    wines: wineReducer,
+    wines: winesReducer,
+    wineStyles: wineStylesReducer,
     foods: foodsReducer,
     drinks: drinksReducer,
     dishes: dishesReducer,
