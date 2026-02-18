@@ -7,17 +7,19 @@ import foodsReducer from "@/app/_store/features/foods/foodsSlice";
 import drinksReducer from "@/app/_store/features/drinks/drinksSlice";
 import dishesReducer from "@/app/_store/features/dishes/dishesSlice";
 import tablesReducer from "@/app/_store/features/tables/tablesSlice";
+import makersReducer from "@/app/_store/features/makers/makersSlice";
 
 export const store = configureStore({
   reducer: {
     beers: beersReducer,
     beerStyles: beerStylesReducer,
+    dishes: dishesReducer,
+    drinks: drinksReducer,
+    foods: foodsReducer,
+    makers: makersReducer,
+    tables: tablesReducer,
     wines: winesReducer,
     wineStyles: wineStylesReducer,
-    foods: foodsReducer,
-    drinks: drinksReducer,
-    dishes: dishesReducer,
-    tables: tablesReducer,
   },
 })
 
