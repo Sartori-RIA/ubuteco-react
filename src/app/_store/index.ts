@@ -4,7 +4,7 @@ import wineReducer from "@/app/_store/features/wines/winesSlice";
 import foodsReducer from "@/app/_store/features/foods/foodsSlice";
 import drinksReducer from "@/app/_store/features/drinks/drinksSlice";
 import dishesReducer from "@/app/_store/features/dishes/dishesSlice";
-
+import tablesReducer from "@/app/_store/features/tables/tablesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
     foods: foodsReducer,
     drinks: drinksReducer,
     dishes: dishesReducer,
+    tables: tablesReducer
   },
 })
 
