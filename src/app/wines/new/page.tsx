@@ -8,12 +8,14 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {winesThunks} from "@/app/_store/features/wines/winesThunks";
+import {useRouter} from "next/navigation";
 
 export default function Page() {
   const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
   const [makers, setMakers] = useState<Maker[]>([]);
   const {loading, errors} = useSelector((state: RootState) => state.wines);
   const dispatch = useAppDispatch()
+  const router = useRouter();
 
   useEffect(() => {
     beerStylesService.index().then((res) => setWineStyles(res));
@@ -21,7 +23,11 @@ export default function Page() {
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(winesThunks.create(formData))
+    try {
+      const newWine = await dispatch(winesThunks.create(formData)).unwrap()
+      router.push(`/wines/${newWine.id}`);
+    } catch (error) {
+    }
   }
 
   return (

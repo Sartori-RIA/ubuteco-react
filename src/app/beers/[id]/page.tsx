@@ -4,7 +4,6 @@ import {useParams} from "next/navigation";
 import {Card, Loading} from "@/app/_components";
 import Image from "next/image";
 import React, {useEffect} from "react";
-import {isPictureFromS3} from "@/app/_lib";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -37,16 +36,15 @@ export default function Page() {
           <br/><br/>
           {beer.description}
         </p>
-        {beer.image && isPictureFromS3(beer.image) && (<div>
+        <div>
           <Image loading="eager"
-                 src={beer.image?.thumb?.url}
+                 src={beer.image_url}
                  width={500}
                  height={400}
                  alt={beer.name}
                  unoptimized
           />
-        </div>)}
-
+        </div>
       </div>
     </Card>
   )

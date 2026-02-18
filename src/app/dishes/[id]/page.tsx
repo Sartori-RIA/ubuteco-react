@@ -4,7 +4,6 @@ import {useParams} from "next/navigation";
 import {Card, Loading} from "@/app/_components";
 import Image from "next/image";
 import React, {useEffect} from "react";
-import {isPictureFromS3} from "@/app/_lib";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -32,16 +31,15 @@ export default function Page() {
         <p>
           {JSON.stringify(dish)}
         </p>
-        {dish.image && isPictureFromS3(dish.image) && (<div>
+        <div>
           <Image loading="eager"
-                 src={dish.image?.thumb?.url}
+                 src={dish.image_url}
                  width={500}
                  height={400}
                  alt={dish.name}
                  unoptimized
           />
-        </div>)}
-
+        </div>
       </div>
     </Card>
   )

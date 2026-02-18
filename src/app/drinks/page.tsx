@@ -3,26 +3,28 @@
 import {Drink} from "@/app/_types";
 import {truncateWords} from "@/app/_lib";
 import {ProductCard, ProductList} from "@/app/_components/Product";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
+import dynamic from "next/dynamic";
+import {setSearchTerm} from "@/app/_store/features/drinks/drinksSlice";
 
-export default function Page() {
+function Page() {
   const {drinks, loading} = useAppSelector((state: RootState) => state.drinks);
   const router = useRouter();
   const dispatch = useAppDispatch()
-  const [search, setSearch] = useState<string>("");
+  const searchTerm = useAppSelector(state => state.drinks.searchTerm);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(drinkThunks.fetchAll({search}));
+      dispatch(drinkThunks.fetchAll({search: searchTerm}));
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [search, dispatch]);
+  }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
@@ -32,7 +34,11 @@ export default function Page() {
   }
 
   return (
-    <ProductList addProductUrl="/drinks/new" onSearch={setSearch} title="Drinks">
+    <ProductList addProductUrl="/drinks/new"
+                 searchValue={searchTerm}
+                 onSearch={(v) => dispatch(setSearchTerm(v))}
+                 title="Drinks"
+    >
       {loading && <Loading/>}
       {!loading && drinks.map((product: Drink) => (
         <ProductCard
@@ -52,3 +58,7 @@ export default function Page() {
     </ProductList>
   );
 }
+
+export default dynamic(() => Promise.resolve(Page), {
+  ssr: false,
+});

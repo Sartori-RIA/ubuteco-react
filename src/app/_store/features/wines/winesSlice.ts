@@ -1,4 +1,4 @@
-import {ApiMetaData, Wine} from "@/app/_types";
+import {ApiMetaData, PaginatedResponse, Wine} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
 import {winesThunks} from './winesThunks'
 
@@ -39,13 +39,13 @@ const winesSlice = createSlice({
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines = action.payload.data
-        state.meta = action.payload.meta
+        const {meta, data} = action.payload as PaginatedResponse<Wine>
+        state.wines = data
+        state.meta = meta
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(winesThunks.fetchById, {
@@ -64,8 +64,7 @@ const winesSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(winesThunks.create, {
@@ -78,7 +77,7 @@ const winesSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(winesThunks.update, {
@@ -94,8 +93,7 @@ const winesSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(winesThunks.delete, {
@@ -108,8 +106,7 @@ const winesSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
   }

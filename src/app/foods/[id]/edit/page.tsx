@@ -2,7 +2,7 @@
 
 import React, {useEffect} from "react";
 import {FoodForm} from "@/app/foods/components";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -14,6 +14,7 @@ export default function Page() {
   const dispatch = useAppDispatch()
   const food = useSelector((state: RootState) => state.foods.foods.find((food) => food.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.foods);
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -22,7 +23,11 @@ export default function Page() {
   }, [dispatch, id])
 
   async function handleEditFood(data: FormData) {
-    dispatch(foodsThunks.update({id: Number(id), data}))
+    try {
+      const updatedFood = await dispatch(foodsThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/foods/${updatedFood.id}`);
+    } catch (error) {
+    }
   }
 
   if (loading) return <Loading/>;

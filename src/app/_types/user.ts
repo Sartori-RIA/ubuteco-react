@@ -3,7 +3,7 @@ import {Organization} from "@/app/_types/organization";
 
 
 export interface Role extends BaseModel {
-  name: 'SUPER_ADMIN' |'ADMIN' | 'KITCHEN' | 'WAITER' | 'CASH_REGISTER' | 'CUSTOMER';
+  name: 'SUPER_ADMIN' | 'ADMIN' | 'KITCHEN' | 'WAITER' | 'CASH_REGISTER' | 'CUSTOMER';
 }
 
 export interface Customer extends BaseModel {

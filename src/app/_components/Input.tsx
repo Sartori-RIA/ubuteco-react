@@ -3,10 +3,13 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
-export function SearchInput({className, onChange}: {
-  className?: string,
+type Props = {
+  searchValue: string
+  className?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-}) {
+}
+
+export function SearchInput({className, onChange, searchValue}: Props) {
   return <div className={`relative w-full ${className}`}>
     <FontAwesomeIcon
       icon={faSearch}
@@ -17,6 +20,7 @@ export function SearchInput({className, onChange}: {
       type="text"
       placeholder="Search..."
       onChange={onChange}
+      value={searchValue}
       className={`
       w-full
       rounded-xl
@@ -38,9 +42,9 @@ export function SearchInput({className, onChange}: {
 }
 
 export function Input({
-                 label,
-                 children,
-               }: {
+                        label,
+                        children,
+                      }: {
   label: string;
   children: React.ReactNode;
 }) {

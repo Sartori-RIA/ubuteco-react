@@ -1,4 +1,4 @@
-import {ApiMetaData, Drink} from "@/app/_types";
+import {ApiMetaData, Drink, PaginatedResponse} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
 import {drinkThunks} from './drinksThunks'
 
@@ -39,13 +39,13 @@ const drinksSlice = createSlice({
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.drinks = action.payload.data
-        state.meta = action.payload.meta
+        const {meta, data} = action.payload as PaginatedResponse<Drink>
+        state.drinks = data
+        state.meta = meta
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(drinkThunks.fetchById, {
@@ -64,12 +64,11 @@ const drinksSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(drinkThunks.create, {
-      pending: (state, action) => {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
@@ -78,7 +77,7 @@ const drinksSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(drinkThunks.update, {
@@ -94,8 +93,7 @@ const drinksSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
     builder.addAsyncThunk(drinkThunks.delete, {
@@ -108,8 +106,7 @@ const drinksSlice = createSlice({
       },
       rejected: (state, action) => {
         state.loading = false
-        // @ts-expect-error: "the error exists!"
-        state.errors = action.payload?.errors
+        state.errors = action.payload as string[]
       }
     })
   }

@@ -1,7 +1,7 @@
 "use client"
 
 import React, {useEffect} from "react";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -14,6 +14,7 @@ export default function Page() {
   const dispatch = useAppDispatch()
   const dish = useSelector((state: RootState) => state.dishes.dishes.find((dish) => dish.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.dishes);
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -22,7 +23,11 @@ export default function Page() {
   }, [dispatch, id])
 
   async function handleEditDish(data: FormData) {
-    dispatch(dishesThunks.update({id: Number(id), data}))
+    try {
+      const updatedDish = await dispatch(dishesThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/dishes/${updatedDish.id}`);
+    } catch (error) {
+    }
   }
 
   if (loading) return <Loading/>;

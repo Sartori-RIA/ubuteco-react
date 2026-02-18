@@ -1,5 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"
-import { apiFetch, apiFetchPaginated } from "@/app/_services/api-fetch"
+import {createAsyncThunk} from "@reduxjs/toolkit"
+import {ApiError, apiFetch, apiFetchPaginated} from "@/app/_services/api-fetch"
 
 type CrudOptions = {
   paginated?: boolean
@@ -9,13 +9,13 @@ export function createCrudThunks<T>(
   entity: string,
   options: CrudOptions = {}
 ) {
-  const { paginated = false } = options
+  const {paginated = false} = options
 
   const fetchAll = createAsyncThunk(
     `${entity}/fetchAll`,
-    async (params: { search?: string } = {}, { rejectWithValue }) => {
+    async (params: { search?: string } = {}, {rejectWithValue}) => {
       try {
-        const { search = "" } = params
+        const {search = ""} = params
         const query = search ? `?q=${search}` : ""
 
         if (paginated) {
@@ -24,7 +24,10 @@ export function createCrudThunks<T>(
 
         return await apiFetch<T[]>(`v1/${entity}${query}`)
       } catch (err) {
-        return rejectWithValue(err)
+        if (err instanceof ApiError) {
+          return rejectWithValue(err.data);
+        }
+        return rejectWithValue(["Unexpected error"]);
       }
     }
   )
@@ -33,51 +36,63 @@ export function createCrudThunks<T>(
     fetchAll,
     fetchById: createAsyncThunk(
       `${entity}/fetchById`,
-      async (id: number, { rejectWithValue }) => {
+      async (id: number, {rejectWithValue}) => {
         try {
           return await apiFetch<T>(`v1/${entity}/${id}`)
         } catch (err) {
-          return rejectWithValue(err)
+          if (err instanceof ApiError) {
+            return rejectWithValue(err.data);
+          }
+          return rejectWithValue(["Unexpected error"]);
         }
       }
     ),
 
     create: createAsyncThunk(
       `${entity}/create`,
-      async (data: FormData, { rejectWithValue }) => {
+      async (data: FormData, {rejectWithValue}) => {
         try {
           return await apiFetch<T>(`v1/${entity}`, {
             method: "POST",
             body: data,
           })
         } catch (err) {
-          return rejectWithValue(err)
+          if (err instanceof ApiError) {
+            return rejectWithValue(err.data);
+          }
+          return rejectWithValue(["Unexpected error"]);
         }
       }
     ),
 
     update: createAsyncThunk(
       `${entity}/update`,
-      async ({ id, data }: { id: number; data: FormData }, { rejectWithValue }) => {
+      async ({id, data}: { id: number; data: FormData }, {rejectWithValue}) => {
         try {
           return await apiFetch<T>(`v1/${entity}/${id}`, {
             method: "PUT",
             body: data,
           })
         } catch (err) {
-          return rejectWithValue(err)
+          if (err instanceof ApiError) {
+            return rejectWithValue(err.data);
+          }
+          return rejectWithValue(["Unexpected error"]);
         }
       }
     ),
 
     delete: createAsyncThunk(
       `${entity}/delete`,
-      async (id: number, { rejectWithValue }) => {
+      async (id: number, {rejectWithValue}) => {
         try {
-          await apiFetch(`v1/${entity}/${id}`, { method: "DELETE" })
+          await apiFetch(`v1/${entity}/${id}`, {method: "DELETE"})
           return id
         } catch (err) {
-          return rejectWithValue(err)
+          if (err instanceof ApiError) {
+            return rejectWithValue(err.data);
+          }
+          return rejectWithValue(["Unexpected error"]);
         }
       }
     ),

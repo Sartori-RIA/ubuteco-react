@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {BeerStyle, Maker} from "@/app/_types";
 import {BeerForm} from "@/app/beers/components";
 import {beerStylesService, makersService} from "@/app/_services";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -15,6 +15,7 @@ export default function Page() {
   const [beerStyles, setBeerStyles] = useState<BeerStyle[]>();
   const [makers, setMakers] = useState<Maker[]>();
 
+  const router = useRouter();
 
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
@@ -33,7 +34,11 @@ export default function Page() {
   }, []);
 
   async function handleEditBeer(data: FormData) {
-    dispatch(beerThunks.update({id: Number(id), data}))
+    try {
+      const updatedBeer = await dispatch(beerThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/beers/${updatedBeer.id}`);
+    } catch (error) {
+    }
   }
 
   if (loading) return <Loading/>;

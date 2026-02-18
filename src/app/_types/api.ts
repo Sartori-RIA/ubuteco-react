@@ -1,4 +1,3 @@
-
 export type RejectValue = {
   rejectValue: {
     status: number

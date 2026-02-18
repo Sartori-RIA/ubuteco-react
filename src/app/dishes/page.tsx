@@ -2,26 +2,28 @@
 
 import {Dish} from "@/app/_types";
 import {ProductCard, ProductList} from "@/app/_components/Product";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
+import dynamic from "next/dynamic";
+import {setSearchTerm} from "@/app/_store/features/dishes/dishesSlice";
 
-export default function Page() {
+function Page() {
   const {dishes, loading} = useAppSelector((state: RootState) => state.dishes);
   const router = useRouter();
   const dispatch = useAppDispatch()
-  const [search, setSearch] = useState<string>("");
+  const searchTerm = useAppSelector(state => state.dishes.searchTerm);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(dishesThunks.fetchAll({search}));
+      dispatch(dishesThunks.fetchAll({search: searchTerm}));
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [search, dispatch]);
+  }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
@@ -31,7 +33,10 @@ export default function Page() {
   }
 
   return (
-    <ProductList addProductUrl="/dishes/new" onSearch={setSearch} title="Dishes">
+    <ProductList addProductUrl="/dishes/new"
+                 searchValue={searchTerm}
+                 onSearch={(v) => dispatch(setSearchTerm(v))}
+                 title="Dishes">
       {loading && <Loading/>}
       {!loading && dishes.map((product: Dish) => (
         <ProductCard
@@ -50,3 +55,7 @@ export default function Page() {
     </ProductList>
   );
 }
+
+export default dynamic(() => Promise.resolve(Page), {
+  ssr: false,
+});

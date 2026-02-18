@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {Maker} from "@/app/_types";
 import {makersService} from "@/app/_services";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -18,6 +18,7 @@ export default function Page() {
   const dispatch = useAppDispatch()
   const drink = useSelector((state: RootState) => state.drinks.drinks.find((drink) => drink.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -30,7 +31,11 @@ export default function Page() {
   }, []);
 
   async function handleEditDrink(data: FormData) {
-    dispatch(drinkThunks.update({id: Number(id), data}))
+    try {
+      const updatedDrink = await dispatch(drinkThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/drinks/${updatedDrink.id}`);
+    } catch (error) {
+    }
   }
 
   if (loading) return <Loading/>;

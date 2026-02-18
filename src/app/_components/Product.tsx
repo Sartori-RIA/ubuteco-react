@@ -4,7 +4,6 @@ import {Product} from "@/app/_types";
 import Image from "next/image";
 import React from "react";
 import {Card, DestroyButton, EditButton, OpenButton, Toolbar} from ".";
-import {isPictureFromS3} from "@/app/_lib";
 
 type Props1 = {
   children: React.ReactNode
@@ -17,18 +16,18 @@ export function ProductCard({product, url, children, onDelete}: Props1) {
   return (
     <Card title={product.name} className="min-h-[200px] flex flex-col justify-between">
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-1">
-        <p className="text-sm text-gray-500 break-words">
+        <div className="text-sm text-gray-500 break-words">
           {children}
-        </p>
-        {product.image && isPictureFromS3(product.image) && (<div>
+        </div>
+        <div>
           <Image loading="eager"
-                 src={product.image?.thumb?.url}
+                 src={product.image_url}
                  width={100}
                  height={100}
                  alt={product.name}
                  unoptimized
           />
-        </div>)}
+        </div>
       </div>
       <div className="flex justify-end">
         <OpenButton url={url}/>
@@ -42,14 +41,18 @@ export function ProductCard({product, url, children, onDelete}: Props1) {
 type Props2 = {
   children: React.ReactNode,
   title: string,
+  searchValue: string,
   onSearch?: (value: string) => void
   addProductUrl: string
 }
 
-export function ProductList({children, title, onSearch, addProductUrl}: Props2) {
+export function ProductList({children, title, searchValue, onSearch, addProductUrl}: Props2) {
   return (<>
       <div className="space-y-6">
-        <Toolbar title={title} newUrl={addProductUrl} onSearch={(e) => onSearch ? onSearch(e.target.value || "") : {}}/>
+        <Toolbar title={title}
+                 newUrl={addProductUrl}
+                 searchValue={searchValue}
+                 onSearch={(e) => onSearch ? onSearch(e.target.value || "") : {}}/>
         <br/>
         <div className="
             grid

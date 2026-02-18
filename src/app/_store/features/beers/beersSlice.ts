@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 import {beerThunks,} from './beersThunks'
-import {ApiMetaData, Beer} from "@/app/_types";
+import {ApiMetaData, Beer, PaginatedResponse} from "@/app/_types";
 
 interface BeersState {
   beers: Beer[]
@@ -41,13 +41,13 @@ const beersSlice = createSlice({
         },
         fulfilled: (state, action) => {
           state.loading = false
-          state.beers = action.payload.data
-          state.meta = action.payload.meta
+          const {meta, data} = action.payload as PaginatedResponse<Beer>
+          state.beers = data
+          state.meta = meta
         },
         rejected: (state, action) => {
           state.loading = false
-          // @ts-expect-error: "the error exists!"
-          state.errors = action.payload?.errors
+          state.errors = action.payload as string[]
         }
       })
       .addAsyncThunk(beerThunks.fetchById, {
@@ -67,8 +67,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
-          // @ts-expect-error: "the error exists!"
-          state.errors = action.payload?.errors
+          state.errors = action.payload as string[]
         },
       })
       .addAsyncThunk(beerThunks.create, {
@@ -81,8 +80,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
-          // @ts-expect-error: "the error exists!"
-          state.errors = action.payload?.errors
+          state.errors = action.payload as string[]
         },
       })
       .addAsyncThunk(beerThunks.update, {
@@ -98,8 +96,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
-          // @ts-expect-error: "the error exists!"
-          state.errors = action.payload?.errors
+          state.errors = action.payload as string[]
         }
       })
       .addAsyncThunk(beerThunks.delete, {
@@ -112,8 +109,7 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
-          // @ts-expect-error: "the error exists!"
-          state.errors = action.payload?.errors
+          state.errors = action.payload as string[]
         }
       })
   },

@@ -8,18 +8,24 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
+import {useRouter} from "next/navigation";
 
 export default function Page() {
   const [makers, setMakers] = useState<Maker[]>([]);
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const dispatch = useAppDispatch()
+  const router = useRouter();
 
   useEffect(() => {
     makersService.index().then((res) => setMakers(res));
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(drinkThunks.create(formData))
+    try {
+      const updatedDrink = await dispatch(drinkThunks.create(formData)).unwrap()
+      router.push(`/drinks/${updatedDrink.id}`);
+    } catch (error) {
+    }
   }
 
   return (

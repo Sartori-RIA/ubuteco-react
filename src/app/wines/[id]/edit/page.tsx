@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {Maker, WineStyle} from "@/app/_types";
 import {makersService, wineStylesService} from "@/app/_services";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -14,12 +14,11 @@ import {WineForm} from "@/app/wines/components";
 export default function Page() {
   const [wineStyles, setWineStyles] = useState<WineStyle[]>();
   const [makers, setMakers] = useState<Maker[]>();
-
-
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const wine = useSelector((state: RootState) => state.wines.wines.find((wine) => wine.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.wines);
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -33,7 +32,11 @@ export default function Page() {
   }, []);
 
   async function handleEditWine(data: FormData) {
-    dispatch(winesThunks.update({id: Number(id), data}))
+    try {
+      const updatedWine = await dispatch(winesThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/wines/${updatedWine.id}`);
+    } catch (error) {
+    }
   }
 
   if (loading) return <Loading/>;

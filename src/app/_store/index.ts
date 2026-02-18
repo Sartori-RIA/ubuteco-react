@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import beerReducer from "@/app/_store/features/beers/beersSlice";
 import wineReducer from "@/app/_store/features/wines/winesSlice";
 import foodsReducer from "@/app/_store/features/foods/foodsSlice";

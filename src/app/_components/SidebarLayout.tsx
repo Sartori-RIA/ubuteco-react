@@ -10,7 +10,8 @@ import {
   faCartShopping,
   faChair,
   faGear,
-  faGlassMartini, faHamburger,
+  faGlassMartini,
+  faHamburger,
   faHouse,
   faIndustry,
   faRightFromBracket,
@@ -77,8 +78,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
                       href={item.link}
                       key={item.label}
                       className={
-                      `flex items-center gap-3 w-full px-4 py-3 rounded-2xl hover:bg-gray-100 transition text-left ${linkClass(item.link)}`
-                    }
+                        `flex items-center gap-3 w-full px-4 py-3 rounded-2xl hover:bg-gray-100 transition text-left ${linkClass(item.link)}`
+                      }
                     >
                       <FontAwesomeIcon icon={item.icon} className="text-base"/>
                       <span className="text-sm font-medium">{item.label}</span>
