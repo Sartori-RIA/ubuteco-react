@@ -7,7 +7,7 @@ import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
-import {deleteDish, fetchDish} from "@/app/_features/dishes/dishesThunks";
+import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 
 export default function Page() {
   const {dishes, loading} = useAppSelector((state: RootState) => state.dishes);
@@ -17,7 +17,7 @@ export default function Page() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(fetchDish(search));
+      dispatch(dishesThunks.fetchAll({search}));
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -26,7 +26,7 @@ export default function Page() {
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
-    dispatch(deleteDish(Number(id)))
+    dispatch(dishesThunks.delete(Number(id)))
     router.refresh();
   }
 

@@ -1,17 +1,17 @@
-import {ApiMetaData, Wine} from "@/app/_types";
+import {ApiMetaData, Food} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
-import {createWine, deleteWine, fetchWine, fetchWineById, updateWine} from './winesThunks'
+import {foodsThunks} from './foodsThunks'
 
-interface WinesState {
-  wines: Wine[]
+interface FoodsState {
+  foods: Food[]
   loading: boolean
   errors?: string[]
   searchTerm: string,
   meta: ApiMetaData
 }
 
-const initialState: WinesState = {
-  wines: [],
+const initialState: FoodsState = {
+  foods: [],
   loading: false,
   errors: undefined,
   searchTerm: '',
@@ -24,8 +24,8 @@ const initialState: WinesState = {
   }
 }
 
-const winesSlice = createSlice({
-  name: 'wines',
+const foodsSlice = createSlice({
+  name: 'foods',
   initialState,
   reducers: {
     setSearchTerm(state, action) {
@@ -33,13 +33,13 @@ const winesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addAsyncThunk(fetchWine, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(foodsThunks.fetchAll, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines = action.payload.data
+        state.foods = action.payload.data
         state.meta = action.payload.meta
       },
       rejected: (state, action) => {
@@ -48,18 +48,18 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(fetchWineById, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(foodsThunks.fetchById, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        const existing = state.wines.find(b => b.id === action.payload.id)
+        const existing = state.foods.find(b => b.id === action.payload.id)
 
         if (existing) {
           Object.assign(existing, action.payload)
         } else {
-          state.wines.push(action.payload)
+          state.foods.push(action.payload)
         }
       },
       rejected: (state, action) => {
@@ -68,28 +68,28 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(createWine, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(foodsThunks.create, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines.push(action.payload)
+        state.foods.push(action.payload)
       },
       rejected: (state, action) => {
         state.loading = false
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(updateWine, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(foodsThunks.update, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        const index = state.wines.findIndex(b => b.id === action.payload.id)
+        const index = state.foods.findIndex(b => b.id === action.payload.id)
         if (index !== -1) {
-          state.wines[index] = action.payload
+          state.foods[index] = action.payload
         }
       },
       rejected: (state, action) => {
@@ -98,13 +98,13 @@ const winesSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(deleteWine, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(foodsThunks.delete, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.wines = state.wines.filter(b => b.id !== action.payload)
+        state.foods = state.foods.filter(b => b.id !== action.payload)
       },
       rejected: (state, action) => {
         state.loading = false
@@ -115,5 +115,5 @@ const winesSlice = createSlice({
   }
 })
 
-export const {setSearchTerm} = winesSlice.actions
-export default winesSlice.reducer
+export const {setSearchTerm} = foodsSlice.actions
+export default foodsSlice.reducer

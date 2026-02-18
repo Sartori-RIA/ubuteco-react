@@ -4,7 +4,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {createFood} from "@/app/_features/foods/foodsThunks";
+import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {FoodForm} from "@/app/foods/components/FoodForm";
 
 export default function Page() {
@@ -12,7 +12,7 @@ export default function Page() {
   const dispatch = useAppDispatch()
 
   async function handleCreateFood(formData: FormData) {
-    dispatch(createFood(formData))
+    dispatch(foodsThunks.create(formData))
   }
 
   return (

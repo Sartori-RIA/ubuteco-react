@@ -6,7 +6,7 @@ import {useParams} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
-import {fetchFoodById, updateFood} from "@/app/_features/foods/foodsThunks";
+import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
 
 export default function Page() {
@@ -17,12 +17,12 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchFoodById(Number(id)))
+      dispatch(foodsThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 
   async function handleEditFood(data: FormData) {
-    dispatch(updateFood({id: Number(id), data}))
+    dispatch(foodsThunks.update({id: Number(id), data}))
   }
 
   if (loading) return <Loading/>;

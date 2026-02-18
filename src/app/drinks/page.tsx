@@ -8,7 +8,7 @@ import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
-import {deleteDrink, fetchDrink} from "@/app/_features/drinks/drinksThunks";
+import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 
 export default function Page() {
   const {drinks, loading} = useAppSelector((state: RootState) => state.drinks);
@@ -18,7 +18,7 @@ export default function Page() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(fetchDrink(search));
+      dispatch(drinkThunks.fetchAll({search}));
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -27,7 +27,7 @@ export default function Page() {
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
-    dispatch(deleteDrink(Number(id)))
+    dispatch(drinkThunks.delete(Number(id)))
     router.refresh();
   }
 

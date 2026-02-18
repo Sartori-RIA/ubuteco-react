@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 
-import {createBeer, deleteBeer, fetchBeerById, fetchBeers, updateBeer,} from './beersThunks'
+import {beerThunks,} from './beersThunks'
 import {ApiMetaData, Beer} from "@/app/_types";
 
 interface BeersState {
@@ -35,7 +35,7 @@ const beersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addAsyncThunk(fetchBeers, {
+      .addAsyncThunk(beerThunks.fetchAll, {
         pending: (state) => {
           state.loading = true
         },
@@ -50,7 +50,7 @@ const beersSlice = createSlice({
           state.errors = action.payload?.errors
         }
       })
-      .addAsyncThunk(fetchBeerById, {
+      .addAsyncThunk(beerThunks.fetchById, {
         pending: (state) => {
           state.loading = true
         },
@@ -71,7 +71,7 @@ const beersSlice = createSlice({
           state.errors = action.payload?.errors
         },
       })
-      .addAsyncThunk(createBeer, {
+      .addAsyncThunk(beerThunks.create, {
         pending: (state) => {
           state.loading = true
         },
@@ -81,11 +81,12 @@ const beersSlice = createSlice({
         },
         rejected: (state, action) => {
           state.loading = false
+          // @ts-expect-error: "the error exists!"
           state.errors = action.payload?.errors
         },
       })
-      .addAsyncThunk(updateBeer, {
-        pending: (state, action) => {
+      .addAsyncThunk(beerThunks.update, {
+        pending: (state) => {
           state.loading = true
         },
         fulfilled: (state, action) => {
@@ -101,7 +102,7 @@ const beersSlice = createSlice({
           state.errors = action.payload?.errors
         }
       })
-      .addAsyncThunk(deleteBeer, {
+      .addAsyncThunk(beerThunks.delete, {
         pending: (state) => {
           state.loading = true
         },

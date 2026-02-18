@@ -8,7 +8,7 @@ import {useParams} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
-import {fetchBeerById, updateBeer} from "@/app/_features/beers/beersThunks";
+import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
 
 export default function Page() {
@@ -23,7 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchBeerById(Number(id)))
+      dispatch(beerThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 
@@ -33,7 +33,7 @@ export default function Page() {
   }, []);
 
   async function handleEditBeer(data: FormData) {
-    dispatch(updateBeer({id: Number(id), data}))
+    dispatch(beerThunks.update({id: Number(id), data}))
   }
 
   if (loading) return <Loading/>;

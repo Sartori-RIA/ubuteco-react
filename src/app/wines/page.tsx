@@ -8,7 +8,7 @@ import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
-import {deleteWine, fetchWine} from "@/app/_features/wines/winesThunks";
+import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 
 export default function Page() {
   const {wines, loading} = useAppSelector((state: RootState) => state.wines);
@@ -18,7 +18,7 @@ export default function Page() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(fetchWine(search));
+      dispatch(winesThunks.fetchAll({search}));
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -27,7 +27,7 @@ export default function Page() {
   async function handleDelete(id: number) {
     if (!confirm("Are you sure?")) return;
 
-    dispatch(deleteWine(Number(id)))
+    dispatch(winesThunks.delete(Number(id)))
     router.refresh();
   }
 

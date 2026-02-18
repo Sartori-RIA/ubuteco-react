@@ -7,7 +7,7 @@ import {BeerStyle, Maker} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {createBeer} from "@/app/_features/beers/beersThunks";
+import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 
 export default function Page() {
   const [beerStyles, setBeerStyles] = useState<BeerStyle[]>([]);
@@ -21,7 +21,7 @@ export default function Page() {
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(createBeer(formData))
+    dispatch(beerThunks.create(formData))
   }
 
   return (

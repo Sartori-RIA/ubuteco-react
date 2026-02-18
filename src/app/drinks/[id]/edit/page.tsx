@@ -8,7 +8,7 @@ import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {fetchDrinkById, updateDrink} from "@/app/_features/drinks/drinksThunks";
+import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {DrinkForm} from "@/app/drinks/components";
 
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchDrinkById(Number(id)))
+      dispatch(drinkThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 
@@ -30,7 +30,7 @@ export default function Page() {
   }, []);
 
   async function handleEditDrink(data: FormData) {
-    dispatch(updateDrink({id: Number(id), data}))
+    dispatch(drinkThunks.update({id: Number(id), data}))
   }
 
   if (loading) return <Loading/>;

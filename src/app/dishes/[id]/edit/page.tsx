@@ -6,7 +6,7 @@ import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {fetchDishById, updateDish} from "@/app/_features/dishes/dishesThunks";
+import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {DishForm} from "@/app/dishes/components";
 
 export default function Page() {
@@ -17,12 +17,12 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchDishById(Number(id)))
+      dispatch(dishesThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 
   async function handleEditDish(data: FormData) {
-    dispatch(updateDish({id: Number(id), data}))
+    dispatch(dishesThunks.update({id: Number(id), data}))
   }
 
   if (loading) return <Loading/>;

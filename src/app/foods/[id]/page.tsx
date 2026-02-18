@@ -8,7 +8,7 @@ import {isPictureFromS3} from "@/app/_lib";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {fetchFoodById} from "@/app/_features/foods/foodsThunks";
+import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -19,7 +19,7 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchFoodById(Number(id)))
+      dispatch(foodsThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 

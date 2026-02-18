@@ -8,7 +8,7 @@ import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {fetchWineById, updateWine} from "@/app/_features/wines/winesThunks";
+import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import {WineForm} from "@/app/wines/components";
 
 export default function Page() {
@@ -23,7 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchWineById(Number(id)))
+      dispatch(winesThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
 
@@ -33,7 +33,7 @@ export default function Page() {
   }, []);
 
   async function handleEditWine(data: FormData) {
-    dispatch(updateWine({id: Number(id), data}))
+    dispatch(winesThunks.update({id: Number(id), data}))
   }
 
   if (loading) return <Loading/>;

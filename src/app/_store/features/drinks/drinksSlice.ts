@@ -1,6 +1,6 @@
 import {ApiMetaData, Drink} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
-import {createDrink, deleteDrink, fetchDrink, fetchDrinkById, updateDrink} from './drinksThunks'
+import {drinkThunks} from './drinksThunks'
 
 interface DrinksState {
   drinks: Drink[]
@@ -33,8 +33,8 @@ const drinksSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addAsyncThunk(fetchDrink, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(drinkThunks.fetchAll, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
@@ -48,8 +48,8 @@ const drinksSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(fetchDrinkById, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(drinkThunks.fetchById, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
@@ -68,7 +68,7 @@ const drinksSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(createDrink, {
+    builder.addAsyncThunk(drinkThunks.create, {
       pending: (state, action) => {
         state.loading = true
       },
@@ -81,8 +81,8 @@ const drinksSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(updateDrink, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(drinkThunks.update, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {
@@ -98,8 +98,8 @@ const drinksSlice = createSlice({
         state.errors = action.payload?.errors
       }
     })
-    builder.addAsyncThunk(deleteDrink, {
-      pending: (state, action) => {
+    builder.addAsyncThunk(drinkThunks.delete, {
+      pending: (state) => {
         state.loading = true
       },
       fulfilled: (state, action) => {

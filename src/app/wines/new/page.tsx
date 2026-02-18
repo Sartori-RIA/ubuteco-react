@@ -7,7 +7,7 @@ import {Maker, WineStyle} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {createWine} from "@/app/_features/wines/winesThunks";
+import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 
 export default function Page() {
   const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
@@ -21,7 +21,7 @@ export default function Page() {
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(createWine(formData))
+    dispatch(winesThunks.create(formData))
   }
 
   return (

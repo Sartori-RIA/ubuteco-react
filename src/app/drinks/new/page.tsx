@@ -7,7 +7,7 @@ import {Maker} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {createDrink} from "@/app/_features/drinks/drinksThunks";
+import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 
 export default function Page() {
   const [makers, setMakers] = useState<Maker[]>([]);
@@ -19,7 +19,7 @@ export default function Page() {
   }, []);
 
   async function handleCreateBeer(formData: FormData) {
-    dispatch(createDrink(formData))
+    dispatch(drinkThunks.create(formData))
   }
 
   return (
