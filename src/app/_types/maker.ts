@@ -4,4 +4,5 @@ export interface Maker extends BaseModel {
   name: string;
   country?: string;
   state?: string;
+  image_url: string
 }
