@@ -2,7 +2,6 @@
 
 import React, {useEffect, useState} from "react";
 import {Maker, WineStyle} from "@/app/_types";
-import {makersService, wineStylesService} from "@/app/_services";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -25,11 +24,6 @@ export default function Page() {
       dispatch(winesThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
-
-  useEffect(() => {
-    wineStylesService.index().then((res) => setWineStyles(res))
-    makersService.index().then((res) => setMakers(res))
-  }, []);
 
   async function handleEditWine(data: FormData) {
     try {

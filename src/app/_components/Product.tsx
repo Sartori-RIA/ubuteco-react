@@ -3,7 +3,7 @@
 import {Product} from "@/app/_types";
 import Image from "next/image";
 import React from "react";
-import {Card, DestroyButton, EditButton, OpenButton, Toolbar} from ".";
+import {Card, DestroyButton, EditLinkButton, OpenButton, Toolbar} from ".";
 
 type Props1 = {
   children: React.ReactNode
@@ -31,7 +31,7 @@ export function ProductCard({product, url, children, onDelete}: Props1) {
       </div>
       <div className="flex justify-end">
         <OpenButton url={url}/>
-        <EditButton url={`${url}/edit`}/>
+        <EditLinkButton url={`${url}/edit`}/>
         <DestroyButton onClick={onDelete}/>
       </div>
     </Card>

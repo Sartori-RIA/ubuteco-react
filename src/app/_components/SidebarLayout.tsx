@@ -18,7 +18,7 @@ import {
   faUsers,
   faWineBottle
 } from "@fortawesome/free-solid-svg-icons";
-import {Button} from ".";
+import {Buttons} from ".";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 
@@ -30,6 +30,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     {label: "Dashboard", icon: faHouse, link: "/"},
 
     {label: "Beers", icon: faBeer, link: "/beers"},
+    {label: "Beer Styles", icon: faBeer, link: "/beer-styles"},
     {label: "Drinks", icon: faGlassMartini, link: "/drinks"},
     {label: "Wines", icon: faWineBottle, link: "/wines"},
 
@@ -90,9 +91,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             </div>
 
             <div className="p-4 border-t">
-              <Button onClick={() => alert("logout")} className="w-full rounded-2xl flex items-center gap-2">
+              <Buttons onClick={() => alert("logout")} className="w-full rounded-2xl flex items-center gap-2">
                 <FontAwesomeIcon icon={faRightFromBracket}/> Logout
-              </Button>
+              </Buttons>
             </div>
           </motion.aside>
         )}
@@ -103,14 +104,14 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
         {/* Topbar */}
         <header className="bg-white border-b p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button
+            <Buttons
               variant="outline"
               size="icon"
               className="rounded-2xl"
               onClick={() => setIsOpen((v) => !v)}
             >
               <FontAwesomeIcon icon={faBars}/>
-            </Button>
+            </Buttons>
             <h2 className="text-lg font-semibold">Dashboard</h2>
           </div>
         </header>

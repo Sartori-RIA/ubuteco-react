@@ -2,7 +2,6 @@
 
 import {BeerForm} from "@/app/beers/components";
 import React, {useEffect, useState} from "react";
-import {beerStylesService, makersService} from "@/app/_services";
 import {BeerStyle, Maker} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -16,11 +15,6 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.beers);
   const dispatch = useAppDispatch()
   const router = useRouter();
-
-  useEffect(() => {
-    beerStylesService.index().then((res) => setBeerStyles(res));
-    makersService.index().then((res) => setMakers(res));
-  }, []);
 
   async function handleCreateBeer(formData: FormData) {
     try {

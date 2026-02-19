@@ -2,7 +2,7 @@
 
 import {Dish} from "@/app/_types";
 import React, {useState} from "react";
-import {Button, Card, FormErrors, Input} from "@/app/_components";
+import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
 
@@ -45,14 +45,14 @@ export function DishForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Name">
-              <input
+            <Label label="Name">
+              <Input
                 className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
               />
-            </Input>
+            </Label>
 
             <div>
               {preview && (
@@ -63,8 +63,8 @@ export function DishForm({
                 />
               )}
 
-              <Input label="Image">
-                <input
+              <Label label="Image">
+                <Input
                   className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                   type="file"
                   name="image"
@@ -77,13 +77,13 @@ export function DishForm({
                     setPreview(imageUrl);
                   }}
                 />
-              </Input>
+              </Label>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Price">
-              <input
+            <Label label="Price">
+              <Input
                 type="number"
                 step="0.01"
                 name="price"
@@ -91,23 +91,23 @@ export function DishForm({
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
               />
-            </Input>
+            </Label>
 
-            <Input label="Stock Quantity">
-              <input
+            <Label label="Stock Quantity">
+              <Input
                 type="number"
                 name="quantity_stock"
                 className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
-            </Input>
+            </Label>
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button type="submit" loading={loading}>
+            <Buttons type="submit" loading={loading}>
               {submitLabel}
-            </Button>
+            </Buttons>
           </div>
         </Form>
       </Card>

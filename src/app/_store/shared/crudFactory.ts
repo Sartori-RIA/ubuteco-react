@@ -50,11 +50,17 @@ export function createCrudThunks<T>(
 
     create: createAsyncThunk(
       `${entity}/create`,
-      async (data: FormData, {rejectWithValue}) => {
+      async (data: FormData | T, {rejectWithValue}) => {
         try {
+          let body
+          if (data instanceof FormData) {
+            body = data
+          } else {
+            body = JSON.stringify(data)
+          }
           return await apiFetch<T>(`v1/${entity}`, {
             method: "POST",
-            body: data,
+            body,
           })
         } catch (err) {
           if (err instanceof ApiError) {
@@ -67,11 +73,17 @@ export function createCrudThunks<T>(
 
     update: createAsyncThunk(
       `${entity}/update`,
-      async ({id, data}: { id: number; data: FormData }, {rejectWithValue}) => {
+      async ({id, data}: { id: number; data: FormData | T }, {rejectWithValue}) => {
         try {
+          let body
+          if (data instanceof FormData) {
+            body = data
+          } else {
+            body = JSON.stringify(data)
+          }
           return await apiFetch<T>(`v1/${entity}/${id}`, {
             method: "PUT",
-            body: data,
+            body,
           })
         } catch (err) {
           if (err instanceof ApiError) {

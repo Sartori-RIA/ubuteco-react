@@ -41,7 +41,7 @@ const sizeStyles: Record<ButtonSize, string> = {
   icon: "h-10 w-10",
 };
 
-export function Button({
+export function Buttons({
                          className,
                          variant = "default",
                          size = "md",
@@ -92,50 +92,58 @@ export function Button({
   );
 }
 
-export function EditButton({url}: { url: string }) {
+export function EditButton({onClick}: { onClick: onClickType }) {
   return (
-    <Button variant="ghost">
+    <Buttons variant="ghost" onClick={onClick}>
+      <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
+    </Buttons>
+  )
+}
+
+export function EditLinkButton({url}: { url: string }) {
+  return (
+    <Buttons variant="ghost">
       <Link href={url}>
         <FontAwesomeIcon color="#2b7fff" icon={faEdit}/>
       </Link>
-    </Button>
+    </Buttons>
   )
 }
 
 export function DestroyButton({onClick}: { onClick: onClickType }) {
   return (
-    <Button onClick={onClick} variant="ghost">
+    <Buttons onClick={onClick} variant="ghost">
       <FontAwesomeIcon color="red" icon={faTrash}/>
-    </Button>
+    </Buttons>
   )
 }
 
 export function AddButton({url}: { url: string }) {
   return (
-    <Button variant="outline">
+    <Buttons variant="outline">
       <Link href={url}>
         <FontAwesomeIcon icon={faPlus}/>
       </Link>
-    </Button>
+    </Buttons>
   )
 }
 
 export function OpenButton({url}: { url: string }) {
   return (
-    <Button variant="ghost">
+    <Buttons variant="ghost">
       <Link href={url}>
         <FontAwesomeIcon icon={faEye}/>
       </Link>
-    </Button>
+    </Buttons>
   )
 }
 
 export function LinkButton({url, children}: { url: string, children: React.ReactNode }) {
   return (
-    <Button variant="ghost">
+    <Buttons variant="ghost">
       <Link href={url}>
         {children}
       </Link>
-    </Button>
+    </Buttons>
   )
 }

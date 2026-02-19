@@ -1,8 +1,7 @@
 "use client"
 
 import {DrinkForm} from "@/app/drinks/components";
-import React, {useEffect, useState} from "react";
-import {makersService} from "@/app/_services";
+import React, {useState} from "react";
 import {Maker} from "@/app/_types";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -15,10 +14,6 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const dispatch = useAppDispatch()
   const router = useRouter();
-
-  useEffect(() => {
-    makersService.index().then((res) => setMakers(res));
-  }, []);
 
   async function handleCreateBeer(formData: FormData) {
     try {

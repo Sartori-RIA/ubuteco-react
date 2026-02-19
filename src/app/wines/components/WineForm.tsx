@@ -2,7 +2,7 @@
 
 import {Maker, Wine, WineStyle} from "@/app/_types";
 import React, {useState} from "react";
-import {Button, Card, FormErrors, Input} from "@/app/_components";
+import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
 
@@ -51,14 +51,14 @@ export function WineForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Name">
-              <input
+            <Label label="Name">
+              <Input
                 className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
               />
-            </Input>
+            </Label>
 
             <div>
               {preview && (
@@ -69,8 +69,8 @@ export function WineForm({
                 />
               )}
 
-              <Input label="Image">
-                <input
+              <Label label="Image">
+                <Input
                   className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                   type="file"
                   name="image"
@@ -83,23 +83,23 @@ export function WineForm({
                     setPreview(imageUrl);
                   }}
                 />
-              </Input>
+              </Label>
             </div>
           </div>
 
-          <Input label="Description">
-            <textarea
+          <Label label="Description">
+            <Textarea
               className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
               rows={4}
               name="description"
               value={form.description ?? ""}
               onChange={(e) => setField("description", e.target.value)}
             />
-          </Input>
+          </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="ABV">
-              <input
+            <Label label="ABV">
+              <Input
                 type="number"
                 name="abv"
                 className="w-full rounded-xl border px-3 py-2 text-sm"
@@ -107,12 +107,12 @@ export function WineForm({
                 onChange={(e) => setField("abv", Number(e.target.value))}
                 required
               />
-            </Input>
+            </Label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Price">
-              <input
+            <Label label="Price">
+              <Input
                 type="number"
                 step="0.01"
                 name="price"
@@ -120,22 +120,22 @@ export function WineForm({
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
               />
-            </Input>
+            </Label>
 
-            <Input label="Stock Quantity">
-              <input
+            <Label label="Stock Quantity">
+              <Input
                 type="number"
                 name="quantity_stock"
                 className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
-            </Input>
+            </Label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {wineStyles.length > 0 && (
-              <Input label="Wine Style">
+              <Label label="Wine Style">
                 <select
                   className="w-full rounded-xl border px-3 py-2 text-sm"
                   name="wine_style_id"
@@ -149,11 +149,11 @@ export function WineForm({
                     </option>
                   ))}
                 </select>
-              </Input>
+              </Label>
             )}
 
             {makers.length > 0 && (
-              <Input label="Maker">
+              <Label label="Maker">
                 <select
                   name="maker_id"
                   className="w-full rounded-xl border px-3 py-2 text-sm"
@@ -167,14 +167,14 @@ export function WineForm({
                     </option>
                   ))}
                 </select>
-              </Input>
+              </Label>
             )}
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button type="submit" loading={loading}>
+            <Buttons type="submit" loading={loading}>
               {submitLabel}
-            </Button>
+            </Buttons>
           </div>
         </Form>
       </Card>

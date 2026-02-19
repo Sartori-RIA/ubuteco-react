@@ -3,7 +3,6 @@
 import React, {useEffect, useState} from "react";
 import {BeerStyle, Maker} from "@/app/_types";
 import {BeerForm} from "@/app/beers/components";
-import {beerStylesService, makersService} from "@/app/_services";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -27,11 +26,6 @@ export default function Page() {
       dispatch(beerThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
-
-  useEffect(() => {
-    beerStylesService.index().then((res) => setBeerStyles(res))
-    makersService.index().then((res) => setMakers(res))
-  }, []);
 
   async function handleEditBeer(data: FormData) {
     try {

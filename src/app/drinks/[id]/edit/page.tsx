@@ -2,7 +2,6 @@
 
 import React, {useEffect, useState} from "react";
 import {Maker} from "@/app/_types";
-import {makersService} from "@/app/_services";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -25,10 +24,6 @@ export default function Page() {
       dispatch(drinkThunks.fetchById(Number(id)))
     }
   }, [dispatch, id])
-
-  useEffect(() => {
-    makersService.index().then((res) => setMakers(res))
-  }, []);
 
   async function handleEditDrink(data: FormData) {
     try {
