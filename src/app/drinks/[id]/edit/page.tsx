@@ -1,7 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
-import {Maker} from "@/app/_types";
+import React, {useEffect} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -11,8 +10,6 @@ import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {DrinkForm} from "@/app/drinks/components";
 
 export default function Page() {
-  const [makers, setMakers] = useState<Maker[]>();
-
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const drink = useSelector((state: RootState) => state.drinks.drinks.find((drink) => drink.id === Number(id)));
@@ -43,7 +40,6 @@ export default function Page() {
       submitLabel="Update Drink"
       errors={errors}
       loading={loading}
-      makers={makers}
     />
   );
 }

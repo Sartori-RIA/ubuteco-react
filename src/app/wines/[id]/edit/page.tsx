@@ -11,8 +11,6 @@ import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import {WineForm} from "@/app/wines/components";
 
 export default function Page() {
-  const [wineStyles, setWineStyles] = useState<WineStyle[]>();
-  const [makers, setMakers] = useState<Maker[]>();
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const wine = useSelector((state: RootState) => state.wines.wines.find((wine) => wine.id === Number(id)));
@@ -41,10 +39,8 @@ export default function Page() {
       defaultValues={wine}
       action={handleEditWine}
       submitLabel="Update Wine"
-      wineStyles={wineStyles}
       errors={errors}
       loading={loading}
-      makers={makers}
     />
   );
 }

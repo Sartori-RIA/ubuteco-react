@@ -1,8 +1,7 @@
 "use client"
 
 import {WineForm} from "@/app/wines/components";
-import React, {useState} from "react";
-import {Maker, WineStyle} from "@/app/_types";
+import React from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -10,8 +9,6 @@ import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import {useRouter} from "next/navigation";
 
 export default function Page() {
-  const [wineStyles, setWineStyles] = useState<WineStyle[]>([]);
-  const [makers, setMakers] = useState<Maker[]>([]);
   const {loading, errors} = useSelector((state: RootState) => state.wines);
   const dispatch = useAppDispatch()
   const router = useRouter();
@@ -28,9 +25,7 @@ export default function Page() {
     <WineForm
       action={handleCreateBeer}
       submitLabel="Save Wine"
-      wineStyles={wineStyles}
       loading={loading}
       errors={errors}
-      makers={makers}
     />)
 }

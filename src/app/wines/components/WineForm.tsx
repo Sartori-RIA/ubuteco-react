@@ -1,15 +1,17 @@
 "use client"
 
 import {Maker, Wine, WineStyle} from "@/app/_types";
-import React, {useState} from "react";
-import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
+import React, {useEffect, useState} from "react";
+import {Buttons, Card, FormErrors, Input, Label, Select, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {RootState} from "@/app/_store";
+import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {makersThunks} from "@/app/_store/features/makers/makersThunks";
+import {wineStylesThunks} from "@/app/_store/features/wine_styles/wineStylesThunks";
 
 interface WineFormProps {
   defaultValues?: Partial<Wine>;
-  wineStyles?: WineStyle[];
-  makers?: Maker[];
   errors?: string[];
   action: (data: FormData) => Promise<void> | void;
   loading?: boolean;
@@ -18,13 +20,14 @@ interface WineFormProps {
 
 export function WineForm({
                            defaultValues,
-                           wineStyles = [],
-                           makers = [],
                            action,
                            errors,
                            loading = false,
                            submitLabel = "Save Wine",
                          }: WineFormProps) {
+  const makers: Maker[] = useAppSelector((state: RootState) => state.makers.makers);
+  const wineStyles: WineStyle[] = useAppSelector((state: RootState) => state.wineStyles.wineStyles);
+  const dispatch = useAppDispatch();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Wine>>({
     name: defaultValues?.name ?? "",
@@ -32,7 +35,16 @@ export function WineForm({
     maker_id: defaultValues?.maker_id,
     price: defaultValues?.price ?? 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
+    grapes: defaultValues?.grapes ?? "",
+    ripening: defaultValues?.ripening ?? "",
+    vintage_wine: defaultValues?.vintage_wine ?? "",
+    visual: defaultValues?.visual ?? "",
   });
+
+  useEffect(() => {
+    dispatch(makersThunks.fetchAll({}))
+    dispatch(wineStylesThunks.fetchAll({}))
+  }, [dispatch])
 
   function setField<K extends keyof Wine>(key: K, value: Wine[K]) {
     setForm((prev) => ({...prev, [key]: value}));
@@ -53,7 +65,6 @@ export function WineForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Name">
               <Input
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
@@ -71,7 +82,6 @@ export function WineForm({
 
               <Label label="Image">
                 <Input
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                   type="file"
                   name="image"
                   accept="image/*"
@@ -89,7 +99,6 @@ export function WineForm({
 
           <Label label="Description">
             <Textarea
-              className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
               rows={4}
               name="description"
               value={form.description ?? ""}
@@ -102,7 +111,6 @@ export function WineForm({
               <Input
                 type="number"
                 name="abv"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.abv ?? 0}
                 onChange={(e) => setField("abv", Number(e.target.value))}
                 required
@@ -116,7 +124,6 @@ export function WineForm({
                 type="number"
                 step="0.01"
                 name="price"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
               />
@@ -126,7 +133,6 @@ export function WineForm({
               <Input
                 type="number"
                 name="quantity_stock"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
@@ -136,11 +142,10 @@ export function WineForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {wineStyles.length > 0 && (
               <Label label="Wine Style">
-                <select
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
+                <Select
                   name="wine_style_id"
                   value={form.wine_style_id ?? ""}
-                  onChange={(e) => setField("wine_style_id", Number(e.target.value))}
+                  onChange={(value) => setField("wine_style_id", Number(value))}
                 >
                   <option value="">Select style</option>
                   {wineStyles.map((style) => (
@@ -148,17 +153,16 @@ export function WineForm({
                       {style.name}
                     </option>
                   ))}
-                </select>
+                </Select>
               </Label>
             )}
 
             {makers.length > 0 && (
               <Label label="Maker">
-                <select
+                <Select
                   name="maker_id"
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
                   value={form.maker_id ?? ""}
-                  onChange={(e) => setField("maker_id", Number(e.target.value))}
+                  onChange={(value) => setField("maker_id", Number(value))}
                 >
                   <option value="">Select Maker</option>
                   {makers.map((maker) => (
@@ -166,7 +170,7 @@ export function WineForm({
                       {maker.name}
                     </option>
                   ))}
-                </select>
+                </Select>
               </Label>
             )}
           </div>

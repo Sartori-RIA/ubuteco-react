@@ -3,8 +3,6 @@ import {Maker} from "@/app/_types/maker";
 
 export interface Drink extends Product {
   description?: string;
-  maker?: Maker;
-  maker_id?: number;
   flavor?: string;
   abv?: number;
 }

@@ -48,7 +48,6 @@ function Page() {
           onDelete={() => handleDelete(Number(product.id))}
         >
           <>
-            <strong>Maker</strong>: {product.maker?.name} <br/>
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

@@ -1,14 +1,13 @@
 "use client"
 
-import {Drink, Maker} from "@/app/_types";
+import {Drink} from "@/app/_types";
 import React, {useState} from "react";
-import {Buttons, Card, FormErrors, Label, Input, Textarea} from "@/app/_components";
+import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
 
 interface DrinkFormProps {
   defaultValues?: Partial<Drink>;
-  makers?: Maker[];
   errors?: string[];
   action: (data: FormData) => Promise<void> | void;
   loading?: boolean;
@@ -17,7 +16,6 @@ interface DrinkFormProps {
 
 export function DrinkForm({
                             defaultValues,
-                            makers = [],
                             action,
                             errors,
                             loading = false,
@@ -27,9 +25,9 @@ export function DrinkForm({
   const [form, setForm] = useState<Partial<Drink>>({
     name: defaultValues?.name ?? "",
     description: defaultValues?.description ?? "",
-    maker_id: defaultValues?.maker_id,
     price: defaultValues?.price ?? 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
+    flavor: defaultValues?.flavor ?? "",
   });
 
   function setField<K extends keyof Drink>(key: K, value: Drink[K]) {
@@ -51,43 +49,38 @@ export function DrinkForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Name">
               <Input
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
               />
             </Label>
 
-            <div>
-              {preview && (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="mt-2 h-32 rounded-xl object-cover"
-                />
-              )}
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="mt-2 h-32 rounded-xl object-cover"
+              />
+            )}
 
-              <Label label="Image">
-                <Input
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
+            <Label label="Image">
+              <Input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
 
-                    const imageUrl = URL.createObjectURL(file);
-                    setPreview(imageUrl);
-                  }}
-                />
-              </Label>
-            </div>
+                  const imageUrl = URL.createObjectURL(file);
+                  setPreview(imageUrl);
+                }}
+              />
+            </Label>
           </div>
 
           <Label label="Description">
             <Textarea
-              className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
               rows={4}
               name="description"
               value={form.description ?? ""}
@@ -96,25 +89,30 @@ export function DrinkForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Label label="Flavor">
+              <Input
+                name="flavor"
+                value={form.flavor}
+                onChange={(e) => setField("flavor", e.target.value)}
+                required
+              />
+            </Label>
+
             <Label label="ABV">
               <Input
                 type="number"
                 name="abv"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.abv ?? 0}
                 onChange={(e) => setField("abv", Number(e.target.value))}
                 required
               />
             </Label>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Price">
               <Input
                 type="number"
                 step="0.01"
                 name="price"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
               />
@@ -124,31 +122,10 @@ export function DrinkForm({
               <Input
                 type="number"
                 name="quantity_stock"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
             </Label>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {makers.length > 0 && (
-              <Label label="Maker">
-                <select
-                  name="maker_id"
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
-                  value={form.maker_id ?? ""}
-                  onChange={(e) => setField("maker_id", Number(e.target.value))}
-                >
-                  <option value="">Select Maker</option>
-                  {makers.map((maker) => (
-                    <option key={maker.id} value={maker.id}>
-                      {maker.name}
-                    </option>
-                  ))}
-                </select>
-              </Label>
-            )}
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

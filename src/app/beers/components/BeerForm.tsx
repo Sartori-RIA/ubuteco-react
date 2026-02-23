@@ -1,6 +1,6 @@
 "use client"
 
-import {Beer} from "@/app/_types";
+import {Beer, BeerStyle, Maker} from "@/app/_types";
 import React, {useEffect, useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label, Select, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
@@ -25,8 +25,8 @@ export function BeerForm({
                            loading = false,
                            submitLabel = "Save Beer",
                          }: BeerFormProps) {
-  const beerStyles = useAppSelector((state: RootState) => state.beerStyles.beerStyles);
-  const makers = useAppSelector((state: RootState) => state.makers.makers);
+  const beerStyles = useAppSelector<BeerStyle[]>((state: RootState) => state.beerStyles.beerStyles);
+  const makers = useAppSelector<Maker[]>((state: RootState) => state.makers.makers);
   const dispatch = useAppDispatch();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Beer>>({
