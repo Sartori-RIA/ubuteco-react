@@ -25,21 +25,15 @@ type InputProps = {
   type?: string;
   name?: string;
   required?: boolean;
+  autoFocus?: boolean;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
-export function Input({step, required, name, accept, className, onChange, value, placeholder, type, onKeyDown}: InputProps) {
+export function Input(props: InputProps) {
   return (<input
-    type={type || 'text'}
-    placeholder={placeholder}
-    onChange={onChange}
-    onKeyDown={onKeyDown}
-    value={value}
-    step={step}
-    name={name}
-    accept={accept}
-    required={required}
+    {...props}
     className={`
       w-full
       rounded-xl
@@ -54,7 +48,7 @@ export function Input({step, required, name, accept, className, onChange, value,
       focus:border-blue-500
       focus:ring-2
       focus:ring-blue-100
-     ${className}
+     ${props.className}
     `}
   />)
 }
@@ -67,12 +61,9 @@ type TextAreaProps = {
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-export function Textarea({rows, name, value, className, onChange}: TextAreaProps) {
+export function Textarea(props: TextAreaProps) {
   return (<textarea
-    name={name}
-    rows={rows}
-    value={value}
-    onChange={onChange}
+    {...props}
     className={`
       w-full
       rounded-xl
@@ -87,6 +78,45 @@ export function Textarea({rows, name, value, className, onChange}: TextAreaProps
       focus:border-blue-500
       focus:ring-2
       focus:ring-blue-100
-     ${className}
-    `}  />)
+     ${props.className}
+    `}/>)
 }
+
+
+export function InlineInput(props: InputProps) {
+  return (
+    <input
+      {...props}
+      spellCheck={false}
+      className={`
+        w-full
+        text-sm
+        font-medium
+
+        bg-transparent
+        outline-none
+        border-none
+        rounded-md
+
+        px-1
+        py-0.5
+
+        transition-all
+        duration-150
+
+        placeholder:text-muted-foreground/60
+
+        hover:bg-muted/30
+        focus:bg-background
+        focus:ring-1
+        focus:ring-primary/30
+
+        disabled:opacity-50
+        disabled:cursor-not-allowed
+
+        ${props.className}
+      `}
+    />
+  )
+}
+

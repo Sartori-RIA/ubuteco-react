@@ -1,15 +1,17 @@
 "use client"
 
-import {Beer, BeerStyle, Maker} from "@/app/_types";
-import React, {useState} from "react";
-import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
+import {Beer} from "@/app/_types";
+import React, {useEffect, useState} from "react";
+import {Buttons, Card, FormErrors, Input, Label, Select, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {RootState} from "@/app/_store";
+import {makersThunks} from "@/app/_store/features/makers/makersThunks";
+import {beerStylesThunks} from "@/app/_store/features/beer_styles/beerStylesThunks";
 
 interface BeerFormProps {
   defaultValues?: Partial<Beer>;
-  beerStyles?: BeerStyle[];
-  makers?: Maker[];
   errors?: string[];
   action: (data: FormData) => Promise<void> | void;
   loading?: boolean;
@@ -18,13 +20,14 @@ interface BeerFormProps {
 
 export function BeerForm({
                            defaultValues,
-                           beerStyles = [],
-                           makers = [],
                            action,
                            errors,
                            loading = false,
                            submitLabel = "Save Beer",
                          }: BeerFormProps) {
+  const beerStyles = useAppSelector((state: RootState) => state.beerStyles.beerStyles);
+  const makers = useAppSelector((state: RootState) => state.makers.makers);
+  const dispatch = useAppDispatch();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Beer>>({
     name: defaultValues?.name ?? "",
@@ -35,6 +38,12 @@ export function BeerForm({
     price: defaultValues?.price ?? 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
   });
+
+  useEffect(() => {
+    dispatch(makersThunks.fetchAll({}))
+    dispatch(beerStylesThunks.fetchAll({}))
+  }, [dispatch])
+
 
   function setField<K extends keyof Beer>(key: K, value: Beer[K]) {
     setForm((prev) => ({...prev, [key]: value}));
@@ -55,7 +64,6 @@ export function BeerForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Name">
               <Input
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
@@ -73,7 +81,6 @@ export function BeerForm({
 
               <Label label="Image">
                 <Input
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                   type="file"
                   name="image"
                   accept="image/*"
@@ -91,7 +98,6 @@ export function BeerForm({
 
           <Label label="Description">
             <Textarea
-              className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
               rows={4}
               name="description"
               value={form.description ?? ""}
@@ -104,7 +110,6 @@ export function BeerForm({
               <Input
                 type="number"
                 name="ibu"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.ibu ?? 0}
                 onChange={(e) => setField("ibu", Number(e.target.value))}
                 required
@@ -115,7 +120,6 @@ export function BeerForm({
               <Input
                 type="number"
                 name="abv"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.abv ?? 0}
                 onChange={(e) => setField("abv", Number(e.target.value))}
                 required
@@ -129,7 +133,6 @@ export function BeerForm({
                 type="number"
                 step="0.01"
                 name="price"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
               />
@@ -139,7 +142,6 @@ export function BeerForm({
               <Input
                 type="number"
                 name="quantity_stock"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
@@ -147,41 +149,35 @@ export function BeerForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {beerStyles.length > 0 && (
-              <Label label="Beer Style">
-                <select
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
-                  name="beer_style_id"
-                  value={form.beer_style_id ?? ""}
-                  onChange={(e) => setField("beer_style_id", Number(e.target.value))}
-                >
-                  <option value="">Select style</option>
-                  {beerStyles.map((style) => (
-                    <option key={style.id} value={style.id}>
-                      {style.name}
-                    </option>
-                  ))}
-                </select>
-              </Label>
-            )}
+            <Label label="Beer Style">
+              <Select
+                name="beer_style_id"
+                value={form.beer_style_id ?? ""}
+                onChange={(e) => setField("beer_style_id", Number(e))}
+              >
+                <option value="">Select style</option>
+                {beerStyles.map((style) => (
+                  <option key={style.id} value={style.id}>
+                    {style.name}
+                  </option>
+                ))}
+              </Select>
+            </Label>
 
-            {makers.length > 0 && (
-              <Label label="Maker">
-                <select
-                  name="maker_id"
-                  className="w-full rounded-xl border px-3 py-2 text-sm"
-                  value={form.maker_id ?? ""}
-                  onChange={(e) => setField("maker_id", Number(e.target.value))}
-                >
-                  <option value="">Select Maker</option>
-                  {makers.map((maker) => (
-                    <option key={maker.id} value={maker.id}>
-                      {maker.name}
-                    </option>
-                  ))}
-                </select>
-              </Label>
-            )}
+            <Label label="Maker">
+              <Select
+                name="maker_id"
+                value={form.maker_id}
+                onChange={(e) => setField("maker_id", Number(e))}
+              >
+                <option value="">Select Maker</option>
+                {makers.map((maker) => (
+                  <option key={maker.id} value={maker.id}>
+                    {maker.name}
+                  </option>
+                ))}
+              </Select>
+            </Label>
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

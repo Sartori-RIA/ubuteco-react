@@ -1,7 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
-import {BeerStyle, Maker} from "@/app/_types";
+import React, {useEffect} from "react";
 import {BeerForm} from "@/app/beers/components";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
@@ -11,9 +10,6 @@ import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
 
 export default function Page() {
-  const [beerStyles, setBeerStyles] = useState<BeerStyle[]>();
-  const [makers, setMakers] = useState<Maker[]>();
-
   const router = useRouter();
 
   const {id} = useParams<{ id: string }>()
@@ -43,10 +39,8 @@ export default function Page() {
       defaultValues={beer}
       action={handleEditBeer}
       submitLabel="Update Beer"
-      beerStyles={beerStyles}
       errors={errors}
       loading={loading}
-      makers={makers}
     />
   );
 }

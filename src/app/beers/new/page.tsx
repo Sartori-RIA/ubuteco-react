@@ -1,8 +1,7 @@
 "use client"
 
 import {BeerForm} from "@/app/beers/components";
-import React, {useEffect, useState} from "react";
-import {BeerStyle, Maker} from "@/app/_types";
+import React from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -10,8 +9,6 @@ import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useRouter} from "next/navigation";
 
 export default function Page() {
-  const [beerStyles, setBeerStyles] = useState<BeerStyle[]>([]);
-  const [makers, setMakers] = useState<Maker[]>([]);
   const {loading, errors} = useSelector((state: RootState) => state.beers);
   const dispatch = useAppDispatch()
   const router = useRouter();
@@ -28,9 +25,7 @@ export default function Page() {
     <BeerForm
       action={handleCreateBeer}
       submitLabel="Save Beer"
-      beerStyles={beerStyles}
       loading={loading}
       errors={errors}
-      makers={makers}
     />)
 }
