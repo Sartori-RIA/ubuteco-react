@@ -107,18 +107,47 @@ export function WineForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Label label="Grapes">
+              <Input
+                name="grapes"
+                value={form.grapes}
+                onChange={(e) => setField("grapes", e.target.value)}
+              />
+            </Label>
+
+            <Label label="Ripening">
+              <Input
+                name="ripening"
+                value={form.ripening}
+                onChange={(e) => setField("ripening", e.target.value)}
+              />
+            </Label>
+
+            <Label label="Vintage Wine">
+              <Input
+                name="vintage_wine"
+                value={form.vintage_wine}
+                onChange={(e) => setField("vintage_wine", e.target.value)}
+              />
+            </Label>
+
+            <Label label="Visual">
+              <Input
+                name="visual"
+                value={form.visual}
+                onChange={(e) => setField("visual", e.target.value)}
+              />
+            </Label>
+
             <Label label="ABV">
               <Input
                 type="number"
                 name="abv"
                 value={form.abv ?? 0}
                 onChange={(e) => setField("abv", Number(e.target.value))}
-                required
               />
             </Label>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Price">
               <Input
                 type="number"
@@ -137,9 +166,7 @@ export function WineForm({
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
               />
             </Label>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {wineStyles.length > 0 && (
               <Label label="Wine Style">
                 <Select
