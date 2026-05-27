@@ -8,9 +8,11 @@ import drinksReducer from "@/app/_store/features/drinks/drinksSlice";
 import dishesReducer from "@/app/_store/features/dishes/dishesSlice";
 import tablesReducer from "@/app/_store/features/tables/tablesSlice";
 import makersReducer from "@/app/_store/features/makers/makersSlice";
+import authReducer from "@/app/_store/features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     beers: beersReducer,
     beerStyles: beerStylesReducer,
     dishes: dishesReducer,

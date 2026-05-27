@@ -15,16 +15,35 @@ import {
   faHouse,
   faIndustry,
   faRightFromBracket,
+  faUser,
   faUsers,
   faWineBottle
 } from "@fortawesome/free-solid-svg-icons";
+import {getPageTitle} from "@/app/_lib/page-titles";
+import {userInitials} from "@/app/_lib/user-display";
 import {Buttons} from ".";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
+import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {signOut} from "@/app/_store/features/auth/authThunks";
+import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const {isSuperAdmin} = useAuthCapabilities();
+
+  if (pathname === "/login") {
+    return <>{children}</>;
+  }
+
+  const handleLogout = async () => {
+    await dispatch(signOut());
+    router.replace("/login");
+  };
 
   const menuItems = [
     {label: "Dashboard", icon: faHouse, link: "/"},
@@ -45,7 +64,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     {label: "Tables", icon: faChair, link: "/tables"},
 
     {label: "Users", icon: faUsers, link: "/users"},
-    {label: "Settings", icon: faGear, link: "/"},
+    {label: "Settings", icon: faGear, link: "/settings"},
   ];
 
   const linkClass = (path: string) =>
@@ -69,8 +88,15 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
           >
             <div>
               <div className="p-6 border-b">
-                <h1 className="text-xl font-bold tracking-tight">My App</h1>
-                <p className="text-sm text-gray-500">Admin Panel</p>
+                <h1 className="text-xl font-bold tracking-tight">Ubuteco</h1>
+                <p className="text-sm text-gray-500">
+                  {user?.name ?? user?.email ?? "Admin Panel"}
+                </p>
+                {isSuperAdmin && (
+                  <p className="mt-1 text-xs font-medium text-amber-700">
+                    Platform — catalog read-only
+                  </p>
+                )}
               </div>
 
               <nav className="p-4 space-y-2">
@@ -92,8 +118,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             </div>
 
             <div className="p-4 border-t">
-              <Buttons onClick={() => alert("logout")} className="w-full rounded-2xl flex items-center gap-2">
-                <FontAwesomeIcon icon={faRightFromBracket}/> Logout
+              <Buttons onClick={handleLogout} className="w-full rounded-2xl flex items-center gap-2">
+                <FontAwesomeIcon icon={faRightFromBracket}/> Sign out
               </Buttons>
             </div>
           </motion.aside>
@@ -113,8 +139,25 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             >
               <FontAwesomeIcon icon={faBars}/>
             </Buttons>
-            <h2 className="text-lg font-semibold">Dashboard</h2>
+            <h2 className="text-lg font-semibold">{getPageTitle(pathname)}</h2>
           </div>
+
+          <Link
+            href="/settings"
+            className={`flex items-center gap-2 rounded-2xl border px-3 py-2 transition hover:bg-gray-50 ${
+              pathname === "/settings" ? "border-blue-200 bg-blue-50" : "border-gray-200"
+            }`}
+          >
+            <span
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white"
+              aria-hidden
+            >
+              {user ? userInitials(user) : <FontAwesomeIcon icon={faUser}/>}
+            </span>
+            <span className="hidden max-w-[140px] truncate text-sm font-medium text-gray-800 sm:inline">
+              {user?.name ?? user?.email ?? "My account"}
+            </span>
+          </Link>
         </header>
 
         {/* Page Content */}

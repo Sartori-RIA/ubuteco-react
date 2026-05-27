@@ -16,12 +16,19 @@ export interface User extends BaseModel {
   email?: string;
   password?: string;
   name?: string;
+  avatar_url?: string;
   organization_id?: number;
   organization?: Organization;
   picture?: PictureFromS3;
   role?: Role;
   role_id?: number;
 }
+
+export type ProfileUpdatePayload = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
 
 export interface SignUpPayload {
   user: {

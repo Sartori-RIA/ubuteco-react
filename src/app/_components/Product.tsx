@@ -4,6 +4,7 @@ import {Product} from "@/app/_types";
 import Image from "next/image";
 import React from "react";
 import {Card, DestroyButton, EditLinkButton, OpenButton, Toolbar} from ".";
+import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 
 type Props1 = {
   children: React.ReactNode
@@ -13,6 +14,8 @@ type Props1 = {
 }
 
 export function ProductCard({product, url, children, onDelete}: Props1) {
+  const {canMutateOperationalData} = useAuthCapabilities();
+
   return (
     <Card title={product.name} className="min-h-[200px] flex flex-col justify-between">
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-1">
@@ -31,8 +34,12 @@ export function ProductCard({product, url, children, onDelete}: Props1) {
       </div>
       <div className="flex justify-end">
         <OpenButton url={url}/>
-        <EditLinkButton url={`${url}/edit`}/>
-        <DestroyButton onClick={onDelete}/>
+        {canMutateOperationalData && (
+          <>
+            <EditLinkButton url={`${url}/edit`}/>
+            <DestroyButton onClick={onDelete}/>
+          </>
+        )}
       </div>
     </Card>
   )
@@ -47,11 +54,14 @@ type Props2 = {
 }
 
 export function ProductList({children, title, searchValue, onSearch, addProductUrl}: Props2) {
+  const {canMutateOperationalData} = useAuthCapabilities();
+
   return (<>
       <div className="space-y-6">
         <Toolbar title={title}
                  newUrl={addProductUrl}
                  searchValue={searchValue}
+                 showAdd={canMutateOperationalData}
                  onSearch={(e) => onSearch ? onSearch(e.target.value || "") : {}}/>
         <br/>
         <div className="

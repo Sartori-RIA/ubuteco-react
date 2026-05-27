@@ -1,7 +1,10 @@
 import {redirect} from "next/navigation";
 import {PaginatedResponse} from "@/app/_types";
+import {clearAuthToken, clearAuthUser, getAuthToken} from "@/app/_lib/auth-storage";
 
 function handleUnauthorized() {
+  clearAuthToken();
+  clearAuthUser();
   if (typeof window !== "undefined") {
     window.location.href = "/login";
   } else {
@@ -36,8 +39,7 @@ export async function apiFetch<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = "potato123"
-
+  const token = getAuthToken();
   const isFormData = options.body instanceof FormData;
   let baseUrl = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
   if (baseUrl && !/^https?:\/\//i.test(baseUrl)) {
@@ -45,14 +47,19 @@ export async function apiFetch<T>(
   }
   const path = url.replace(/^\/+/, "");
   const fullUrl = baseUrl ? `${baseUrl}/${path}` : `/${path}`;
+  const headers: Record<string, string> = {
+    ...(isFormData ? {} : {"Content-Type": "application/json"}),
+    ...(options.headers as Record<string, string> | undefined),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const res = await fetch(fullUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      ...(isFormData ? {} : {'Content-Type': 'application/json'}),
-      ...options.headers
-    },
-    ...options
-  })
+    ...options,
+    headers,
+  });
 
   if (!res.ok) {
     switch (res.status) {
@@ -69,5 +76,14 @@ export async function apiFetch<T>(
     }
   }
 
-  return await res.json() as T
+  if (res.status === 204) {
+    return undefined as T;
+  }
+
+  const text = await res.text();
+  if (!text) {
+    return undefined as T;
+  }
+
+  return JSON.parse(text) as T;
 }

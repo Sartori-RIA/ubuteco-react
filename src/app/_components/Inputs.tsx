@@ -17,6 +17,7 @@ export function InputIcon({className, onChange, value, icon, placeholder}: Input
 }
 
 type InputProps = {
+  id?: string,
   value?: string | number,
   step?: string | number,
   placeholder?: string,

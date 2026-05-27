@@ -5,6 +5,8 @@ import "./globals.css";
 
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import AuthGuard from "@/app/_components/AuthGuard";
+import AuthHydrator from "@/app/_components/AuthHydrator";
 import SidebarLayout from "@/app/_components/SidebarLayout";
 import {Provider} from "react-redux";
 import {store} from "./_store"
@@ -37,9 +39,13 @@ export default function RootLayout({
       className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
     >
     <Provider store={store}>
-      <SidebarLayout>
-        {children}
-      </SidebarLayout>
+      <AuthHydrator>
+        <AuthGuard>
+          <SidebarLayout>
+            {children}
+          </SidebarLayout>
+        </AuthGuard>
+      </AuthHydrator>
     </Provider>
     </body>
     </html>
