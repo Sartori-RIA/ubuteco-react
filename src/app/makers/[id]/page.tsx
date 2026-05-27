@@ -13,7 +13,7 @@ export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
 
-  const maker = useSelector((state: RootState) => state.makers.makers.find((maker) => maker.id === Number(id)));
+  const maker = useSelector((state: RootState) => state.makers.makers.find((m) => m.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.makers);
 
   useEffect(() => {
@@ -29,18 +29,17 @@ export default function Page() {
     <Card title={maker.name}>
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-2">
         <p>
-          {JSON.stringify(maker)}
+          <strong>Country</strong>: {maker.country ?? "—"}
         </p>
         <div>
           <Image loading="eager"
-                 src={maker.image_url}
+                 src={maker.logo_url}
                  width={500}
                  height={400}
                  alt={maker.name}
                  unoptimized
           />
         </div>
-
       </div>
     </Card>
   )

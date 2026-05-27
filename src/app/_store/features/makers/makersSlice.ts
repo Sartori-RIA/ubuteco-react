@@ -1,4 +1,4 @@
-import {Maker} from "@/app/_types";
+import {ApiMetaData, Maker, PaginatedResponse} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
 import {makersThunks} from './makersThunks'
 
@@ -7,13 +7,21 @@ interface MakersState {
   loading: boolean
   errors?: string[]
   searchTerm: string
+  meta: ApiMetaData
 }
 
 const initialState: MakersState = {
   makers: [],
   loading: false,
   errors: undefined,
-  searchTerm: ''
+  searchTerm: '',
+  meta: {
+    count: 0,
+    last: 0,
+    page: 1,
+    pages: 1,
+    previous: null
+  }
 }
 
 const makersSlice = createSlice({
@@ -31,7 +39,9 @@ const makersSlice = createSlice({
       },
       fulfilled: (state, action) => {
         state.loading = false
-        state.makers = action.payload as Maker[]
+        const {meta, data} = action.payload as PaginatedResponse<Maker>
+        state.makers = data
+        state.meta = meta
       },
       rejected: (state, action) => {
         state.loading = false

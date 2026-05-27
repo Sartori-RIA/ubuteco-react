@@ -10,7 +10,7 @@ import {useAppSelector} from "@/app/_store/hooks";
 const PUBLIC_PATHS = ["/login"];
 
 function operationalListPath(pathname: string): string {
-  const match = pathname.match(/^\/(beers|wines|drinks|foods|dishes|makers|orders|users|tables)/);
+  const match = pathname.match(/^\/(beers|wines|drinks|foods|dishes|makers|orders|users)/);
   return match ? `/${match[1]}` : "/";
 }
 

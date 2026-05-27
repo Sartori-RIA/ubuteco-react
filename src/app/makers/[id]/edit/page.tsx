@@ -7,12 +7,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
-import {MakerForm} from "@/app/makers/components/MakerForm";
+import {MakerForm} from "@/app/makers/components";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
-  const maker = useSelector((state: RootState) => state.makers.makers.find((maker) => maker.id === Number(id)));
+  const maker = useSelector((state: RootState) => state.makers.makers.find((m) => m.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.makers);
   const router = useRouter();
 
@@ -24,8 +24,8 @@ export default function Page() {
 
   async function handleEdit(data: FormData) {
     try {
-      const updatedWine = await dispatch(makersThunks.update({id: Number(id), data})).unwrap()
-      router.push(`/makers/${updatedWine.id}`);
+      const updatedMaker = await dispatch(makersThunks.update({id: Number(id), data})).unwrap()
+      router.push(`/makers/${updatedMaker.id}`);
     } catch (error) {
     }
   }
@@ -37,7 +37,7 @@ export default function Page() {
     <MakerForm
       defaultValues={maker}
       action={handleEdit}
-      submitLabel="Update Wine"
+      submitLabel="Update Maker"
       errors={errors}
       loading={loading}
     />

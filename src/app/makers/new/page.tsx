@@ -6,10 +6,10 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {useRouter} from "next/navigation";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
-import {MakerForm} from "@/app/makers/components/MakerForm";
+import {MakerForm} from "@/app/makers/components";
 
 export default function Page() {
-  const {loading, errors} = useSelector((state: RootState) => state.wines);
+  const {loading, errors} = useSelector((state: RootState) => state.makers);
   const dispatch = useAppDispatch()
   const router = useRouter();
 
@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <MakerForm
       action={handleCreate}
-      submitLabel="Save Wine"
+      submitLabel="Save Maker"
       loading={loading}
       errors={errors}
     />)

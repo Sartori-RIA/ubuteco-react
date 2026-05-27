@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <Card title={"Wine styles"}>
-      <div className="max-w-xl space-y-4">
+      <div className="mx-auto max-w-xl space-y-4">
         <WineStylesList/>
       </div>
     </Card>

@@ -1,6 +1,6 @@
 "use client"
 
-import {Maker, Wine} from "@/app/_types";
+import {Maker} from "@/app/_types";
 import React, {useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
@@ -21,14 +21,13 @@ export function MakerForm({
                             loading = false,
                             submitLabel = "Save Maker",
                           }: MakerFormProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(defaultValues?.logo_url ?? null);
   const [form, setForm] = useState<Partial<Maker>>({
     name: defaultValues?.name ?? "",
     country: defaultValues?.country ?? "",
-    state: defaultValues?.state ?? "",
   });
 
-  function setField<K extends keyof Wine>(key: K, value: Wine[K]) {
+  function setField<K extends keyof Maker>(key: K, value: Maker[K]) {
     setForm((prev) => ({...prev, [key]: value}));
   }
 
@@ -39,7 +38,7 @@ export function MakerForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Wine" : "New Wine"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? "Update Maker" : "New Maker"} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
@@ -47,38 +46,44 @@ export function MakerForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Name">
               <Input
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
+                required
               />
             </Label>
 
-            <div>
-              {preview && (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="mt-2 h-32 rounded-xl object-cover"
-                />
-              )}
+            <Label label="Country">
+              <Input
+                value={form.country ?? ""}
+                onChange={(e) => setField("country", e.target.value)}
+                name="country"
+                required
+              />
+            </Label>
+          </div>
 
-              <Label label="Image">
-                <Input
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
+          <div>
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="mb-2 h-32 rounded-xl object-cover"
+              />
+            )}
 
-                    const imageUrl = URL.createObjectURL(file);
-                    setPreview(imageUrl);
-                  }}
-                />
-              </Label>
-            </div>
+            <Label label="Logo">
+              <Input
+                type="file"
+                name="logo"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setPreview(URL.createObjectURL(file));
+                }}
+              />
+            </Label>
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

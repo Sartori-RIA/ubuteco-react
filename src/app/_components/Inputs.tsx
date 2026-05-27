@@ -27,6 +27,8 @@ type InputProps = {
   name?: string;
   required?: boolean;
   autoFocus?: boolean;
+  min?: number;
+  max?: number;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
