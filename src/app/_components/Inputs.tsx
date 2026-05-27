@@ -107,9 +107,6 @@ export function InlineInput(props: InputProps) {
         placeholder:text-muted-foreground/60
 
         hover:bg-muted/30
-        focus:bg-background
-        focus:ring-1
-        focus:ring-primary/30
 
         disabled:opacity-50
         disabled:cursor-not-allowed

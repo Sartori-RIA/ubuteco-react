@@ -43,37 +43,41 @@ export function BeerStyleRow({ style, onRename, onDelete }: Props) {
 
     ${
         isEditing
-          ? "z-10 bg-muted/60 ring-3 ring-primary/30 shadow-lg rounded-lg will-change-transform transition-all duration-200 ease-out"
+          ? "z-10 bg-muted/60 ring-2 ring-primary/30 rounded-lg"
           : "hover:bg-muted/40"
       }
   `}
     >
-      <div className="flex items-center gap-3 w-full">
-        <div className="size-2 rounded-full bg-muted-foreground/40 shrink-0" />
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <div className="size-2 shrink-0 rounded-full bg-muted-foreground/40" />
 
         {isEditing ? (
-          <InlineInput
-            autoFocus
-            value={value}
-            onChange={e => setValue(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === "Enter") save()
-              if (e.key === "Escape") {
-                setValue(style.name)
-                setIsEditing(false)
-              }
-            }}
-            onBlur={save}
-          />
+          <div className="min-w-0 flex-1">
+            <InlineInput
+              autoFocus
+              value={value}
+              onChange={e => setValue(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === "Enter") save()
+                if (e.key === "Escape") {
+                  setValue(style.name)
+                  setIsEditing(false)
+                }
+              }}
+              onBlur={save}
+            />
+          </div>
         ) : (
-          <span className="text-sm font-medium">{style.name}</span>
+          <span className="min-w-0 flex-1 truncate text-sm font-medium">{style.name}</span>
         )}
       </div>
 
-      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition">
-        <EditButton onClick={() => setIsEditing(true)} />
-        <DestroyButton onClick={() => onDelete(Number(style.id))} />
-      </div>
+      {!isEditing && (
+        <div className="flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
+          <EditButton onClick={() => setIsEditing(true)} />
+          <DestroyButton onClick={() => onDelete(Number(style.id))} />
+        </div>
+      )}
     </li>
   )
 }

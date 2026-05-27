@@ -35,7 +35,7 @@ export function BeerStylesList() {
       {errors && <FormErrors errors={errors}/>}
       {loading && <Loading />}
       <CreateBeerStyleRow onCreate={handleCreate} />
-      <ul className="overflow-hidden rounded-2xl  bg-background flex flex-col gap-2">
+      <ul className="rounded-2xl flex flex-col gap-2">
         {!loading && beerStyles.map(style => (
           <BeerStyleRow
             key={style.id}
