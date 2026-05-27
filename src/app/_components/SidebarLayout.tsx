@@ -33,6 +33,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     {label: "Beer Styles", icon: faBeer, link: "/beer-styles"},
     {label: "Drinks", icon: faGlassMartini, link: "/drinks"},
     {label: "Wines", icon: faWineBottle, link: "/wines"},
+    {label: "Wine Styles", icon: faWineBottle, link: "/wine-styles"},
 
     {label: "Dishes", icon: faHamburger, link: "/dishes"},
     {label: "Food", icon: faHamburger, link: "/foods"},
