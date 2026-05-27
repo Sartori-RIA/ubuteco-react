@@ -29,7 +29,6 @@ export default function Page() {
     <Card title={drink.name}>
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-2">
         <p>
-          <strong>Maker</strong>: {drink.maker?.name} <br/>
           {drink.description}
         </p>
         <div>
