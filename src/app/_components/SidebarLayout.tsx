@@ -12,6 +12,7 @@ import {
   faGear,
   faGlassMartini,
   faHamburger,
+  faUtensils,
   faHouse,
   faIndustry,
   faRightFromBracket,
@@ -28,6 +29,7 @@ import {usePathname, useRouter} from "next/navigation";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {canAccessKitchen, isKitchenStaff} from "@/app/_lib/auth-roles";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -35,7 +37,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const {isSuperAdmin} = useAuthCapabilities();
+  const {isSuperAdmin, user: capabilitiesUser} = useAuthCapabilities();
+  const kitchenOnly = isKitchenStaff(capabilitiesUser);
 
   if (isAuthPublicPath(pathname)) {
     return <>{children}</>;
@@ -46,8 +49,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     router.replace("/login");
   };
 
-  const menuItems = [
+  const allMenuItems = [
     {label: "Dashboard", icon: faHouse, link: "/"},
+    {label: "Kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
 
     {label: "Beers", icon: faBeer, link: "/beers"},
     {label: "Beer Styles", icon: faBeer, link: "/beer-styles"},
@@ -67,6 +71,12 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     {label: "Users", icon: faUsers, link: "/users"},
     {label: "Settings", icon: faGear, link: "/settings"},
   ];
+
+  const menuItems = kitchenOnly
+    ? allMenuItems.filter((item) => item.link === "/kitchen" || item.link === "/settings")
+    : allMenuItems.filter(
+        (item) => !("kitchen" in item && item.kitchen) || canAccessKitchen(capabilitiesUser)
+      );
 
   const linkClass = (path: string) =>
     `px-3 py-2 rounded-md text-sm font-medium transition-colors ${

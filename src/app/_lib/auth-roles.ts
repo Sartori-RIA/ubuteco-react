@@ -20,3 +20,21 @@ const OPERATIONAL_MUTATION_PATH =
 export function isOperationalMutationPath(pathname: string): boolean {
   return OPERATIONAL_MUTATION_PATH.test(pathname);
 }
+
+const KITCHEN_ACCESS_ROLES = new Set(["KITCHEN", "ADMIN", "WAITER", "CASH_REGISTER"]);
+
+export function canAccessKitchen(user: User | null | undefined): boolean {
+  const role = getRoleName(user);
+  return role != null && KITCHEN_ACCESS_ROLES.has(role);
+}
+
+export function isKitchenStaff(user: User | null | undefined): boolean {
+  return getRoleName(user) === "KITCHEN";
+}
+
+/** Paths kitchen-only users may use (queue + account). */
+const KITCHEN_ALLOWED_PATH = /^\/(kitchen|settings)(\/|$)/;
+
+export function isKitchenAllowedPath(pathname: string): boolean {
+  return KITCHEN_ALLOWED_PATH.test(pathname);
+}

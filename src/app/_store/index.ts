@@ -10,11 +10,13 @@ import tablesReducer from "@/app/_store/features/tables/tablesSlice";
 import makersReducer from "@/app/_store/features/makers/makersSlice";
 import authReducer from "@/app/_store/features/auth/authSlice";
 import ordersReducer from "@/app/_store/features/orders/ordersSlice";
+import kitchenReducer from "@/app/_store/features/kitchen/kitchenSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     orders: ordersReducer,
+    kitchen: kitchenReducer,
     beers: beersReducer,
     beerStyles: beerStylesReducer,
     dishes: dishesReducer,

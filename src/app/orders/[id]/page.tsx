@@ -54,13 +54,14 @@ export default function OrderPage() {
   }, [dispatch, orderId]);
 
   useEffect(() => {
-    loadOrder();
+    if (!orderId) return;
+    dispatch(ordersThunks.refreshOrder(orderId));
     dispatch(tablesThunks.fetchAll({}));
 
     return () => {
       dispatch(clearActiveOrder());
     };
-  }, [loadOrder, dispatch]);
+  }, [orderId, dispatch]);
 
   const handleMetaSave = useCallback(
     async (data: {table_id: number | null; discount: number}) => {

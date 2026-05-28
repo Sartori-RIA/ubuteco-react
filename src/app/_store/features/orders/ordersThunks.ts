@@ -76,8 +76,11 @@ const addOrderItem = createAsyncThunk(
   async ({orderId, data}: {orderId: number; data: ItemOrderSend}, {rejectWithValue}) => {
     try {
       const item = await ordersService.addItem(orderId, data);
-      const order = await ordersService.show(orderId);
-      return {item, order};
+      const [order, items] = await Promise.all([
+        ordersService.show(orderId),
+        ordersService.listItems(orderId),
+      ]);
+      return {item, order, items};
     } catch (err) {
       if (err instanceof ApiError) {
         return rejectWithValue(err.data);

@@ -9,6 +9,7 @@ const SEGMENT_TITLES: Record<string, string> = {
   foods: "Foods",
   makers: "Makers",
   orders: "Orders",
+  kitchen: "Kitchen",
   organizations: "Organizations",
   tables: "Tables",
   users: "Users",

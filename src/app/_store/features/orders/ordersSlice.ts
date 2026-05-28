@@ -11,6 +11,8 @@ interface OrdersState {
   saving: boolean;
   addingItem: boolean;
   pendingItemIds: number[];
+  /** Tracks the latest refreshOrder request; cleared when a mutation invalidates it. */
+  itemsRefreshRequestId: string | null;
   errors?: string[];
   searchTerm: string;
   statusFilter: OrderStatus | "";
@@ -27,6 +29,7 @@ const initialState: OrdersState = {
   saving: false,
   addingItem: false,
   pendingItemIds: [],
+  itemsRefreshRequestId: null,
   errors: undefined,
   searchTerm: "",
   statusFilter: "",
@@ -60,6 +63,7 @@ const ordersSlice = createSlice({
       state.orderItems = [];
       state.errors = undefined;
       state.pendingItemIds = [];
+      state.itemsRefreshRequestId = null;
     },
   },
   extraReducers: (builder) => {
@@ -106,6 +110,7 @@ const ordersSlice = createSlice({
       fulfilled: (state, action) => {
         state.saving = false;
         state.activeOrder = action.payload;
+        state.orderItems = [];
         state.orders.unshift(action.payload);
       },
       rejected: (state, action) => {
@@ -141,18 +146,23 @@ const ordersSlice = createSlice({
       },
     });
     builder.addAsyncThunk(ordersThunks.refreshOrder, {
-      pending: (state) => {
+      pending: (state, action) => {
         state.loading = true;
+        state.itemsRefreshRequestId = action.meta.requestId;
       },
       fulfilled: (state, action) => {
         state.loading = false;
         state.activeOrder = action.payload.order;
-        state.orderItems = action.payload.items;
+        if (action.meta.requestId === state.itemsRefreshRequestId) {
+          state.orderItems = action.payload.items;
+          state.itemsRefreshRequestId = null;
+        }
         const index = state.orders.findIndex((o) => o.id === action.payload.order.id);
         if (index !== -1) state.orders[index] = action.payload.order;
       },
       rejected: (state, action) => {
         state.loading = false;
+        state.itemsRefreshRequestId = null;
         state.errors = action.payload as string[];
       },
     });
@@ -160,15 +170,18 @@ const ordersSlice = createSlice({
       state: OrdersState,
       order: Order,
       items?: OrderItem[],
-      itemPatch?: {item?: OrderItem; removeId?: number}
+      itemPatch?: {item?: OrderItem; items?: OrderItem[]; removeId?: number}
     ) => {
       state.activeOrder = order;
       if (items) {
         state.orderItems = items;
       } else if (itemPatch?.item) {
-        const idx = state.orderItems.findIndex((i) => i.id === itemPatch.item!.id);
+        const patchId = Number(itemPatch.item.id);
+        const idx = state.orderItems.findIndex((i) => Number(i.id) === patchId);
         if (idx === -1) state.orderItems.push(itemPatch.item);
         else state.orderItems[idx] = itemPatch.item;
+      } else if (itemPatch?.items) {
+        state.orderItems = itemPatch.items;
       } else if (itemPatch?.removeId != null) {
         state.orderItems = state.orderItems.filter((i) => i.id !== itemPatch.removeId);
       }
@@ -179,11 +192,12 @@ const ordersSlice = createSlice({
     builder.addAsyncThunk(ordersThunks.addOrderItem, {
       pending: (state) => {
         state.addingItem = true;
+        state.itemsRefreshRequestId = null;
         state.errors = undefined;
       },
       fulfilled: (state, action) => {
         state.addingItem = false;
-        syncOrderItems(state, action.payload.order, undefined, {item: action.payload.item});
+        syncOrderItems(state, action.payload.order, action.payload.items);
       },
       rejected: (state, action) => {
         state.addingItem = false;
@@ -193,6 +207,7 @@ const ordersSlice = createSlice({
 
     builder.addAsyncThunk(ordersThunks.updateOrderItem, {
       pending: (state, action) => {
+        state.itemsRefreshRequestId = null;
         const itemId = action.meta.arg.itemId;
         if (!state.pendingItemIds.includes(itemId)) {
           state.pendingItemIds.push(itemId);
@@ -210,6 +225,7 @@ const ordersSlice = createSlice({
 
     builder.addAsyncThunk(ordersThunks.removeOrderItem, {
       pending: (state, action) => {
+        state.itemsRefreshRequestId = null;
         const itemId = action.meta.arg.itemId;
         if (!state.pendingItemIds.includes(itemId)) {
           state.pendingItemIds.push(itemId);

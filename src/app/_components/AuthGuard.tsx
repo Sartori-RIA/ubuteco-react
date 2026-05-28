@@ -4,7 +4,11 @@ import {ReactNode, useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
-import {isOperationalMutationPath} from "@/app/_lib/auth-roles";
+import {
+  isKitchenAllowedPath,
+  isKitchenStaff,
+  isOperationalMutationPath,
+} from "@/app/_lib/auth-roles";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useClientReady} from "@/app/_hooks/useClientReady";
 import {useAppSelector} from "@/app/_store/hooks";
@@ -20,7 +24,7 @@ export default function AuthGuard({children}: {children: ReactNode}) {
   const router = useRouter();
   const ready = useClientReady();
   const authStatus = useAppSelector((state) => state.auth.status);
-  const {canMutateOperationalData} = useAuthCapabilities();
+  const {canMutateOperationalData, user} = useAuthCapabilities();
 
   useEffect(() => {
     if (!ready || isAuthPublicPath(pathname)) return;
@@ -33,8 +37,13 @@ export default function AuthGuard({children}: {children: ReactNode}) {
 
     if (!canMutateOperationalData && isOperationalMutationPath(pathname)) {
       router.replace(operationalListPath(pathname));
+      return;
     }
-  }, [ready, pathname, router, authStatus, canMutateOperationalData]);
+
+    if (user && isKitchenStaff(user) && !isKitchenAllowedPath(pathname)) {
+      router.replace("/kitchen");
+    }
+  }, [ready, pathname, router, authStatus, canMutateOperationalData, user]);
 
   if (isAuthPublicPath(pathname)) {
     return <>{children}</>;

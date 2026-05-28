@@ -1,5 +1,7 @@
 import {BaseModel, PictureFromS3} from "@/app/_types/base";
 
+export type OrganizationOperationalStatus = "open" | "closed";
+
 export interface Organization extends BaseModel {
   name?: string;
   cnpj?: string;
@@ -7,4 +9,5 @@ export interface Organization extends BaseModel {
   logo?: PictureFromS3;
   theme_id?: number;
   user_id?: number;
+  operational_status?: OrganizationOperationalStatus;
 }
