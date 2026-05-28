@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import AuthGuard from "@/app/_components/AuthGuard";
 import AuthHydrator from "@/app/_components/AuthHydrator";
 import SidebarLayout from "@/app/_components/SidebarLayout";
+import {ToastProvider} from "@/app/_components/Toast/ToastProvider";
 import {Provider} from "react-redux";
 import {store} from "./_store"
 
@@ -39,13 +40,15 @@ export default function RootLayout({
       className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
     >
     <Provider store={store}>
-      <AuthHydrator>
-        <AuthGuard>
-          <SidebarLayout>
-            {children}
-          </SidebarLayout>
-        </AuthGuard>
-      </AuthHydrator>
+      <ToastProvider>
+        <AuthHydrator>
+          <AuthGuard>
+            <SidebarLayout>
+              {children}
+            </SidebarLayout>
+          </AuthGuard>
+        </AuthHydrator>
+      </ToastProvider>
     </Provider>
     </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
 import {FormEvent, useState} from "react";
+import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {Buttons, Input} from "@/app/_components";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
@@ -77,6 +78,18 @@ export default function LoginPage() {
         <Buttons type="submit" className="w-full rounded-xl" disabled={status === "loading"}>
           {status === "loading" ? "Signing in..." : "Sign in"}
         </Buttons>
+
+        <div className="flex flex-col gap-2 text-center text-sm">
+          <Link href="/forgot-password" className="text-blue-600 hover:text-blue-700 font-medium">
+            Forgot your password?
+          </Link>
+          <p className="text-gray-600">
+            No account?{" "}
+            <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+              Create one
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

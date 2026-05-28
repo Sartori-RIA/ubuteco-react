@@ -7,22 +7,26 @@ import {Beer} from "@/app/_types/beer";
 import {Drink} from "@/app/_types/drink";
 import {Wine} from "@/app/_types/wine";
 
+export type OrderStatus = "open" | "closed" | "payed";
+
 export interface Order extends BaseModel {
   user?: Customer;
   organization?: Organization;
   organization_id?: number;
   table?: Table;
   table_id?: number;
+  status?: OrderStatus;
   order_items?: OrderItem[];
-  total?: number;
+  total?: number | {cents?: number; currency_iso?: string};
   total_cents?: number;
   total_currency?: string;
-  discount?: number;
+  discount?: number | {cents?: number; currency_iso?: string};
   discount_cents?: number;
   discount_currency?: string;
-  total_with_discount?: number;
+  total_with_discount?: number | {cents?: number; currency_iso?: string};
   total_with_discount_cents?: number;
   total_with_discount_currency?: string;
+  order_items_count?: number;
 }
 
 export interface OrderItem extends BaseModel {

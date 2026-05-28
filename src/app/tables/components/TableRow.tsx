@@ -2,6 +2,7 @@
 
 import {Table} from "@/app/_types";
 import {useEffect, useState} from "react";
+import Link from "next/link";
 import {DestroyButton, EditButton, InlineInput} from "@/app/_components";
 
 type Props = {
@@ -104,10 +105,20 @@ export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
         )}
       </div>
 
-      {!readOnly && !isEditing && (
-        <div className="flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
-          <EditButton onClick={() => setIsEditing(true)}/>
-          <DestroyButton onClick={() => onDelete(Number(table.id))}/>
+      {!isEditing && (
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href={`/orders/new?table_id=${table.id}`}
+            className="text-xs font-medium text-blue-600 hover:text-blue-700 whitespace-nowrap"
+          >
+            New order
+          </Link>
+          {!readOnly && (
+            <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
+              <EditButton onClick={() => setIsEditing(true)}/>
+              <DestroyButton onClick={() => onDelete(Number(table.id))}/>
+            </div>
+          )}
         </div>
       )}
     </li>

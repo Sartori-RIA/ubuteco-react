@@ -19,6 +19,7 @@ import {
   faUsers,
   faWineBottle
 } from "@fortawesome/free-solid-svg-icons";
+import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {getPageTitle} from "@/app/_lib/page-titles";
 import {userInitials} from "@/app/_lib/user-display";
 import {Buttons} from ".";
@@ -36,7 +37,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const user = useAppSelector((state) => state.auth.user);
   const {isSuperAdmin} = useAuthCapabilities();
 
-  if (pathname === "/login") {
+  if (isAuthPublicPath(pathname)) {
     return <>{children}</>;
   }
 

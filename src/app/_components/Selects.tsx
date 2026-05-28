@@ -3,11 +3,13 @@ type SelectProps = {
   value: number | string | undefined
   onChange: (value: string) => void
   className?: string
+  disabled?: boolean
   children: React.ReactNode
 }
 
-export function Select({name, className, value, onChange, children}: SelectProps) {
+export function Select({name, className, value, onChange, disabled, children}: SelectProps) {
   return <select name={name}
+                 disabled={disabled}
                  value={value ?? ""}
                  className={`
       w-full

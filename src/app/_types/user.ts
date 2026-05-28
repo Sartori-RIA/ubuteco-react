@@ -32,14 +32,14 @@ export type ProfileUpdatePayload = {
 
 export interface SignUpPayload {
   user: {
-    email: string,
-    password: string,
-    name: string
+    email: string;
+    password: string;
+    name: string;
   };
-  organization_attributes: {
-    name: string,
-    phone: string,
-    cnpj: string
+  organization_attributes?: {
+    name: string;
+    phone: string;
+    cnpj?: string;
   };
 }
 

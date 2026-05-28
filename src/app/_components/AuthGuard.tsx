@@ -3,13 +3,12 @@
 import {ReactNode, useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
+import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {isOperationalMutationPath} from "@/app/_lib/auth-roles";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useClientReady} from "@/app/_hooks/useClientReady";
 import {useAppSelector} from "@/app/_store/hooks";
 import {Loading} from "@/app/_components/Loading";
-
-const PUBLIC_PATHS = ["/login"];
 
 function operationalListPath(pathname: string): string {
   const match = pathname.match(/^\/(beers|wines|drinks|foods|dishes|makers|orders|users)/);
@@ -24,7 +23,7 @@ export default function AuthGuard({children}: {children: ReactNode}) {
   const {canMutateOperationalData} = useAuthCapabilities();
 
   useEffect(() => {
-    if (!ready || PUBLIC_PATHS.includes(pathname)) return;
+    if (!ready || isAuthPublicPath(pathname)) return;
 
     const token = getAuthToken();
     if (!token && authStatus !== "authenticated") {
@@ -37,7 +36,7 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     }
   }, [ready, pathname, router, authStatus, canMutateOperationalData]);
 
-  if (PUBLIC_PATHS.includes(pathname)) {
+  if (isAuthPublicPath(pathname)) {
     return <>{children}</>;
   }
 

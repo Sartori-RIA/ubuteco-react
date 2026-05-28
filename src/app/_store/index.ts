@@ -9,10 +9,12 @@ import dishesReducer from "@/app/_store/features/dishes/dishesSlice";
 import tablesReducer from "@/app/_store/features/tables/tablesSlice";
 import makersReducer from "@/app/_store/features/makers/makersSlice";
 import authReducer from "@/app/_store/features/auth/authSlice";
+import ordersReducer from "@/app/_store/features/orders/ordersSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    orders: ordersReducer,
     beers: beersReducer,
     beerStyles: beerStylesReducer,
     dishes: dishesReducer,

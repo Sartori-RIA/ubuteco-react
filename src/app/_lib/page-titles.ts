@@ -14,6 +14,9 @@ const SEGMENT_TITLES: Record<string, string> = {
   users: "Users",
   settings: "Settings",
   login: "Sign in",
+  signup: "Create account",
+  "forgot-password": "Forgot password",
+  "reset-password": "Reset password",
   forbidden: "Forbidden",
 };
 
