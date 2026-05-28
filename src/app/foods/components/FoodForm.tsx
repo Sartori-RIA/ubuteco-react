@@ -1,10 +1,11 @@
 "use client"
 
 import {Food} from "@/app/_types";
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
-import Form from "next/form";
+import {toDateInputValue} from "@/app/_lib/format-date";
+import {priceFromCents} from "@/app/_lib/money";
 
 interface FoodFormProps {
   defaultValues?: Partial<Food>;
@@ -15,70 +16,74 @@ interface FoodFormProps {
 }
 
 export function FoodForm({
-                           defaultValues,
-                           action,
-                           errors,
-                           loading = false,
-                           submitLabel = "Save Food",
-                         }: FoodFormProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+                            defaultValues,
+                            action,
+                            errors,
+                            loading = false,
+                            submitLabel = "Save Food",
+                          }: FoodFormProps) {
+  const [preview, setPreview] = useState<string | null>(defaultValues?.image_url ?? null);
   const [form, setForm] = useState<Partial<Food>>({
     name: defaultValues?.name ?? "",
-    price: defaultValues?.price ?? 0,
+    price: defaultValues ? priceFromCents(defaultValues) : 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
+    valid_until: defaultValues?.valid_until ?? "",
   });
 
   function setField<K extends keyof Food>(key: K, value: Food[K]) {
     setForm((prev) => ({...prev, [key]: value}));
   }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await action(new FormData(event.currentTarget));
+  }
+
   return (
     <motion.div
-      initial={{opacity: 0, y: 10}}
+      initial={false}
       animate={{opacity: 1, y: 0}}
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Food" : "New Food"} className="rounded-2xl shadow-lg">
-        <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
+      <Card title={defaultValues?.id ? "Update Food" : "New Food"} className="rounded-2xl shadow-lg hover:translate-y-0">
+        <form
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+          className="space-y-6 max-w-2xl"
+        >
 
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Label label="Name">
               <Input
-                className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
                 name="name"
+                required
               />
             </Label>
 
-            <div>
+            <Label label="Image">
               {preview && (
                 <img
                   src={preview}
                   alt="Preview"
-                  className="mt-2 h-32 rounded-xl object-cover"
+                  className="mb-2 h-32 rounded-xl object-cover"
                 />
               )}
-
-              <Label label="Image">
-                <Input
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-
-                    const imageUrl = URL.createObjectURL(file);
-                    setPreview(imageUrl);
-                  }}
-                />
-              </Label>
-            </div>
+              <Input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setPreview(URL.createObjectURL(file));
+                }}
+              />
+            </Label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -87,19 +92,29 @@ export function FoodForm({
                 type="number"
                 step="0.01"
                 name="price"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.price ?? 0}
                 onChange={(e) => setField("price", Number(e.target.value))}
+                required
               />
             </Label>
 
-            <Label label="Stock Quantity">
+            <Label label="Stock quantity">
               <Input
                 type="number"
+                min={0}
                 name="quantity_stock"
-                className="w-full rounded-xl border px-3 py-2 text-sm"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
+                required
+              />
+            </Label>
+
+            <Label label="Valid until">
+              <Input
+                type="date"
+                name="valid_until"
+                value={toDateInputValue(form.valid_until as string | undefined)}
+                onChange={(e) => setField("valid_until", e.target.value)}
               />
             </Label>
           </div>
@@ -109,7 +124,7 @@ export function FoodForm({
               {submitLabel}
             </Buttons>
           </div>
-        </Form>
+        </form>
       </Card>
     </motion.div>
   );

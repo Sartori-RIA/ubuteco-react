@@ -1,6 +1,6 @@
 "use client";
 
-import {ReactNode, useEffect} from "react";
+import {ReactNode, useLayoutEffect} from "react";
 import {getAuthToken, getAuthUser} from "@/app/_lib/auth-storage";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
@@ -8,7 +8,7 @@ import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
 export default function AuthHydrator({children}: {children: ReactNode}) {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = getAuthToken();
     const user = getAuthUser();
     if (token && user) {

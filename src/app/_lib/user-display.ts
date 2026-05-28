@@ -1,4 +1,5 @@
 import {User} from "@/app/_types";
+import {formatDateLong} from "@/app/_lib/format-date";
 
 export function userInitials(user: User | null | undefined): string {
   const source = user?.name?.trim() || user?.email?.trim() || "?";
@@ -10,8 +11,5 @@ export function userInitials(user: User | null | undefined): string {
 }
 
 export function formatMemberSince(value?: Date | string): string {
-  if (!value) return "—";
-  const date = typeof value === "string" ? new Date(value) : value;
-  if (Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleDateString("en-US", {day: "2-digit", month: "long", year: "numeric"});
+  return formatDateLong(value);
 }

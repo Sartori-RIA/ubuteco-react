@@ -5,6 +5,7 @@ export interface Product extends BaseModel {
   price?: number;
   quantity_stock?: number;
   image_url: string;
+  thumbnail_url?: string;
   image?: File
   price_cents?: number;
   price_currency?: string;

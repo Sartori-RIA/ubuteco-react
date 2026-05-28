@@ -1,10 +1,12 @@
 import {ApiMetaData, Food, PaginatedResponse} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
-import {foodsThunks} from './foodsThunks'
+import {FoodOption, foodsThunks} from './foodsThunks'
 
 interface FoodsState {
   foods: Food[]
+  foodOptions: FoodOption[]
   loading: boolean
+  optionsLoading: boolean
   errors?: string[]
   searchTerm: string,
   meta: ApiMetaData
@@ -12,7 +14,9 @@ interface FoodsState {
 
 const initialState: FoodsState = {
   foods: [],
+  foodOptions: [],
   loading: false,
+  optionsLoading: false,
   errors: undefined,
   searchTerm: '',
   meta: {
@@ -48,6 +52,18 @@ const foodsSlice = createSlice({
         state.errors = action.payload as string[]
       }
     })
+    builder.addAsyncThunk(foodsThunks.fetchOptions, {
+      pending: (state) => {
+        state.optionsLoading = true
+      },
+      fulfilled: (state, action) => {
+        state.optionsLoading = false
+        state.foodOptions = action.payload
+      },
+      rejected: (state) => {
+        state.optionsLoading = false
+      }
+    })
     builder.addAsyncThunk(foodsThunks.fetchById, {
       pending: (state) => {
         state.loading = true
@@ -74,6 +90,11 @@ const foodsSlice = createSlice({
       fulfilled: (state, action) => {
         state.loading = false
         state.foods.push(action.payload)
+        const option = {id: action.payload.id, name: action.payload.name}
+        if (!state.foodOptions.some((food) => food.id === option.id)) {
+          state.foodOptions.push(option)
+          state.foodOptions.sort((a, b) => a.name.localeCompare(b.name))
+        }
       },
       rejected: (state, action) => {
         state.loading = false

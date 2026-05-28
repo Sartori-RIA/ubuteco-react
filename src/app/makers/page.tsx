@@ -42,7 +42,11 @@ function Page() {
         <ProductCard
           key={maker.id}
           url={`/makers/${maker.id}`}
-          product={{name: maker.name, image_url: maker.logo_url}}
+          product={{
+            name: maker.name,
+            image_url: maker.logo_url,
+            thumbnail_url: maker.logo_thumbnail_url,
+          }}
           onDelete={() => handleDelete(Number(maker.id))}
         >
           <>

@@ -26,6 +26,7 @@ type InputProps = {
   type?: string;
   name?: string;
   required?: boolean;
+  disabled?: boolean;
   autoFocus?: boolean;
   min?: number;
   max?: number;

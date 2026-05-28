@@ -1,6 +1,8 @@
 "use client"
 
 import {Food} from "@/app/_types";
+import {formatDate} from "@/app/_lib/format-date";
+import {displayPrice} from "@/app/_lib/money";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
@@ -39,14 +41,18 @@ function Page() {
                  onSearch={(v) => dispatch(setSearchTerm(v))}
     >
       {loading && <Loading/>}
-      {!loading && foods.map((product: Food) => (
+      {!loading && foods.map((food: Food) => (
         <ProductCard
-          key={product.id}
-          url={`/foods/${product.id}`}
-          product={product}
-          onDelete={() => handleDelete(Number(product.id))}
+          key={food.id}
+          url={`/foods/${food.id}`}
+          product={food}
+          onDelete={() => handleDelete(Number(food.id))}
         >
-          {JSON.stringify(product, null, 2)}
+          <>
+            <strong>Price</strong>: {displayPrice(food)}<br/>
+            <strong>Stock</strong>: {food.quantity_stock ?? 0}<br/>
+            <strong>Valid until</strong>: {formatDate(food.valid_until)}
+          </>
         </ProductCard>
       ))}
     </ProductList>

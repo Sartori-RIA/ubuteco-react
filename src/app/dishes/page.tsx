@@ -1,15 +1,20 @@
 "use client"
 
 import {Dish} from "@/app/_types";
+import {displayPrice} from "@/app/_lib/money";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
-import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import dynamic from "next/dynamic";
+import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {setSearchTerm} from "@/app/_store/features/dishes/dishesSlice";
+
+function ingredientCount(dish: Dish): number {
+  return dish.dish_ingredients?.length ?? 0;
+}
 
 function Page() {
   const {dishes, loading} = useAppSelector((state: RootState) => state.dishes);
@@ -38,17 +43,16 @@ function Page() {
                  onSearch={(v) => dispatch(setSearchTerm(v))}
                  title="Dishes">
       {loading && <Loading/>}
-      {!loading && dishes.map((product: Dish) => (
+      {!loading && dishes.map((dish: Dish) => (
         <ProductCard
-          key={product.id}
-          url={`/dishes/${product.id}`}
-          product={product}
-          onDelete={() => handleDelete(Number(product.id))}
+          key={dish.id}
+          url={`/dishes/${dish.id}`}
+          product={dish}
+          onDelete={() => handleDelete(Number(dish.id))}
         >
           <>
-            <br/>
-            {JSON.stringify(product)}
-            <br/>
+            <strong>Price</strong>: {displayPrice(dish)}<br/>
+            <strong>Ingredients</strong>: {ingredientCount(dish)}
           </>
         </ProductCard>
       ))}

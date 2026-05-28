@@ -5,7 +5,9 @@ import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isOperationalMutationPath} from "@/app/_lib/auth-roles";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useClientReady} from "@/app/_hooks/useClientReady";
 import {useAppSelector} from "@/app/_store/hooks";
+import {Loading} from "@/app/_components/Loading";
 
 const PUBLIC_PATHS = ["/login"];
 
@@ -17,11 +19,12 @@ function operationalListPath(pathname: string): string {
 export default function AuthGuard({children}: {children: ReactNode}) {
   const pathname = usePathname();
   const router = useRouter();
+  const ready = useClientReady();
   const authStatus = useAppSelector((state) => state.auth.status);
   const {canMutateOperationalData} = useAuthCapabilities();
 
   useEffect(() => {
-    if (PUBLIC_PATHS.includes(pathname)) return;
+    if (!ready || PUBLIC_PATHS.includes(pathname)) return;
 
     const token = getAuthToken();
     if (!token && authStatus !== "authenticated") {
@@ -32,10 +35,14 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     if (!canMutateOperationalData && isOperationalMutationPath(pathname)) {
       router.replace(operationalListPath(pathname));
     }
-  }, [pathname, router, authStatus, canMutateOperationalData]);
+  }, [ready, pathname, router, authStatus, canMutateOperationalData]);
 
   if (PUBLIC_PATHS.includes(pathname)) {
     return <>{children}</>;
+  }
+
+  if (!ready) {
+    return <Loading/>;
   }
 
   if (!getAuthToken() && authStatus !== "authenticated") {

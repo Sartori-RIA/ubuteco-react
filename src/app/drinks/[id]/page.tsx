@@ -1,8 +1,7 @@
 "use client"
 
 import {useParams} from "next/navigation";
-import {Card, Loading} from "@/app/_components";
-import Image from "next/image";
+import {Card, Loading, ProductDetailImage} from "@/app/_components";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -31,15 +30,7 @@ export default function Page() {
         <p>
           {drink.description}
         </p>
-        <div>
-          <Image loading="eager"
-                 src={drink.image_url}
-                 width={500}
-                 height={400}
-                 alt={drink.name}
-                 unoptimized
-          />
-        </div>
+        <ProductDetailImage src={drink.image_url} alt={drink.name}/>
       </div>
     </Card>
   )

@@ -9,29 +9,30 @@ import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 type Props1 = {
   children: React.ReactNode
   onDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
-  product: Pick<Product, "name"> & {image_url?: string}
+  product: Pick<Product, "name"> & {image_url?: string; thumbnail_url?: string}
   url: string
   showImage?: boolean
 }
 
 export function ProductCard({product, url, children, onDelete, showImage = true}: Props1) {
   const {canMutateOperationalData} = useAuthCapabilities();
-  const imageUrl = product.image_url;
+  const imageUrl = product.thumbnail_url ?? product.image_url;
 
   return (
     <Card title={product.name} className="min-h-[200px] flex flex-col justify-between">
-      <div className={showImage && imageUrl ? "grid xs:grid-cols-1 grid-cols-2 gap-1" : ""}>
+      <div className={showImage && imageUrl ? "space-y-3" : ""}>
         <div className="text-sm text-gray-500 break-words">
           {children}
         </div>
         {showImage && imageUrl && (
-          <div>
-            <Image loading="eager"
-                   src={imageUrl}
-                   width={100}
-                   height={100}
-                   alt={product.name}
-                   unoptimized
+          <div className="relative mx-auto h-44 w-full max-w-[220px] overflow-hidden rounded-lg bg-gray-50">
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-contain"
+              sizes="220px"
+              unoptimized
             />
           </div>
         )}

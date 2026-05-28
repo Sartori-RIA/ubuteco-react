@@ -80,7 +80,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
       <AnimatePresence>
         {isOpen && (
           <motion.aside
-            initial={{width: 0, opacity: 0}}
+            initial={false}
             animate={{width: 260, opacity: 1}}
             exit={{width: 0, opacity: 0}}
             transition={{duration: 0.25}}

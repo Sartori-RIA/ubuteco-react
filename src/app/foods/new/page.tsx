@@ -9,7 +9,7 @@ import {useRouter} from "next/navigation";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 
 export default function Page() {
-  const {loading, errors} = useSelector((state: RootState) => state.beers);
+  const {loading, errors} = useSelector((state: RootState) => state.foods);
   const dispatch = useAppDispatch()
   const router = useRouter();
 
