@@ -1,6 +1,6 @@
 # Plan: Multi-tenant (frontend)
 
-**Status:** not started  
+**Status:** in progress (Phase 2 started)  
 **Project:** ubuteco-react  
 **Backend:** [01-multi-tenant.md](../../../ubuteco_api/docs/plans/01-multi-tenant.md)  
 **Priority:** P0 (after / in parallel with API Phase 1–2)
@@ -17,16 +17,16 @@ Frontend must not rely on sending `organization_id` for scoped operations; use t
 
 ## Phase 1 — Audit API calls
 
-- [ ] Grep `organization_id` in services/thunks/forms
-- [ ] Remove from POST/PATCH bodies where API will ignore it (orders, users, products)
-- [ ] Keep read-only display of org from `auth.user.organization`
+- [x] Grep `organization_id` in services/thunks/forms — no writes send tenant id
+- [x] Client already omits `organization_id` on POST/PATCH (orders, users, products)
+- [x] Read-only display of org from `auth.user.organization`
 
 ---
 
 ## Phase 2 — Auth state
 
-- [ ] Ensure `fetchCurrentUser` always hydrates `organization` (id, name, `operational_status`, future locale/currency)
-- [ ] Guard routes that require org: redirect if `user.organization_id` missing
+- [x] `fetchCurrentUser` hydrates nested `organization` (via AuthHydrator)
+- [x] Guard routes: `AuthGuard` redirects to `/forbidden` when org-scoped role lacks organization
 
 ---
 
