@@ -21,10 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <AppearanceScript/>
-      </head>
       <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}>
+        <AppearanceScript/>
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -16,23 +16,22 @@ type AppearanceContextValue = {
 
 const AppearanceContext = createContext<AppearanceContextValue | null>(null);
 
-function readInitialMode(): AppearanceMode {
-  if (typeof window === "undefined") return "system";
-  return readStoredAppearance();
-}
-
 export function AppearanceProvider({children}: {children: ReactNode}) {
-  const [mode, setModeState] = useState<AppearanceMode>(readInitialMode);
+  const [mode, setModeState] = useState<AppearanceMode>("system");
   const [isDark, setIsDark] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const stored = readStoredAppearance();
     setModeState(stored);
     applyAppearance(stored);
     setIsDark(document.documentElement.classList.contains("dark"));
+    setReady(true);
   }, []);
 
   useEffect(() => {
+    if (!ready) return;
+
     applyAppearance(mode);
     setIsDark(document.documentElement.classList.contains("dark"));
 
@@ -46,7 +45,7 @@ export function AppearanceProvider({children}: {children: ReactNode}) {
 
     media.addEventListener("change", syncSystem);
     return () => media.removeEventListener("change", syncSystem);
-  }, [mode]);
+  }, [mode, ready]);
 
   const setMode = (next: AppearanceMode) => {
     setModeState(next);
