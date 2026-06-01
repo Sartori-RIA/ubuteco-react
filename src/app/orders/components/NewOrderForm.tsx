@@ -7,7 +7,7 @@ import {Buttons, Card, FormErrors, Label, Loading} from "@/app/_components";
 import {Select} from "@/app/_components/Selects";
 import {Input} from "@/app/_components/Inputs";
 import {useToast} from "@/app/_components/Toast/ToastProvider";
-import {DISPLAY_CURRENCY} from "@/app/_lib/money";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
 import {ordersThunks} from "@/app/_store/features/orders/ordersThunks";
@@ -19,6 +19,7 @@ export function NewOrderForm() {
   const tableFromQuery = searchParams.get("table_id") ?? "";
   const dispatch = useAppDispatch();
   const {showToast} = useToast();
+  const {defaultCurrency} = useOrganizationSettings();
   const {saving, errors} = useAppSelector((state: RootState) => state.orders);
   const {tables, loading: tablesLoading} = useAppSelector((state: RootState) => state.tables);
 
@@ -74,7 +75,7 @@ export function NewOrderForm() {
             </Select>
           </Label>
 
-          <Label label={`Discount (${DISPLAY_CURRENCY}, optional)`}>
+          <Label label={`Discount (${defaultCurrency}, optional)`}>
             <Input
               type="number"
               step="0.01"

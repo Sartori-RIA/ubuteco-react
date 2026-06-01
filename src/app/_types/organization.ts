@@ -9,4 +9,7 @@ export interface Organization extends BaseModel {
   logo?: PictureFromS3;
   user_id?: number;
   operational_status?: OrganizationOperationalStatus;
+  locale?: string;
+  default_currency?: string;
+  timezone?: string;
 }

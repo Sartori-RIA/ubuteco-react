@@ -1,6 +1,6 @@
 # Plan: Organization locale & currency (frontend)
 
-**Status:** not started  
+**Status:** in progress  
 **Project:** ubuteco-react  
 **Backend:** [02-locale-and-currency.md](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
 **Priority:** P1
@@ -15,28 +15,28 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 
 ## Phase 1 — Types & store
 
-- [ ] Extend `Organization` type: `locale`, `default_currency`, `timezone`
-- [ ] Hydrate from `fetchCurrentUser` / organization endpoint
-- [ ] Redux or context: `useOrganizationSettings()` hook
+- [x] Extend `Organization` type: `locale`, `default_currency`, `timezone`
+- [x] Hydrate from `fetchCurrentUser` / organization endpoint
+- [x] Redux or context: `useOrganizationSettings()` hook
 
 ---
 
 ## Phase 2 — Formatting utilities
 
-- [ ] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
-- [ ] `formatDate(date, options?)` using org `timezone` (e.g. `date-fns-tz` or `Intl`)
-- [ ] Replace ad-hoc formatting in orders, kitchen, catalog pages incrementally
+- [x] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
+- [x] `formatDate(date, options?)` using org `timezone` (e.g. `date-fns-tz` or `Intl`)
+- [~] Replace ad-hoc formatting in orders, kitchen, catalog pages incrementally
 
 ---
 
 ## Phase 3 — Settings UI
 
-- [ ] Page or section under `/settings` (admin only):
+- [x] Page or section under `/settings` (admin only):
   - Locale select (`pt-BR`, `en`, …)
   - Currency select (ISO list, curated)
   - Timezone select
-- [ ] PATCH organization via `organizationsService`
-- [ ] Confirm dialog if changing currency (explain effect on new orders only)
+- [x] PATCH organization via `organizationsService`
+- [x] Confirm dialog if changing currency (explain effect on new orders only)
 
 ---
 
@@ -56,6 +56,6 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 
 ## Definition of done
 
-- [ ] Admin can change locale/currency/timezone
-- [ ] Money and dates on orders/kitchen reflect org settings
-- [ ] No hardcoded `BRL`/`R$` in new code
+- [x] Admin can change locale/currency/timezone (UI ready; requires API migration)
+- [~] Money and dates on orders/kitchen reflect org settings
+- [x] No hardcoded `BRL`/`R$` in new code

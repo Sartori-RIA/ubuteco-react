@@ -7,7 +7,8 @@ import {Label} from "@/app/_components";
 import {Select} from "@/app/_components/Selects";
 import {Input} from "@/app/_components/Inputs";
 import {useDebounce} from "@/app/_hooks/useDebounce";
-import {DISPLAY_CURRENCY, parseMoneyValue} from "@/app/_lib/money";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {parseMoneyValue} from "@/app/_lib/money";
 
 function initialDiscount(order: Order): string {
   if (order.discount_cents != null) return String(order.discount_cents / 100);
@@ -24,6 +25,7 @@ type Props = {
 };
 
 export function OrderMetaForm({order, tables, readOnly = false, onSave}: Props) {
+  const {defaultCurrency} = useOrganizationSettings();
   const [tableId, setTableId] = useState(order.table_id ? String(order.table_id) : "");
   const [discount, setDiscount] = useState(() => initialDiscount(order));
   const debouncedTableId = useDebounce(tableId, 500);
@@ -60,7 +62,7 @@ export function OrderMetaForm({order, tables, readOnly = false, onSave}: Props) 
         </Select>
       </Label>
 
-      <Label label={`Discount (${DISPLAY_CURRENCY})`}>
+      <Label label={`Discount (${defaultCurrency})`}>
         <Input
           type="number"
           step="0.01"
