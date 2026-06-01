@@ -10,11 +10,11 @@ type Props = {
 
 export function AuthShell({title, subtitle, children, footer}: Props) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
+    <div className="flex min-h-screen items-center justify-center bg-background p-6">
+      <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-surface p-8 shadow-lg">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+          <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+          <p className="mt-1 text-sm text-muted">{subtitle}</p>
         </div>
         {children}
         {footer}
@@ -25,8 +25,8 @@ export function AuthShell({title, subtitle, children, footer}: Props) {
 
 export function AuthFooterLink({href, children}: { href: string; children: ReactNode }) {
   return (
-    <p className="text-center text-sm text-gray-600">
-      <Link href={href} className="font-medium text-blue-600 hover:text-blue-700">
+    <p className="text-center text-sm text-muted">
+      <Link href={href} className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
         {children}
       </Link>
     </p>
