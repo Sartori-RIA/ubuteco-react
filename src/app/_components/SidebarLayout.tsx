@@ -52,22 +52,17 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const allMenuItems = [
     {label: "Dashboard", icon: faHouse, link: "/"},
     {label: "Kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
-
     {label: "Beers", icon: faBeer, link: "/beers"},
     {label: "Beer Styles", icon: faBeer, link: "/beer-styles"},
     {label: "Drinks", icon: faGlassMartini, link: "/drinks"},
     {label: "Wines", icon: faWineBottle, link: "/wines"},
     {label: "Wine Styles", icon: faWineBottle, link: "/wine-styles"},
-
     {label: "Dishes", icon: faHamburger, link: "/dishes"},
     {label: "Food", icon: faHamburger, link: "/foods"},
-
     {label: "Makers", icon: faIndustry, link: "/makers"},
-
     {label: "Orders", icon: faCartShopping, link: "/orders"},
     {label: "Organizations", icon: faBuilding, link: "/organizations"},
     {label: "Tables", icon: faChair, link: "/tables"},
-
     {label: "Users", icon: faUsers, link: "/users"},
     {label: "Settings", icon: faGear, link: "/settings"},
   ];
@@ -82,12 +77,11 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
       pathname === path
         ? "bg-blue-600 text-white"
-        : "text-gray-700 hover:bg-gray-200"
-    }`
+        : "text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800"
+    }`;
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-background">
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -95,41 +89,37 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             animate={{width: 260, opacity: 1}}
             exit={{width: 0, opacity: 0}}
             transition={{duration: 0.25}}
-            className="bg-white shadow-xl flex flex-col justify-between overflow-hidden"
+            className="flex flex-col justify-between overflow-hidden border-r border-border bg-surface shadow-xl"
           >
             <div>
-              <div className="p-6 border-b">
-                <h1 className="text-xl font-bold tracking-tight">Ubuteco</h1>
-                <p className="text-sm text-gray-500">
+              <div className="border-b border-border p-6">
+                <h1 className="text-xl font-bold tracking-tight text-foreground">Ubuteco</h1>
+                <p className="text-sm text-muted">
                   {user?.name ?? user?.email ?? "Admin Panel"}
                 </p>
                 {isSuperAdmin && (
-                  <p className="mt-1 text-xs font-medium text-amber-700">
+                  <p className="mt-1 text-xs font-medium text-amber-700 dark:text-amber-400">
                     Platform — catalog read-only
                   </p>
                 )}
               </div>
 
-              <nav className="p-4 space-y-2">
-                {menuItems.map((item) => {
-                  return (
-                    <Link
-                      href={item.link}
-                      key={item.label}
-                      className={
-                        `flex items-center gap-3 w-full px-4 py-3 rounded-2xl hover:bg-gray-100 transition text-left ${linkClass(item.link)}`
-                      }
-                    >
-                      <FontAwesomeIcon icon={item.icon} className="text-base"/>
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </Link>
-                  );
-                })}
+              <nav className="space-y-2 p-4">
+                {menuItems.map((item) => (
+                  <Link
+                    href={item.link}
+                    key={item.label}
+                    className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition hover:bg-surface-muted ${linkClass(item.link)}`}
+                  >
+                    <FontAwesomeIcon icon={item.icon} className="text-base"/>
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </Link>
+                ))}
               </nav>
             </div>
 
-            <div className="p-4 border-t">
-              <Buttons onClick={handleLogout} className="w-full rounded-2xl flex items-center gap-2">
+            <div className="border-t border-border p-4">
+              <Buttons onClick={handleLogout} className="flex w-full items-center gap-2 rounded-2xl">
                 <FontAwesomeIcon icon={faRightFromBracket}/> Sign out
               </Buttons>
             </div>
@@ -137,10 +127,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Topbar */}
-        <header className="bg-white border-b p-4 flex items-center justify-between">
+      <div className="flex flex-1 flex-col">
+        <header className="flex items-center justify-between border-b border-border bg-surface p-4">
           <div className="flex items-center gap-3">
             <Buttons
               variant="outline"
@@ -150,13 +138,15 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             >
               <FontAwesomeIcon icon={faBars}/>
             </Buttons>
-            <h2 className="text-lg font-semibold">{getPageTitle(pathname)}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{getPageTitle(pathname)}</h2>
           </div>
 
           <Link
             href="/settings"
-            className={`flex items-center gap-2 rounded-2xl border px-3 py-2 transition hover:bg-gray-50 ${
-              pathname === "/settings" ? "border-blue-200 bg-blue-50" : "border-gray-200"
+            className={`flex items-center gap-2 rounded-2xl border px-3 py-2 transition hover:bg-surface-muted ${
+              pathname === "/settings"
+                ? "border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950/40"
+                : "border-border"
             }`}
           >
             <span
@@ -165,18 +155,16 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             >
               {user ? userInitials(user) : <FontAwesomeIcon icon={faUser}/>}
             </span>
-            <span className="hidden max-w-[140px] truncate text-sm font-medium text-gray-800 sm:inline">
+            <span className="hidden max-w-[140px] truncate text-sm font-medium text-foreground sm:inline">
               {user?.name ?? user?.email ?? "My account"}
             </span>
           </Link>
         </header>
 
-        {/* Page Content */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 overflow-auto p-6">
           {children}
         </main>
       </div>
     </div>
   );
 }
-

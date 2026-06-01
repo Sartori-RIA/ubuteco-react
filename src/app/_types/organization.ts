@@ -7,7 +7,6 @@ export interface Organization extends BaseModel {
   cnpj?: string;
   phone?: string;
   logo?: PictureFromS3;
-  theme_id?: number;
   user_id?: number;
   operational_status?: OrganizationOperationalStatus;
 }

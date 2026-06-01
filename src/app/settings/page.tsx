@@ -16,6 +16,7 @@ import {updateAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {User} from "@/app/_types";
+import {AppearanceSettings} from "@/app/settings/components/AppearanceSettings";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -240,6 +241,13 @@ export default function SettingsPage() {
             </Buttons>
           </div>
         </form>
+      </Card>
+
+      <Card title="Appearance" className="hover:translate-y-0">
+        <p className="mb-4 text-sm text-muted">
+          Choose light, dark, or follow your system preference. Saved on this device.
+        </p>
+        <AppearanceSettings/>
       </Card>
 
       <Card title="Plan" className="hover:translate-y-0">

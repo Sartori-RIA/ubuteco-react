@@ -7,6 +7,8 @@ import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import AuthGuard from "@/app/_components/AuthGuard";
 import AuthHydrator from "@/app/_components/AuthHydrator";
+import {AppearanceProvider} from "@/app/_components/AppearanceProvider";
+import {AppearanceScript} from "@/app/_components/AppearanceScript";
 import SidebarLayout from "@/app/_components/SidebarLayout";
 import {ToastProvider} from "@/app/_components/Toast/ToastProvider";
 import {Provider} from "react-redux";
@@ -35,11 +37,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+    <head>
+      <AppearanceScript/>
+    </head>
     <body
       className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
     >
     <Provider store={store}>
+      <AppearanceProvider>
       <ToastProvider>
         <AuthHydrator>
           <AuthGuard>
@@ -49,6 +55,7 @@ export default function RootLayout({
           </AuthGuard>
         </AuthHydrator>
       </ToastProvider>
+      </AppearanceProvider>
     </Provider>
     </body>
     </html>

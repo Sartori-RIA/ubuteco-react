@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-    --background: #ffffff;
-    --foreground: rgba(0, 0, 0, 0.76);
+  --background: #f3f4f6;
+  --foreground: #111827;
+  --surface: #ffffff;
+  --surface-muted: #f9fafb;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+}
+
+.dark {
+  --background: #030712;
+  --foreground: #f3f4f6;
+  --surface: #111827;
+  --surface-muted: #1f2937;
+  --border: #374151;
+  --muted: #9ca3af;
 }
 
 @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-roboto-sans);
-    --font-mono: var(--font-roboto-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: rgba(0, 0, 0, 0.76);;
-    }
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-roboto-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: Roboto, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Roboto, sans-serif;
 }
