@@ -18,7 +18,7 @@ Replace the **placeholder** `/organizations` page with a real admin experience: 
 
 - `src/app/organizations/page.tsx` — placeholder (`<h1>Tables index page</h1>` — copy-paste error).
 - Sidebar links “Organizations” for privileged roles.
-- API: `OrganizationsController`, themes nested resource, `operational_status` on org.
+- API: `OrganizationsController`, `operational_status` on org.
 - Kitchen page already PATCHes `operational_status` for open/closed kitchen.
 
 ---
@@ -34,9 +34,8 @@ Replace the **placeholder** `/organizations` page with a real admin experience: 
 
 ## Phase 2 — Organization profile UI
 
-- [ ] Show: name, phone, logo, `operational_status`, theme summary
+- [ ] Show: name, phone, logo, `operational_status`
 - [ ] Edit form: name, phone, logo upload (match API multipart patterns from dishes/beers)
-- [ ] Link to theme colors or inline theme section (API: `organizations/themes`)
 
 ---
 

@@ -27,10 +27,10 @@ const baseStyles =
   "inline-flex items-center justify-center font-medium transition rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
 const variantStyles: Record<ButtonVariant, string> = {
-  default: "bg-black text-white hover:bg-black/80 focus:ring-black",
-  outline: "border border-gray-300 bg-white hover:bg-gray-50 focus:ring-gray-400",
-  secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-400",
-  ghost: "bg-transparent hover:bg-gray-100 focus:ring-gray-400",
+  default: "bg-black text-white hover:bg-black/80 focus:ring-black dark:bg-white dark:text-black dark:hover:bg-white/90",
+  outline: "border border-border bg-surface hover:bg-surface-muted focus:ring-gray-400",
+  secondary: "bg-surface-muted text-foreground hover:bg-border focus:ring-gray-400",
+  ghost: "bg-transparent hover:bg-surface-muted focus:ring-gray-400",
   danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-600",
 };
 

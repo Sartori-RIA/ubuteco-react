@@ -31,8 +31,8 @@ export function ConfirmDialog({
     <AnimatePresence>
       {open && (
         <ModalWrapper onClose={onCancel}>
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-          <p className="mt-2 text-sm text-gray-600">{message}</p>
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+          <p className="mt-2 text-sm text-muted">{message}</p>
           <div className="mt-6 flex justify-end gap-2">
             <Buttons type="button" variant="outline" onClick={onCancel} disabled={loading}>
               {cancelLabel}

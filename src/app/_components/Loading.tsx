@@ -8,7 +8,7 @@ export function Loading() {
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}
-          className="w-3 h-3 bg-black rounded-full"
+          className="h-3 w-3 rounded-full bg-foreground"
           animate={{
             y: [0, -10, 0],
           }}
