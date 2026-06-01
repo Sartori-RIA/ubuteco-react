@@ -8,7 +8,7 @@ type LabelProps = {
 export function Label({label, children}: LabelProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={label.toString().toLowerCase()} className="text-sm font-medium text-gray-700">{label}</label>
+      <label htmlFor={label.toString().toLowerCase()} className="text-sm font-medium text-foreground">{label}</label>
       {children}
     </div>
   );

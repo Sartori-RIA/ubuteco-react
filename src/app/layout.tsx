@@ -1,20 +1,8 @@
-"use client"
-
 import {Roboto, Roboto_Mono} from "next/font/google";
 import "./globals.css";
 
-import {config} from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
-import AuthGuard from "@/app/_components/AuthGuard";
-import AuthHydrator from "@/app/_components/AuthHydrator";
-import {AppearanceProvider} from "@/app/_components/AppearanceProvider";
 import {AppearanceScript} from "@/app/_components/AppearanceScript";
-import SidebarLayout from "@/app/_components/SidebarLayout";
-import {ToastProvider} from "@/app/_components/Toast/ToastProvider";
-import {Provider} from "react-redux";
-import {store} from "./_store"
-
-config.autoAddCss = false
+import {Providers} from "@/app/providers";
 
 const robotoSans = Roboto({
   variable: "--font-roboto-sans",
@@ -26,38 +14,19 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata: Metadata = {
-//   title: "Ubuteco React App",
-//   description: "Ubuteco React App",
-// };
-
 export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <head>
-      <AppearanceScript/>
-    </head>
-    <body
-      className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}
-    >
-    <Provider store={store}>
-      <AppearanceProvider>
-      <ToastProvider>
-        <AuthHydrator>
-          <AuthGuard>
-            <SidebarLayout>
-              {children}
-            </SidebarLayout>
-          </AuthGuard>
-        </AuthHydrator>
-      </ToastProvider>
-      </AppearanceProvider>
-    </Provider>
-    </body>
+      <head>
+        <AppearanceScript/>
+      </head>
+      <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

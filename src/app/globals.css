@@ -11,7 +11,8 @@
   --muted: #6b7280;
 }
 
-.dark {
+html.dark {
+  color-scheme: dark;
   --background: #030712;
   --foreground: #f3f4f6;
   --surface: #111827;
@@ -35,4 +36,36 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: Roboto, sans-serif;
+}
+
+/* Legacy hardcoded grays until pages migrate to semantic tokens */
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700 {
+  color: var(--foreground);
+}
+
+html.dark .text-gray-600,
+html.dark .text-gray-500 {
+  color: var(--muted);
+}
+
+html.dark .text-gray-400 {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+html.dark .bg-white {
+  background-color: var(--surface);
+}
+
+html.dark .bg-gray-50,
+html.dark .bg-gray-100 {
+  background-color: var(--surface-muted);
+}
+
+html.dark .border-gray-200,
+html.dark .border-gray-300,
+html.dark .border-dashed.border-gray-300 {
+  border-color: var(--border);
 }

@@ -24,7 +24,7 @@ export default function ModalWrapper({
       />
 
       <motion.div
-        className="relative bg-white p-6 rounded-xl w-[500px] shadow-xl"
+        className="relative w-[500px] rounded-xl border border-border bg-surface p-6 shadow-xl"
         initial={{scale: 0.95, opacity: 0}}
         animate={{scale: 1, opacity: 1}}
         exit={{scale: 0.95, opacity: 0}}
