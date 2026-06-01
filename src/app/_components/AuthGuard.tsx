@@ -5,9 +5,11 @@ import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {
+  hasOrganization,
   isKitchenAllowedPath,
   isKitchenStaff,
   isOperationalMutationPath,
+  requiresOrganization,
 } from "@/app/_lib/auth-roles";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useClientReady} from "@/app/_hooks/useClientReady";
@@ -32,6 +34,11 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     const token = getAuthToken();
     if (!token && authStatus !== "authenticated") {
       router.replace("/login");
+      return;
+    }
+
+    if (user && requiresOrganization(user) && !hasOrganization(user)) {
+      router.replace("/forbidden");
       return;
     }
 

@@ -8,6 +8,17 @@ export function isSuperAdmin(user: User | null | undefined): boolean {
   return getRoleName(user) === "SUPER_ADMIN";
 }
 
+const ORG_SCOPED_ROLES = new Set(["ADMIN", "KITCHEN", "WAITER", "CASH_REGISTER"]);
+
+export function requiresOrganization(user: User | null | undefined): boolean {
+  const role = getRoleName(user);
+  return role != null && ORG_SCOPED_ROLES.has(role);
+}
+
+export function hasOrganization(user: User | null | undefined): boolean {
+  return user?.organization_id != null || user?.organization?.id != null;
+}
+
 /** Super admin may view org catalog (beers, dishes, etc.) but not mutate it. */
 export function canMutateOperationalData(user: User | null | undefined): boolean {
   return !isSuperAdmin(user);
