@@ -8,7 +8,7 @@ import {ItemOrderSend, OrderItem, OrderItemType} from "@/app/_types/order";
 import {Wine} from "@/app/_types/wine";
 import {Buttons, Label, Select} from "@/app/_components";
 import {Input} from "@/app/_components/Inputs";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
@@ -36,6 +36,7 @@ function stockOf(product: CatalogProduct): number | null {
 
 export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
   const t = useTranslations();
+  const {displayPrice} = useMoneyFormat();
   const dispatch = useAppDispatch();
   const {beers, loading: beersLoading} = useAppSelector((state: RootState) => state.beers);
   const {drinks, loading: drinksLoading} = useAppSelector((state: RootState) => state.drinks);

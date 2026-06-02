@@ -52,7 +52,7 @@ function Page() {
           onDelete={() => handleDelete(Number(maker.id))}
         >
           <>
-            <strong>Country</strong>: {maker.country ?? "—"}
+            <strong>{t("catalog.country")}</strong>: {maker.country ?? "—"}
           </>
         </ProductCard>
       ))}

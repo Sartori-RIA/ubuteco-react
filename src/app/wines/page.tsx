@@ -50,12 +50,12 @@ function Page() {
           onDelete={() => handleDelete(Number(product.id))}
         >
           <>
-            <strong>Grapes</strong>: {product.grapes} <br/>
-            <strong>Ripening</strong>: {product.ripening} <br/>
-            <strong>Vintage wine</strong>: {product.vintage_wine} <br/>
-            <strong>Visual</strong>: {product.visual} <br/>
-            <strong>Maker</strong>: {product.maker?.name} <br/>
-            <strong>ABV</strong>: {product.abv}
+            <strong>{t("catalog.grapes")}</strong>: {product.grapes} <br/>
+            <strong>{t("catalog.ripening")}</strong>: {product.ripening} <br/>
+            <strong>{t("catalog.vintageWine")}</strong>: {product.vintage_wine} <br/>
+            <strong>{t("catalog.visual")}</strong>: {product.visual} <br/>
+            <strong>{t("common.maker")}</strong>: {product.maker?.name} <br/>
+            <strong>{t("common.abv")}</strong>: {product.abv}
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

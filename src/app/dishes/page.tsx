@@ -1,7 +1,7 @@
 "use client"
 
 import {Dish} from "@/app/_types";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
@@ -22,6 +22,7 @@ function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch()
   const t = useTranslations();
+  const {displayPrice} = useMoneyFormat();
   const searchTerm = useAppSelector(state => state.dishes.searchTerm);
 
   useEffect(() => {
@@ -53,8 +54,8 @@ function Page() {
           onDelete={() => handleDelete(Number(dish.id))}
         >
           <>
-            <strong>Price</strong>: {displayPrice(dish)}<br/>
-            <strong>Ingredients</strong>: {ingredientCount(dish)}
+            <strong>{t("common.price")}</strong>: {displayPrice(dish)}<br/>
+            <strong>{t("catalog.ingredients")}</strong>: {ingredientCount(dish)}
           </>
         </ProductCard>
       ))}

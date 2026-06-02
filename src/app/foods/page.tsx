@@ -1,8 +1,7 @@
 "use client"
 
 import {Food} from "@/app/_types";
-import {formatDate} from "@/app/_lib/format-date";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
@@ -19,6 +18,7 @@ function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch()
   const t = useTranslations();
+  const {displayPrice, formatDate} = useMoneyFormat();
   const searchTerm = useAppSelector(state => state.foods.searchTerm);
 
   useEffect(() => {
@@ -51,9 +51,9 @@ function Page() {
           onDelete={() => handleDelete(Number(food.id))}
         >
           <>
-            <strong>Price</strong>: {displayPrice(food)}<br/>
-            <strong>Stock</strong>: {food.quantity_stock ?? 0}<br/>
-            <strong>Valid until</strong>: {formatDate(food.valid_until)}
+            <strong>{t("common.price")}</strong>: {displayPrice(food)}<br/>
+            <strong>{t("common.stock")}</strong>: {food.quantity_stock ?? 0}<br/>
+            <strong>{t("catalog.validUntil")}</strong>: {formatDate(food.valid_until)}
           </>
         </ProductCard>
       ))}
