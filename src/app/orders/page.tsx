@@ -15,18 +15,23 @@ import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
 import {ordersThunks} from "@/app/_store/features/orders/ordersThunks";
 import {setPage, setSearchTerm, setStatusFilter} from "@/app/_store/features/orders/ordersSlice";
-import {formatDate} from "@/app/_lib/format-date";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {OrderStatus} from "@/app/_types";
 
-const STATUS_FILTERS: {value: OrderStatus | ""; label: string}[] = [
-  {value: "", label: "All"},
-  {value: "open", label: "Open"},
-  {value: "closed", label: "Closed"},
-  {value: "payed", label: "Paid"},
+const STATUS_FILTERS: {value: OrderStatus | ""; key: "filterAll" | "open" | "closed" | "payed"}[] = [
+  {value: "", key: "filterAll"},
+  {value: "open", key: "open"},
+  {value: "closed", key: "closed"},
+  {value: "payed", key: "payed"},
 ];
 
 function Page() {
   const dispatch = useAppDispatch();
+  const t = useTranslations();
+  const {locale} = useOrganizationSettings();
+  const {formatDate} = useMoneyFormat();
   const {orders, loading, searchTerm, statusFilter, page, meta} = useAppSelector(
     (state: RootState) => state.orders
   );
@@ -58,10 +63,17 @@ function Page() {
     );
   };
 
+  const pillClass = (active: boolean) =>
+    `rounded-full border px-3 py-1 text-sm font-medium transition ${
+      active
+        ? "border-blue-600 bg-blue-600 text-white"
+        : "border-border bg-surface text-foreground hover:bg-surface-muted"
+    }`;
+
   return (
     <div className="space-y-6">
       <Toolbar
-        title="Orders"
+        title={t("orders.title")}
         newUrl="/orders/new"
         searchValue={searchTerm}
         onSearch={(e) => dispatch(setSearchTerm(e.target.value))}
@@ -73,13 +85,11 @@ function Page() {
             key={filter.value || "all"}
             type="button"
             onClick={() => dispatch(setStatusFilter(filter.value))}
-            className={`rounded-full px-3 py-1 text-sm font-medium transition ${
-              statusFilter === filter.value
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-100"
-            }`}
+            className={pillClass(statusFilter === filter.value)}
           >
-            {filter.label}
+            {filter.key === "filterAll"
+              ? t("orders.filterAll")
+              : formatOrderStatus(filter.key, locale)}
           </button>
         ))}
       </div>
@@ -90,28 +100,35 @@ function Page() {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {orders.map((order) => (
             <Link key={order.id} href={`/orders/${order.id}`}>
-              <Card title={`Order #${order.id}`} className="h-full hover:shadow-md">
-                <div className="space-y-2 text-sm text-gray-600">
+              <Card
+                title={t("orders.cardTitle", {id: order.id ?? ""})}
+                className="h-full hover:shadow-md"
+              >
+                <div className="space-y-2 text-sm text-muted">
                   <div className="flex items-center justify-between gap-2">
                     <OrderStatusBadge status={order.status}/>
-                    <span>{formatDate(order.created_at)}</span>
+                    <span className="text-foreground">{formatDate(order.created_at)}</span>
                   </div>
                   <p>
-                    <strong>Table:</strong> {order.table?.name ?? "—"}
+                    <strong className="text-foreground">{t("orders.table")}:</strong> {order.table?.name ?? "—"}
                   </p>
                   <p>
-                    <strong>Staff:</strong> {order.user?.name ?? "—"}
+                    <strong className="text-foreground">{t("orders.staff")}:</strong> {order.user?.name ?? "—"}
                   </p>
                   <p>
-                    <strong>Items:</strong> {order.order_items_count ?? "—"}
+                    <strong className="text-foreground">{t("orders.itemsCount")}:</strong>{" "}
+                    {order.order_items_count ?? "—"}
                   </p>
                   <p>
-                    <strong>Total:</strong> {displayOrderAmount(order, "total_with_discount")}
+                    <strong className="text-foreground">{t("orders.total")}:</strong>{" "}
+                    {displayOrderAmount(order, "total_with_discount")}
                     {orderHasDiscount(order) && (
-                      <span className="ml-1 text-xs text-amber-600">(discounted)</span>
+                      <span className="ml-1 text-xs text-amber-600 dark:text-amber-400">
+                        {t("orders.discounted")}
+                      </span>
                     )}
                   </p>
-                  <p className="text-xs text-gray-400">{formatOrderStatus(order.status)}</p>
+                  <p className="text-xs opacity-85">{formatOrderStatus(order.status, locale)}</p>
                 </div>
               </Card>
             </Link>
@@ -120,7 +137,7 @@ function Page() {
       ) : null}
 
       {!loading && orders.length === 0 && (
-        <p className="text-center text-sm text-gray-500 py-12">No orders found.</p>
+        <p className="py-12 text-center text-sm text-muted">{t("orders.noOrders")}</p>
       )}
 
       <Pagination meta={meta} loading={loading} onLoadMore={loadMore}/>

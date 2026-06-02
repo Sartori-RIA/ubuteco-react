@@ -25,8 +25,9 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 ## Phase 2 — Formatting utilities
 
 - [x] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
-- [x] `formatDate(date, options?)` using org `timezone` (e.g. `date-fns-tz` or `Intl`)
-- [~] Replace ad-hoc formatting in orders, kitchen, catalog pages incrementally
+- [x] `formatDate(date, options?)` using org `timezone` (via `Intl`)
+- [x] Orders pages use `useMoneyFormat()` for dates and money display
+- [ ] Kitchen and catalog pages (incremental)
 
 ---
 
@@ -41,10 +42,14 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 
 ---
 
-## Phase 4 — i18n (optional v1.1)
+## Phase 4 — i18n (org locale)
 
-- [ ] If UI strings should follow org locale: integrate `next-intl` or similar keyed to org locale
-- [ ] v1 minimum: API error messages already localized; UI can stay single language until i18n pass
+- [x] Lightweight catalog in `src/app/_lib/i18n/` keyed to org `locale` (no `next-intl` — avoids App Router middleware/routing churn)
+- [x] `useTranslations()` hook reads locale from `useOrganizationSettings()`
+- [x] Orders module strings in `en` + `pt-BR` (list, detail, items table, add panel, toasts, confirms)
+- [ ] Full-app i18n pass (settings, catalog, kitchen, …) — separate increment or plan 02 phase extension
+
+**Note on sub-plans:** keep phases inside this plan while work stays one branch/PR. Create a sub-plan (or new numbered plan) only when a phase becomes its own epic — e.g. `next-intl` migration across all routes, or kitchen i18n with live cable labels.
 
 ---
 
@@ -58,5 +63,5 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 ## Definition of done
 
 - [x] Admin can change locale/currency/timezone (UI ready; requires API migration)
-- [~] Money and dates on orders/kitchen reflect org settings
+- [x] Money and dates on orders reflect org settings
 - [x] No hardcoded `BRL`/`R$` in new code
