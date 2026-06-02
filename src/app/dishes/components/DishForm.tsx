@@ -121,7 +121,7 @@ export function DishForm({
           </section>
 
           <section className="space-y-4 border-t pt-6">
-            <h4 className="text-sm font-semibold text-gray-900">Ingredients</h4>
+            <h4 className="text-sm font-semibold text-gray-900">{t("forms.fields.ingredients")}</h4>
             <DishIngredientsEditor
               foods={foods}
               ingredients={ingredients}

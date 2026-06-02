@@ -6,6 +6,7 @@ import {OrderItemStatus} from "@/app/_types/order";
 import {Select} from "@/app/_components/Selects";
 import {formatOrderItemStatus} from "@/app/orders/_lib/order-display";
 import {KITCHEN_STATUS_OPTIONS} from "@/app/kitchen/_lib/kitchen-columns";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
   ticket: KitchenTicket;
@@ -22,7 +23,8 @@ export function KitchenTicketCard({
   readOnly = false,
   onStatusChange,
 }: Props) {
-  const dishName = ticket.order_item?.name ?? "Dish";
+  const t = useTranslations();
+  const dishName = ticket.order_item?.name ?? t("kitchen.defaultDishName");
 
   return (
     <article
@@ -34,7 +36,7 @@ export function KitchenTicketCard({
         <div>
           <h3 className="font-semibold text-gray-900">{dishName}</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Qty <span className="font-medium text-gray-800">{ticket.quantity ?? 1}</span>
+            {t("kitchen.ticketQty", {count: ticket.quantity ?? 1})}
           </p>
         </div>
         {showOrderLink ? (
@@ -42,15 +44,18 @@ export function KitchenTicketCard({
             href={`/orders/${ticket.order_id}`}
             className="shrink-0 text-xs font-medium text-blue-600 hover:text-blue-700"
           >
-            Order #{ticket.order_id}
+            {t("kitchen.ticketOrder", {id: ticket.order_id ?? 0})}
           </Link>
         ) : (
-          <span className="shrink-0 text-xs font-medium text-gray-500">Order #{ticket.order_id}</span>
+          <span className="shrink-0 text-xs font-medium text-gray-500">
+            {t("kitchen.ticketOrder", {id: ticket.order_id ?? 0})}
+          </span>
         )}
       </div>
 
       <p className="mt-2 text-sm text-gray-600">
-        Table: <span className="font-medium">{ticket.table?.name ?? "—"}</span>
+        {t("kitchen.ticketTable")}{" "}
+        <span className="font-medium">{ticket.table?.name ?? "—"}</span>
       </p>
 
       <div className="mt-3">
