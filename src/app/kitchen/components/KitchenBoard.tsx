@@ -4,6 +4,8 @@ import {KitchenTicket} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
 import {KitchenTicketCard} from "@/app/kitchen/components/KitchenTicketCard";
 import {KITCHEN_COLUMNS} from "@/app/kitchen/_lib/kitchen-columns";
+import {useTranslations} from "@/app/_hooks/useTranslations";
+import type {TranslationKey} from "@/app/_lib/i18n";
 
 type Props = {
   tickets: KitchenTicket[];
@@ -20,23 +22,28 @@ export function KitchenBoard({
   readOnly = false,
   onStatusChange,
 }: Props) {
+  const t = useTranslations();
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
       {KITCHEN_COLUMNS.map((column) => {
-        const columnTickets = tickets.filter((t) => column.statuses.includes(t.status));
+        const columnTickets = tickets.filter((tkt) => column.statuses.includes(tkt.status));
+        const titleKey = `kitchen.columns.${column.id}` as TranslationKey;
 
         return (
           <section
             key={column.id}
-            className="flex min-h-[200px] flex-col rounded-xl border border-gray-200 bg-gray-50/80"
+            className="flex min-h-[200px] flex-col rounded-xl border border-border bg-surface-muted"
           >
-            <header className="border-b border-gray-200 px-4 py-3">
-              <h2 className="text-sm font-semibold text-gray-900">{column.title}</h2>
-              <p className="text-xs text-gray-500">{columnTickets.length} items</p>
+            <header className="border-b border-border px-4 py-3">
+              <h2 className="text-sm font-semibold text-foreground">{t(titleKey)}</h2>
+              <p className="text-xs text-muted">
+                {t("kitchen.columnItems", {count: columnTickets.length})}
+              </p>
             </header>
             <div className="flex flex-1 flex-col gap-3 p-3">
               {columnTickets.length === 0 ? (
-                <p className="py-6 text-center text-xs text-gray-400">No items</p>
+                <p className="py-6 text-center text-xs text-muted">{t("kitchen.noItems")}</p>
               ) : (
                 columnTickets.map((ticket) => (
                   <KitchenTicketCard
