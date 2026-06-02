@@ -394,6 +394,40 @@ export type MessageCatalog = {
       delete: ConfirmMessages;
     };
   };
+  organizations: {
+    profile: {
+      title: string;
+      subtitle: string;
+    };
+    list: {
+      title: string;
+      cardTitle: string;
+      name: string;
+      phone: string;
+      status: string;
+      statusOpen: string;
+      statusClosed: string;
+      createdAt: string;
+      view: string;
+      empty: string;
+      loadFailed: string;
+    };
+    form: {
+      profileTitle: string;
+      name: string;
+      phone: string;
+      logo: string;
+      logoAlt: string;
+      save: string;
+      saveFailed: string;
+    };
+    operational: {
+      title: string;
+      hint: string;
+      open: string;
+      closed: string;
+    };
+  };
 };
 
 type JoinKeys<P extends string, K extends string> = P extends "" ? K : `${P}.${K}`;

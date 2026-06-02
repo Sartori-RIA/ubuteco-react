@@ -2,7 +2,7 @@
 
 import {useMemo} from "react";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
-import {getRoleName} from "@/app/_lib/auth-roles";
+import {canManageOrganization} from "@/app/_lib/auth-roles";
 import {resolveOrganizationSettings} from "@/app/_lib/organization-settings";
 
 export function useOrganizationSettings() {
@@ -14,7 +14,7 @@ export function useOrganizationSettings() {
     return {
       organization: user?.organization ?? null,
       ...settings,
-      canManage: getRoleName(user) === "ADMIN",
+      canManage: canManageOrganization(user),
     };
   }, [user]);
 }

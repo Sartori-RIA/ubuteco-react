@@ -52,6 +52,22 @@ export function canManageUsers(user: User | null | undefined): boolean {
   return isAdmin(user);
 }
 
+/** Org profile and operational settings for the authenticated tenant. */
+export function canManageOrganization(user: User | null | undefined): boolean {
+  return isAdmin(user);
+}
+
+/** Organization admin UI (own org for ADMIN, cross-org list for SUPER_ADMIN). */
+export function canAccessOrganizations(user: User | null | undefined): boolean {
+  return isSuperAdmin(user) || canManageOrganization(user);
+}
+
+const ORGANIZATION_PATH = /^\/organizations(\/|$)/;
+
+export function isOrganizationPath(pathname: string): boolean {
+  return ORGANIZATION_PATH.test(pathname);
+}
+
 /** Paths restricted to org admins (staff user management). */
 const ADMIN_ONLY_PATH = /^\/users(\/|$)/;
 

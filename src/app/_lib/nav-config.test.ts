@@ -18,10 +18,10 @@ describe("getVisibleNavGroups", () => {
     expect(links).toEqual(["/kitchen", "/settings"]);
   });
 
-  it("hides organizations for org admin", () => {
+  it("shows organizations for org admin", () => {
     const groups = getVisibleNavGroups(userWithRole("ADMIN"));
     const links = groups.flatMap((group) => group.items.map((item) => item.link));
-    expect(links).not.toContain("/organizations");
+    expect(links).toContain("/organizations");
     expect(links).toContain("/orders");
   });
 
@@ -38,6 +38,13 @@ describe("getVisibleNavGroups", () => {
       );
       expect(links).not.toContain("/users");
     }
+  });
+
+  it("hides organizations for kitchen staff", () => {
+    const links = getVisibleNavGroups(userWithRole("KITCHEN")).flatMap((group) =>
+      group.items.map((item) => item.link)
+    );
+    expect(links).not.toContain("/organizations");
   });
 
   it("shows users for org admin", () => {

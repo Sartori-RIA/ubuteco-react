@@ -418,6 +418,40 @@ const en: MessageCatalog = {
       },
     },
   },
+  organizations: {
+    profile: {
+      title: "Organization",
+      subtitle: "Manage your bar or restaurant profile and kitchen status.",
+    },
+    list: {
+      title: "Organizations",
+      cardTitle: "All organizations",
+      name: "Name",
+      phone: "Phone",
+      status: "Kitchen",
+      statusOpen: "Open",
+      statusClosed: "Closed",
+      createdAt: "Created",
+      view: "View",
+      empty: "No organizations found.",
+      loadFailed: "Could not load organizations.",
+    },
+    form: {
+      profileTitle: "Profile",
+      name: "Organization name",
+      phone: "Phone",
+      logo: "Logo",
+      logoAlt: "Organization logo",
+      save: "Save changes",
+      saveFailed: "Could not save organization.",
+    },
+    operational: {
+      title: "Kitchen status",
+      hint: "When closed, the kitchen queue is paused and open orders may be closed on the API.",
+      open: "Kitchen is open — orders flow to the queue.",
+      closed: "Kitchen is closed — new items are not processed.",
+    },
+  },
 };
 
 export default en;

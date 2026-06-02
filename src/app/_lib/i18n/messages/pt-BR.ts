@@ -420,6 +420,40 @@ const ptBR: MessageCatalog = {
       },
     },
   },
+  organizations: {
+    profile: {
+      title: "Organização",
+      subtitle: "Gerencie o perfil do seu bar ou restaurante e o status da cozinha.",
+    },
+    list: {
+      title: "Organizações",
+      cardTitle: "Todas as organizações",
+      name: "Nome",
+      phone: "Telefone",
+      status: "Cozinha",
+      statusOpen: "Aberta",
+      statusClosed: "Fechada",
+      createdAt: "Criado em",
+      view: "Ver",
+      empty: "Nenhuma organização encontrada.",
+      loadFailed: "Não foi possível carregar as organizações.",
+    },
+    form: {
+      profileTitle: "Perfil",
+      name: "Nome da organização",
+      phone: "Telefone",
+      logo: "Logo",
+      logoAlt: "Logo da organização",
+      save: "Salvar alterações",
+      saveFailed: "Não foi possível salvar a organização.",
+    },
+    operational: {
+      title: "Status da cozinha",
+      hint: "Quando fechada, a fila da cozinha pausa e pedidos abertos podem ser encerrados na API.",
+      open: "Cozinha aberta — pedidos seguem para a fila.",
+      closed: "Cozinha fechada — novos itens não são processados.",
+    },
+  },
 };
 
 export default ptBR;

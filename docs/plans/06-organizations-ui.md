@@ -1,8 +1,9 @@
 # Plan: Organizations UI
 
-**Status:** not started  
+**Status:** in progress  
 **Project:** ubuteco-react  
 **Backend:** [Organizations API](../../../ubuteco_api/app/controllers/api/v1/organizations_controller.rb), [02-locale-and-currency](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
+**Branch:** `feature/organizations-ui`  
 **Priority:** P1  
 **Estimated effort:** 1–1.5 sprints
 
@@ -16,71 +17,73 @@ Replace the **placeholder** `/organizations` page with a real admin experience: 
 
 ## Current state
 
-- `src/app/organizations/page.tsx` — placeholder (`<h1>Tables index page</h1>` — copy-paste error).
-- Sidebar links “Organizations” for privileged roles.
-- API: `OrganizationsController`, `operational_status` on org.
-- Kitchen page already PATCHes `operational_status` for open/closed kitchen.
+- `src/app/organizations/page.tsx` — admin profile + super-admin list (replaces placeholder).
+- Sidebar “Organizations” for org ADMIN and SUPER_ADMIN (administration group).
+- API: `OrganizationsController`, `operational_status` on org; platform list at `v1/platform/organizations`.
+- Kitchen page uses shared `OrganizationOperationalToggle`.
 
 ---
 
 ## Phase 1 — Access & routing
 
-- [ ] **Org ADMIN:** `/organizations` → edit **own** org (redirect `/organizations/current` or single org form)
-- [ ] **SUPER_ADMIN:** list all orgs (search) + link to detail (future platform API from [01-multi-tenant](../../../ubuteco_api/docs/plans/01-multi-tenant.md))
-- [ ] `canManageOrganization(user)` helper in `auth-roles.ts`
-- [ ] Guard route; forbidden for kitchen-only staff
+- [x] **Org ADMIN:** `/organizations` → edit **own** org (single org form)
+- [x] **SUPER_ADMIN:** list all orgs (search) + link to detail at `/organizations/[id]`
+- [x] `canManageOrganization(user)` helper in `auth-roles.ts`
+- [x] Guard route; forbidden for kitchen-only staff and non-admin roles
 
 ---
 
 ## Phase 2 — Organization profile UI
 
-- [ ] Show: name, phone, logo, `operational_status`
-- [ ] Edit form: name, phone, logo upload (match API multipart patterns from dishes/beers)
+- [x] Show: name, phone, logo, `operational_status`
+- [x] Edit form: name, phone, logo upload (multipart PATCH)
 
 ---
 
 ## Phase 3 — Operational settings
 
-- [ ] Kitchen open/closed toggle (reuse logic from `kitchen/page.tsx` — extract shared hook/component `OrganizationOperationalToggle`)
-- [ ] Confirm dialog when closing kitchen (closes open orders on API)
-- [ ] When [02-locale-and-currency](./02-locale-and-currency.md) lands: locale, currency, timezone fields here or under settings
+- [x] Kitchen open/closed toggle — shared `OrganizationOperationalToggle` + `useOrganizationOperationalToggle`
+- [x] Confirm dialog when closing kitchen (closes open orders on API)
+- [x] Locale, currency, timezone via reused `LocaleSettings` on org admin page (also in settings)
 
 ---
 
 ## Phase 4 — Services & state
 
-- [ ] `organizationsService` — list, show, update (verify existing methods)
-- [ ] After update: refresh `auth.user.organization` in Redux
-- [ ] Toast success/error patterns (match orders/kitchen)
+- [x] `organizationsService` — paginated index, show, update, updateForm
+- [x] `platformOrganizationsService` — super-admin list/show/update
+- [x] After update: refresh `auth.user.organization` in Redux
+- [x] Toast success/error patterns (match kitchen)
 
 ---
 
-## Phase 5 — Super admin list (if in scope)
+## Phase 5 — Super admin list
 
-- [ ] Paginated table: name, phone, status, created_at
-- [ ] Search via API if available
-- [ ] Defer create org to registration flow unless product asks
+- [x] Paginated table: name, phone, status, created_at
+- [x] Search via API (`q` param)
+- [x] Defer create org to registration flow
 
 ---
 
 ## Phase 6 — Tests
 
-- [ ] Role guard: kitchen cannot access `/organizations`
-- [ ] Render org form with mocked org
-- [ ] Toggle operational status calls API
+- [x] Role guard: kitchen cannot access `/organizations` (nav + auth-roles)
+- [x] Operational toggle hook calls API
+- [ ] Render org form with mocked org (MSW — optional follow-up)
 
 ---
 
 ## Definition of done
 
-- [ ] No placeholder page; admin can manage org profile and kitchen status from org UI
-- [ ] Shared operational toggle DRY with kitchen page
-- [ ] Super admin has list view or documented deferral
+- [x] No placeholder page; admin can manage org profile and kitchen status from org UI
+- [x] Shared operational toggle DRY with kitchen page
+- [x] Super admin has list view + detail edit via platform API
 
 ---
 
 ## References
 
-- `src/app/kitchen/page.tsx` — operational toggle
+- `src/app/kitchen/page.tsx` — operational toggle (uses shared component)
 - `src/app/_services/organizations.service.ts`
+- `src/app/_services/platform-organizations.service.ts`
 - `src/app/_components/SidebarLayout.tsx` — menu visibility
