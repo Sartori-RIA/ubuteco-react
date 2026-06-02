@@ -17,14 +17,15 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 ## Before you code
 
 1. Read [docs/plans/README.md](docs/plans/README.md) — pick **one plan**, check status and companion API plan.
-2. Read [docs/context/frontend-map.md](docs/context/frontend-map.md) for folder conventions.
-3. Read [docs/dev-setup.md](docs/dev-setup.md) for ports and env vars.
+2. Small bugs / UX polish: [docs/backlog/README.md](docs/backlog/README.md) — promote to a plan if scope grows.
+3. Read [docs/context/frontend-map.md](docs/context/frontend-map.md) for folder conventions.
+4. Read [docs/dev-setup.md](docs/dev-setup.md) for ports and env vars.
 
 ## Branching
 
-- **One plan = one branch:** `feature/<plan-slug>` (e.g. `feature/locale-and-currency`).
-- Do not mix unrelated plans on the same branch.
-- Docs-only changes: `docs/<topic>` (e.g. `docs/ai-context`).
+- **Implementation** (code): one plan = one branch — `feature/<plan-slug>` (e.g. `feature/locale-and-currency`). Do not mix unrelated plans on the same branch.
+- **Plan & backlog docs** (`docs/plans/`, `docs/backlog/`, status checkboxes, new plan files): commit **directly on `main`** — no feature branch or PR required.
+- **Other docs-only** (context, ADRs, dev-setup): also fine on `main`, or `docs/<topic>` if you prefer a short-lived branch.
 
 ## Do not (unless explicitly asked)
 
@@ -48,6 +49,7 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 | Area | Path |
 |------|------|
 | Plans | `docs/plans/` |
+| Backlog | `docs/backlog/` |
 | Context | `docs/context/` |
 | Pages | `src/app/**/page.tsx` |
 | Shared UI | `src/app/_components/` |
