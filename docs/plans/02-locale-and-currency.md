@@ -3,6 +3,7 @@
 **Status:** in progress  
 **Project:** ubuteco-react  
 **Backend:** [02-locale-and-currency.md](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
+**Branch:** `feature/locale-and-currency`  
 **Priority:** P1
 
 ---
