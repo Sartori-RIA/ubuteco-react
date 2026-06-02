@@ -5,12 +5,14 @@ import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {
+  canAccessOrganizations,
   canManageUsers,
   hasOrganization,
   isAdminOnlyPath,
   isKitchenAllowedPath,
   isKitchenStaff,
   isOperationalMutationPath,
+  isOrganizationPath,
   requiresOrganization,
 } from "@/app/_lib/auth-roles";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
@@ -55,6 +57,11 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     }
 
     if (user && isAdminOnlyPath(pathname) && !canManageUsers(user)) {
+      router.replace("/");
+      return;
+    }
+
+    if (user && isOrganizationPath(pathname) && !canAccessOrganizations(user)) {
       router.replace("/");
     }
   }, [ready, pathname, router, authStatus, canMutateOperationalData, user]);

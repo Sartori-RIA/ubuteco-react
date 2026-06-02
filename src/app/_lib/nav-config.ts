@@ -15,7 +15,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type {TranslationKey} from "@/app/_lib/i18n";
 import {User} from "@/app/_types";
-import {canAccessKitchen, canManageUsers, isKitchenStaff, isSuperAdmin} from "@/app/_lib/auth-roles";
+import {
+  canAccessKitchen,
+  canAccessOrganizations,
+  canManageUsers,
+  isKitchenStaff,
+  isSuperAdmin,
+} from "@/app/_lib/auth-roles";
 
 export type NavItem = {
   labelKey: TranslationKey;
@@ -24,6 +30,7 @@ export type NavItem = {
   kitchen?: boolean;
   superAdminOnly?: boolean;
   adminOnly?: boolean;
+  organizationAccess?: boolean;
 };
 
 export type NavGroup = {
@@ -58,13 +65,8 @@ export const NAV_GROUPS: NavGroup[] = [
     labelKey: "nav.groups.administration",
     items: [
       {labelKey: "nav.users", icon: faUsers, link: "/users", adminOnly: true},
+      {labelKey: "nav.organizations", icon: faBuilding, link: "/organizations", organizationAccess: true},
       {labelKey: "nav.settings", icon: faGear, link: "/settings"},
-    ],
-  },
-  {
-    labelKey: "nav.groups.platform",
-    items: [
-      {labelKey: "nav.organizations", icon: faBuilding, link: "/organizations", superAdminOnly: true},
     ],
   },
 ];
@@ -72,6 +74,7 @@ export const NAV_GROUPS: NavGroup[] = [
 function isItemVisible(item: NavItem, user: User | null | undefined): boolean {
   if (item.superAdminOnly && !isSuperAdmin(user)) return false;
   if (item.adminOnly && !canManageUsers(user)) return false;
+  if (item.organizationAccess && !canAccessOrganizations(user)) return false;
   if (item.kitchen && !canAccessKitchen(user)) return false;
   return true;
 }

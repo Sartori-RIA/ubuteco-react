@@ -28,4 +28,19 @@ describe("organizationsService.update", () => {
     });
     expect(result).toEqual(updated);
   });
+
+  it("PATCHes multipart profile updates", async () => {
+    const formData = new FormData();
+    formData.set("name", "Bar");
+    const updated = {id: 42, name: "Bar"};
+    vi.mocked(apiFetch).mockResolvedValue(updated);
+
+    const result = await organizationsService.updateForm(42, formData);
+
+    expect(apiFetch).toHaveBeenCalledWith("v1/organizations/42", {
+      body: formData,
+      method: "PATCH",
+    });
+    expect(result).toEqual(updated);
+  });
 });

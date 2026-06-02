@@ -7,7 +7,7 @@ import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
   title: string,
-  newUrl: string
+  newUrl?: string
   searchValue: string
   showAdd?: boolean
   onSearch?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -25,7 +25,7 @@ export function Toolbar({title, onSearch, newUrl, searchValue, showAdd = true}: 
                  placeholder={t("common.search")}
                  value={searchValue}
       />
-      {showAdd && <AddButton url={newUrl}/>}
+      {showAdd && newUrl ? <AddButton url={newUrl}/> : null}
     </div>
   )
 }
