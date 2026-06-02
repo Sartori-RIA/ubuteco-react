@@ -7,10 +7,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
+  const t = useTranslations();
 
   const beer = useSelector((state: RootState) => state.beers.beers.find((beer) => beer.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.beers);
@@ -22,16 +24,16 @@ export default function Page() {
   }, [dispatch, id])
 
   if (loading) return <Loading/>;
-  if (beer === undefined) return <h1>Not Found</h1>
+  if (beer === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <Card title={beer.name}>
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-2">
         <p>
-          <strong>Style</strong>: {beer.beer_style?.name} <br/>
-          <strong>Maker</strong>: {beer.maker?.name} <br/>
-          <strong>Quantity in Stock</strong>: {beer.quantity_stock} <br/>
-          <strong>ABV</strong>: {beer.abv}&nbsp;<strong>IBU</strong>: {beer.ibu}
+          <strong>{t("common.style")}</strong>: {beer.beer_style?.name} <br/>
+          <strong>{t("common.maker")}</strong>: {beer.maker?.name} <br/>
+          <strong>{t("catalog.quantityInStock")}</strong>: {beer.quantity_stock} <br/>
+          <strong>{t("common.abv")}</strong>: {beer.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {beer.ibu}
           <br/><br/>
           {beer.description}
         </p>
