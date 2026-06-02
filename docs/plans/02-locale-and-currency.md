@@ -1,6 +1,6 @@
 # Plan: Organization locale & currency (frontend)
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [02-locale-and-currency.md](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
 **Branch:** `feature/locale-and-currency`  
@@ -27,7 +27,7 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 - [x] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
 - [x] `formatDate(date, options?)` using org `timezone` (via `Intl`)
 - [x] Orders pages use `useMoneyFormat()` for dates and money display
-- [ ] Kitchen and catalog pages (incremental)
+- [x] Kitchen and catalog pages use `useMoneyFormat()` for prices and dates
 
 ---
 
@@ -47,16 +47,16 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 - [x] Lightweight catalog in `src/app/_lib/i18n/` keyed to org `locale` (no `next-intl` — avoids App Router middleware/routing churn)
 - [x] `useTranslations()` hook reads locale from `useOrganizationSettings()`
 - [x] Orders module strings in `en` + `pt-BR` (list, detail, items table, add panel, toasts, confirms)
-- [x] Full-app i18n pass (settings, auth, catalog, kitchen, forms, placeholders) — incremental; form field labels and detail pages remain English for now
+- [x] Full-app i18n (settings, auth, catalog, kitchen, forms, detail pages)
 
-**Note on sub-plans:** keep phases inside this plan while work stays one branch/PR. Create a sub-plan (or new numbered plan) only when a phase becomes its own epic — e.g. `next-intl` migration across all routes, or kitchen i18n with live cable labels.
+**Note on sub-plans:** keep phases inside this plan while work stays one branch/PR. Create a sub-plan (or new numbered plan) only when a phase becomes its own epic — e.g. `next-intl` migration across all routes.
 
 ---
 
 ## Phase 5 — Tests
 
-- [ ] Unit tests for format helpers
-- [ ] Settings form validation + successful PATCH mock
+- [x] Unit tests for format helpers (`src/app/_lib/format.test.ts`)
+- [x] Settings PATCH mock (`src/app/_services/organizations.service.test.ts`)
 
 ---
 
