@@ -1,9 +1,9 @@
 # Plan: App shell & navigation (frontend)
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** —  
-**Branch:** `feature/app-shell-navigation`  
+**Branch:** `feature/app-shell-navigation` (merged — PR #19)  
 **Priority:** P1  
 **Backlog:** [001-sidebar-nav-overflow](../backlog/001-sidebar-nav-overflow.md)
 
@@ -34,8 +34,8 @@ Minimal diff; unblocks users immediately.
 - [x] Restructure aside: `flex flex-col h-full` with three zones — **header** (shrink-0), **nav** (`flex-1 min-h-0 overflow-y-auto`), **footer** (shrink-0, Sign out).
 - [x] Reduce nav item density: `py-2` (or `py-2.5`), `rounded-lg`, slightly smaller gap — match header/toolbar visual weight.
 - [x] Compact header: `p-4` instead of `p-6`; optional single-line subtitle with truncate.
-- [ ] Verify at 100% zoom, viewport height **768px**: Dashboard through Sign out all reachable via scroll.
-- [ ] Manual check: kitchen-only user, org admin, super-admin.
+- [x] Verify at 100% zoom, viewport height **768px**: Dashboard through Sign out all reachable via scroll.
+- [x] Manual check: kitchen-only user, org admin, super-admin.
 
 **Files:** `src/app/_components/SidebarLayout.tsx`
 
@@ -74,7 +74,7 @@ Nice-to-have for smaller laptop screens; not required to close backlog 001.
 
 ---
 
-## Phase 4 — Polish & consistency
+## Phase 4 — Polish & consistency (optional follow-up)
 
 - [ ] Align Settings entry: sidebar link + header avatar both go to `/settings` — keep both or demote sidebar Settings to group footer only (decide in PR; prefer keeping in Administration group).
 - [ ] Dark mode: verify group labels and scroll shadow at bottom of nav (`mask` or subtle gradient) if needed.
@@ -93,10 +93,10 @@ Nice-to-have for smaller laptop screens; not required to close backlog 001.
 
 ## Definition of done
 
-- [ ] Phase 1 merged — no zoom required for full nav on 768px-tall **desktop** viewport.
-- [ ] Phase 2 merged — grouped nav, roles respected.
-- [ ] Backlog [001](../backlog/001-sidebar-nav-overflow.md) marked `done`.
-- [ ] No regression for kitchen staff or super-admin banner.
+- [x] Phase 1 merged — no zoom required for full nav on 768px-tall **desktop** viewport.
+- [x] Phase 2 merged — grouped nav, roles respected.
+- [x] Backlog [001](../backlog/001-sidebar-nav-overflow.md) marked `done`.
+- [x] No regression for kitchen staff or super-admin banner.
 
 Phase 3 (collapsed rail) is optional; not part of definition of done unless explicitly requested.
 
@@ -105,6 +105,7 @@ Phase 3 (collapsed rail) is optional; not part of definition of done unless expl
 ## References
 
 - `src/app/_components/SidebarLayout.tsx`
+- `src/app/_lib/nav-config.ts`
 - `src/app/_hooks/useAuthCapabilities.ts`
 - `src/app/_lib/auth-roles.ts`
 - `src/app/_lib/page-titles.ts` (header titles stay in sync with routes)

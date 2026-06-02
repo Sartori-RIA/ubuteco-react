@@ -1,6 +1,6 @@
 # Plan: Appearance — dark mode (user preference)
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react (primary) + ubuteco_api (legacy removal)  
 **Priority:** P2  
 **Estimated effort:** 0.5 sprint
@@ -46,15 +46,13 @@ Org branding stays via **logo + name** on Organizations UI (plan 06), not sideba
 
 ---
 
-## Phase 3 — Shell styling
+## Phase 3 — Shell styling (core done; incremental polish optional)
 
 - [x] Sidebar, header, Card, Buttons, Inputs, AuthShell
 - [ ] Toolbar, Product lists, kitchen board (incremental as pages are touched)
 - [ ] Audit remaining hardcoded `bg-white` / `text-gray-*` in app routes
 
----
-
-## Phase 4 — Tests & docs
+## Phase 4 — Tests & docs (optional follow-up)
 
 - [ ] Unit: `resolveDarkMode`, `readStoredAppearance`
 - [ ] Optional E2E: toggle in settings persists after reload
@@ -67,7 +65,13 @@ Org branding stays via **logo + name** on Organizations UI (plan 06), not sideba
 - [x] No `themes` API or DB table
 - [x] User can pick Light / Dark / System in Settings
 - [x] App shell readable in both modes
-- [ ] No references to org theme in active frontend types
+- [x] No references to org theme in active frontend types
+
+---
+
+## Follow-up (not blocking)
+
+Phase 3 incremental page audits and Phase 4 unit/E2E tests can be picked up in backlog or when touching those pages.
 
 ---
 

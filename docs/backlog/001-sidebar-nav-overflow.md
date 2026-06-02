@@ -1,10 +1,10 @@
 # Sidebar navigation overflow
 
-**Status:** open (tracked in plan)  
+**Status:** done  
 **Priority:** P1  
 **Area:** navigation / app shell  
 **Plan:** [13-app-shell-navigation](../plans/13-app-shell-navigation.md)  
-**Branch:** `feature/app-shell-navigation`
+**Branch:** `feature/app-shell-navigation` (merged — PR #19)
 
 ## Problem
 
@@ -24,8 +24,11 @@ The left sidebar lists **15+ flat menu items** with generous padding. On typical
 - Clear grouping so operators find Orders/Kitchen vs catalog admin vs platform admin.
 - No loss of role-based visibility (kitchen staff, super-admin read-only banner).
 
+## Resolution
+
+Shipped in PR #19: scrollable nav region (`flex-1 min-h-0 overflow-y-auto`), compact density, grouped menu via `nav-config.ts`, role filters unchanged.
+
 ## Notes
 
 - Primary file: `src/app/_components/SidebarLayout.tsx`
-- Do **not** fold into [09-frontend-performance](../plans/09-frontend-performance.md) — that plan is metrics/bundle/render, not IA/layout.
-- Promoted to plan 13 because the fix is IA + layout + optional collapsed mode, not a one-line CSS patch.
+- Optional follow-up: collapsed sidebar rail (plan 13 Phase 3).

@@ -1,6 +1,6 @@
 # Plan: Multi-tenant (frontend)
 
-**Status:** in progress (Phase 2 started)  
+**Status:** in progress (Phases 1–2 done; Phases 3–4 pending)  
 **Project:** ubuteco-react  
 **Backend:** [01-multi-tenant.md](../../../ubuteco_api/docs/plans/01-multi-tenant.md)  
 **Priority:** P0 (after / in parallel with API Phase 1–2)

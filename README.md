@@ -1,48 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ubuteco-react
 
+Staff UI for **uButeco** — orders, kitchen queue, catalog, and organization settings. Built with **Next.js** (App Router) and **Redux Toolkit**.
 
-## About the project
+The previous Angular app ([ubuteco_spa](https://github.com/Sartori-RIA/ubuteco_spa)) is **abandoned**. New features and fixes belong here only.
 
-**ubuteco-react** is the only active frontend for uButeco (staff UI: orders, kitchen, catalog, settings).
+## Architecture
 
-The previous Angular app ([ubuteco_spa](https://github.com/Sartori-RIA/ubuteco_spa)) is **abandoned**. There is no plan to migrate or achieve feature parity with it — a full rewrite would not be worth the effort. New features and fixes belong here only.
+Business rules live in **[ubuteco_api](https://github.com/Sartori-RIA/ubuteco_api)**. This app handles auth, routing, formatting, and UX.
 
-**Improvement plans (frontend):** [docs/plans/README.md](docs/plans/README.md) — organizations, users, settings, testing, performance, and more.
-
-**AI / contributors:** [AGENTS.md](AGENTS.md) · [docs/context/](docs/context/) · [docs/dev-setup.md](docs/dev-setup.md)
-
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+page.tsx → hooks / Redux thunks → _services/*.ts → api-fetch.ts → Rails API
+                ↓
+         AuthGuard / role helpers (client-side only)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Kitchen real-time updates: `useKitchenCable` → AnyCable WebSocket (`CABLE_URL`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 15+ (App Router) |
+| State | Redux Toolkit (`_store/features/*`) |
+| Styling | Tailwind CSS + CSS variables (light/dark) |
+| i18n | Org locale via `useTranslations()` + message catalogs (`_lib/i18n/`) |
+| Money / dates | Org currency & timezone via `useMoneyFormat()` / `_lib/format.ts` |
+| API | JWT in `Authorization` header; `apiFetch` wrapper |
 
-## Learn More
+### Folder layout
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/
+  layout.tsx, providers.tsx   # Root shell, Redux, auth hydration
+  page.tsx                    # Dashboard (/)
+  login/, signup/, …          # Public routes
+  orders/, kitchen/, beers/…  # Feature routes (list / [id] / new / edit)
+  settings/                   # Profile, appearance, regional settings
+  _components/                # Shared UI (Buttons, Card, AuthGuard, SidebarLayout, …)
+  _hooks/                     # useAuthCapabilities, useMoneyFormat, useTranslations, …
+  _lib/                       # Pure helpers (auth-roles, format, i18n, appearance)
+  _services/                  # API clients + api-fetch.ts
+  _store/                     # Redux slices and thunks
+  _types/                     # TypeScript interfaces
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Naming pattern per resource: `beers/page.tsx` (list), `beers/[id]/page.tsx` (detail), `beers/new/page.tsx`, `_store/features/beers/`, etc.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Auth & multi-tenant UX
 
-## Deploy on Vercel
+- Session: Redux `authSlice` + JWT in `localStorage` (`_lib/auth-storage.ts`)
+- `AuthGuard` — unauthenticated → `/login`; org-scoped role without org → `/forbidden`
+- `useAuthCapabilities()` — kitchen-only routes, super-admin read-only catalog, operational mutations
+- Appearance (light / dark / system) is **user-level**; locale/currency/timezone are **org-level**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Full detail: [docs/context/architecture.md](docs/context/architecture.md) · [docs/context/frontend-map.md](docs/context/frontend-map.md)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Getting started
+
+See [docs/dev-setup.md](docs/dev-setup.md) for env vars, API URL, and ports.
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). API defaults to port 3001 (see dev-setup).
+
+```bash
+npm run build    # production build
+npm test         # vitest
+npm run lint     # eslint
+```
+
+## Docs
+
+| Doc | Purpose |
+|-----|---------|
+| [AGENTS.md](AGENTS.md) | Instructions for AI assistants |
+| [docs/plans/README.md](docs/plans/README.md) | Feature plans + status tracker |
+| [docs/backlog/](docs/backlog/) | Small bugs and UX fixes |
+| [docs/dev-setup.md](docs/dev-setup.md) | Local development |
+| [docs/context/](docs/context/) | Architecture deep-dive |
+
+## Improvement plans
+
+Tracked in [docs/plans/README.md](docs/plans/README.md) — locale, app shell, landing page, testing, dashboard, and more. One `feature/<slug>` branch per plan; plan doc updates go to `main`.
