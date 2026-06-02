@@ -32,3 +32,10 @@ export type DashboardSeriesParams = DashboardFetchParams & {
   grain?: string;
   metric?: string;
 };
+
+export type DashboardKitchen = {
+  open_dish_count: number;
+  avg_prep_seconds: number;
+  from: string;
+  to: string;
+};

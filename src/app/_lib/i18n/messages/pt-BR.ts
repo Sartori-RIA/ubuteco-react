@@ -443,6 +443,12 @@ const ptBR: MessageCatalog = {
       title: "Itens por tipo",
       empty: "Sem mix de itens neste período.",
     },
+    kitchen: {
+      title: "Cozinha",
+      openDishes: "Pratos abertos na fila",
+      avgPrep: "Tempo médio de preparo (período)",
+      hint: "O tempo de preparo vai da criação do item até pronto, para pratos concluídos no período selecionado.",
+    },
     platform: {
       title: "Plataforma",
       subtitle: "Ferramentas multi-organização para super admins.",

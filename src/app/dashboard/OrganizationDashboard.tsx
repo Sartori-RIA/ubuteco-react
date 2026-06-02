@@ -14,6 +14,7 @@ import {
   DashboardDateRange,
   DashboardKpiCards,
   ItemsByTypePanel,
+  KitchenPanel,
   RevenueChart,
 } from "@/app/dashboard/components";
 
@@ -21,7 +22,7 @@ function OrganizationDashboard() {
   const dispatch = useAppDispatch();
   const t = useTranslations();
   const {timezone} = useMoneyFormat();
-  const {summary, series, from, to, loading, errors} = useAppSelector((state: RootState) => state.dashboard);
+  const {summary, series, kitchen, from, to, loading, errors} = useAppSelector((state: RootState) => state.dashboard);
 
   useEffect(() => {
     dispatch(resetDateRange(timezone));
@@ -55,8 +56,9 @@ function OrganizationDashboard() {
         <>
           <DashboardKpiCards summary={summary}/>
           <div className="grid gap-6 xl:grid-cols-3">
-            <div className="xl:col-span-2">
+            <div className="xl:col-span-2 space-y-6">
               <RevenueChart series={series}/>
+              <KitchenPanel kitchen={kitchen}/>
             </div>
             <ItemsByTypePanel itemsByType={summary?.items_by_type}/>
           </div>

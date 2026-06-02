@@ -30,12 +30,26 @@ export const dashboardThunks = {
       }
     }
   ),
+  fetchKitchen: createAsyncThunk(
+    "dashboard/fetchKitchen",
+    async (params: DashboardFetchParams, {rejectWithValue}) => {
+      try {
+        return await dashboardService.fetchKitchen(params);
+      } catch (err) {
+        if (err instanceof ApiError) {
+          return rejectWithValue(err.data);
+        }
+        return rejectWithValue(["Unexpected error"]);
+      }
+    }
+  ),
   fetchAll: createAsyncThunk(
     "dashboard/fetchAll",
     async (params: DashboardFetchParams, {dispatch, rejectWithValue}) => {
       const results = await Promise.allSettled([
         dispatch(dashboardThunks.fetchSummary(params)).unwrap(),
         dispatch(dashboardThunks.fetchSeries(params)).unwrap(),
+        dispatch(dashboardThunks.fetchKitchen(params)).unwrap(),
       ]);
 
       const errors = results

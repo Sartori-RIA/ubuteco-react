@@ -417,6 +417,12 @@ export type MessageCatalog = {
       title: string;
       empty: string;
     };
+    kitchen: {
+      title: string;
+      openDishes: string;
+      avgPrep: string;
+      hint: string;
+    };
     platform: {
       title: string;
       subtitle: string;

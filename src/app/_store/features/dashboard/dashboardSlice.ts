@@ -1,4 +1,4 @@
-import {DashboardSeries, DashboardSummary} from "@/app/_types";
+import {DashboardKitchen, DashboardSeries, DashboardSummary} from "@/app/_types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {defaultDashboardRange} from "@/app/_lib/dashboard-date-range";
 import {DEFAULT_TIMEZONE} from "@/app/_lib/organization-settings";
@@ -7,6 +7,7 @@ import {dashboardThunks} from "./dashboardThunks";
 type DashboardState = {
   summary: DashboardSummary | null;
   series: DashboardSeries | null;
+  kitchen: DashboardKitchen | null;
   from: string;
   to: string;
   loading: boolean;
@@ -18,6 +19,7 @@ const initialRange = defaultDashboardRange(DEFAULT_TIMEZONE);
 const initialState: DashboardState = {
   summary: null,
   series: null,
+  kitchen: null,
   from: initialRange.from,
   to: initialRange.to,
   loading: false,
@@ -60,6 +62,11 @@ const dashboardSlice = createSlice({
     builder.addAsyncThunk(dashboardThunks.fetchSeries, {
       fulfilled: (state, action) => {
         state.series = action.payload;
+      },
+    });
+    builder.addAsyncThunk(dashboardThunks.fetchKitchen, {
+      fulfilled: (state, action) => {
+        state.kitchen = action.payload;
       },
     });
   },

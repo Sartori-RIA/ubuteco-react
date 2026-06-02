@@ -28,4 +28,12 @@ describe("dashboardService", () => {
       "v1/dashboard/series?from=2026-05-01&to=2026-05-07&grain=day&metric=revenue"
     );
   });
+
+  it("fetches kitchen metrics", async () => {
+    vi.mocked(apiFetch).mockResolvedValue({open_dish_count: 2});
+
+    await dashboardService.fetchKitchen({from: "2026-05-01", to: "2026-05-07"});
+
+    expect(apiFetch).toHaveBeenCalledWith("v1/dashboard/kitchen?from=2026-05-01&to=2026-05-07");
+  });
 });

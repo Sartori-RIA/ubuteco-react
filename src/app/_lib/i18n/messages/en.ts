@@ -441,6 +441,12 @@ const en: MessageCatalog = {
       title: "Items by type",
       empty: "No item mix data for this range.",
     },
+    kitchen: {
+      title: "Kitchen",
+      openDishes: "Open dishes in queue",
+      avgPrep: "Avg prep time (range)",
+      hint: "Prep time is measured from item creation until ready, for dishes completed in the selected range.",
+    },
     platform: {
       title: "Platform",
       subtitle: "Cross-organization tools for super admins.",

@@ -1,4 +1,4 @@
-import {DashboardFetchParams, DashboardSeries, DashboardSeriesParams, DashboardSummary} from "@/app/_types";
+import {DashboardFetchParams, DashboardKitchen, DashboardSeries, DashboardSeriesParams, DashboardSummary} from "@/app/_types";
 import {apiFetch} from "@/app/_services/api-fetch";
 
 function buildQuery(params: Record<string, string | undefined>): string {
@@ -25,7 +25,13 @@ async function fetchSeries(params: DashboardSeriesParams): Promise<DashboardSeri
   return await apiFetch<DashboardSeries>(`v1/dashboard/series${query}`);
 }
 
+async function fetchKitchen(params: DashboardFetchParams): Promise<DashboardKitchen> {
+  const query = buildQuery({from: params.from, to: params.to});
+  return await apiFetch<DashboardKitchen>(`v1/dashboard/kitchen${query}`);
+}
+
 export const dashboardService = {
   fetchSummary,
   fetchSeries,
+  fetchKitchen,
 };
