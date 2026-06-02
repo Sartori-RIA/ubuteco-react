@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {OrderItem, OrderItemStatus} from "@/app/_types";
 import {Buttons} from "@/app/_components";
 import {Select} from "@/app/_components/Selects";
@@ -12,6 +12,7 @@ import {
   orderItemUnitPrice,
 } from "@/app/orders/_lib/order-display";
 import {useDebounce} from "@/app/_hooks/useDebounce";
+import {shouldPersistDebouncedQuantity} from "@/app/orders/_lib/quantity-input";
 import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -46,15 +47,17 @@ function QuantityInput({
   pending: boolean;
   onQuantityChange: (itemId: number, quantity: number) => void;
 }) {
-  const [localQty, setLocalQty] = useState(item.quantity ?? 1);
+  const serverQty = item.quantity ?? 1;
+  const [localQty, setLocalQty] = useState(serverQty);
   const debouncedQty = useDebounce(localQty, 400);
+  const userEditedRef = useRef(false);
 
   useEffect(() => {
-    if (readOnly || pending) return;
-    const serverQty = item.quantity ?? 1;
-    if (debouncedQty < 1 || debouncedQty === serverQty) return;
+    if (readOnly || pending || !userEditedRef.current) return;
+    if (!shouldPersistDebouncedQuantity(localQty, debouncedQty, serverQty)) return;
+    userEditedRef.current = false;
     onQuantityChange(Number(item.id), debouncedQty);
-  }, [debouncedQty, readOnly, pending, item.id, item.quantity, onQuantityChange]);
+  }, [debouncedQty, localQty, readOnly, pending, item.id, serverQty, onQuantityChange]);
 
   if (readOnly) {
     return <span className="text-foreground">{item.quantity}</span>;
@@ -67,7 +70,10 @@ function QuantityInput({
       disabled={pending}
       className="w-16 rounded-lg border border-border bg-surface px-2 py-1 text-right text-foreground disabled:opacity-50"
       value={localQty}
-      onChange={(e) => setLocalQty(Number(e.target.value))}
+      onChange={(event) => {
+        userEditedRef.current = true;
+        setLocalQty(Number(event.target.value));
+      }}
     />
   );
 }
@@ -132,7 +138,7 @@ export function OrderItemsTable({
                 <td className="px-4 py-3 text-right text-muted">{orderItemUnitPrice(item)}</td>
                 <td className="px-4 py-3 text-right">
                   <QuantityInput
-                    key={item.id}
+                    key={`${item.id}-${item.quantity ?? 0}`}
                     item={item}
                     readOnly={readOnly}
                     pending={pending}

@@ -42,6 +42,12 @@ const ptBR: MessageCatalog = {
     users: "Usuários",
     settings: "Configurações",
     platformReadOnly: "Plataforma — catálogo somente leitura",
+    groups: {
+      operations: "Operações",
+      menuCatalog: "Cardápio e catálogo",
+      administration: "Administração",
+      platform: "Plataforma",
+    },
   },
   auth: {
     signInTitle: "Ubuteco",
@@ -313,6 +319,8 @@ const ptBR: MessageCatalog = {
       quantity: "Quantidade",
       loading: "Carregando…",
       select: "Selecione…",
+      searchPlaceholder: "Digite para buscar produtos…",
+      noResults: "Nenhum produto corresponde à busca.",
       outOfStock: " (sem estoque)",
       stock: " · estoque: {count}",
       selected: "Selecionado: {name} por {price}{stock}",

@@ -1,23 +1,18 @@
 "use client";
 
-import {useEffect, useMemo, useState} from "react";
-import {Beer} from "@/app/_types/beer";
-import {Dish} from "@/app/_types/dish";
-import {Drink} from "@/app/_types/drink";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {ItemOrderSend, OrderItem, OrderItemType} from "@/app/_types/order";
-import {Wine} from "@/app/_types/wine";
-import {Buttons, Label, Select} from "@/app/_components";
+import {Buttons, Label, SearchableSelect} from "@/app/_components";
 import {Input} from "@/app/_components/Inputs";
 import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useTranslations} from "@/app/_hooks/useTranslations";
-import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
-import {RootState} from "@/app/_store";
-import {beerThunks} from "@/app/_store/features/beers/beersThunks";
-import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
-import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
-import {winesThunks} from "@/app/_store/features/wines/winesThunks";
-
-type CatalogProduct = Beer | Drink | Dish | Wine;
+import {useAppSelector} from "@/app/_store/hooks";
+import {findMatchingOrderLine} from "@/app/orders/_lib/order-items";
+import {mergeCatalogResults} from "@/app/orders/_lib/merge-catalog-results";
+import {
+  OrderCatalogProduct,
+  searchOrderCatalog,
+} from "@/app/orders/_lib/search-order-catalog";
 
 const TYPES: OrderItemType[] = ["Beer", "Drink", "Dish", "Wine"];
 
@@ -27,7 +22,7 @@ type Props = {
   onAdd: (payload: ItemOrderSend) => void;
 };
 
-function stockOf(product: CatalogProduct): number | null {
+function stockOf(product: OrderCatalogProduct): number | null {
   if ("quantity_stock" in product && product.quantity_stock != null) {
     return product.quantity_stock;
   }
@@ -37,59 +32,67 @@ function stockOf(product: CatalogProduct): number | null {
 export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
   const t = useTranslations();
   const {displayPrice} = useMoneyFormat();
-  const dispatch = useAppDispatch();
-  const {beers, loading: beersLoading} = useAppSelector((state: RootState) => state.beers);
-  const {drinks, loading: drinksLoading} = useAppSelector((state: RootState) => state.drinks);
-  const {dishes, loading: dishesLoading} = useAppSelector((state: RootState) => state.dishes);
-  const {wines, loading: winesLoading} = useAppSelector((state: RootState) => state.wines);
+  const storeBeers = useAppSelector((state) => state.beers.beers);
+  const storeDrinks = useAppSelector((state) => state.drinks.drinks);
+  const storeDishes = useAppSelector((state) => state.dishes.dishes);
+  const storeWines = useAppSelector((state) => state.wines.wines);
 
   const [itemType, setItemType] = useState<OrderItemType>("Beer");
   const [productId, setProductId] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState<OrderCatalogProduct | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [catalog, setCatalog] = useState<OrderCatalogProduct[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(false);
+  const [productSearch, setProductSearch] = useState("");
+
+  const storeCatalog = useMemo(() => {
+    switch (itemType) {
+      case "Beer":
+        return storeBeers;
+      case "Drink":
+        return storeDrinks;
+      case "Dish":
+        return storeDishes;
+      case "Wine":
+        return storeWines;
+    }
+  }, [itemType, storeBeers, storeDrinks, storeDishes, storeWines]);
+
+  const loadCatalog = useCallback(
+    async (type: OrderItemType, query: string, supplement: OrderCatalogProduct[]) => {
+      setCatalogLoading(true);
+      try {
+        const data = await searchOrderCatalog(type, query);
+        setCatalog(mergeCatalogResults(data, supplement, query));
+      } catch {
+        setCatalog(mergeCatalogResults([], supplement, query));
+      } finally {
+        setCatalogLoading(false);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    switch (itemType) {
-      case "Beer":
-        dispatch(beerThunks.fetchAll({}));
-        break;
-      case "Drink":
-        dispatch(drinkThunks.fetchAll({}));
-        break;
-      case "Dish":
-        dispatch(dishesThunks.fetchAll({}));
-        break;
-      case "Wine":
-        dispatch(winesThunks.fetchAll({}));
-        break;
-    }
-  }, [itemType, dispatch]);
+    setProductId("");
+    setSelectedProduct(null);
+    setQuantity(1);
+    setProductSearch("");
+  }, [itemType]);
 
-  const catalog = useMemo(() => {
-    switch (itemType) {
-      case "Beer":
-        return beers;
-      case "Drink":
-        return drinks;
-      case "Dish":
-        return dishes;
-      case "Wine":
-        return wines;
-      default:
-        return [];
-    }
-  }, [itemType, beers, drinks, dishes, wines]);
+  useEffect(() => {
+    const delay = productSearch.trim() ? 300 : 0;
+    const handle = window.setTimeout(() => {
+      void loadCatalog(itemType, productSearch, storeCatalog);
+    }, delay);
+    return () => window.clearTimeout(handle);
+  }, [itemType, productSearch, storeCatalog, loadCatalog]);
 
-  const catalogLoading =
-    (itemType === "Beer" && beersLoading) ||
-    (itemType === "Drink" && drinksLoading) ||
-    (itemType === "Dish" && dishesLoading) ||
-    (itemType === "Wine" && winesLoading);
-
-  const selected = catalog.find((p) => String(p.id) === productId);
+  const selected = selectedProduct ?? catalog.find((p) => String(p.id) === productId) ?? null;
   const selectedStock = selected ? stockOf(selected) : null;
-  const existingLine = orderItems.find(
-    (line) => line.item_type === itemType && line.item_id === Number(productId)
-  );
+  const existingLine = productId
+    ? findMatchingOrderLine(orderItems, {item_type: itemType, item_id: Number(productId)})
+    : undefined;
   const maxQty =
     selectedStock != null
       ? existingLine
@@ -99,10 +102,25 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
   const overStock = maxQty != null && quantity > maxQty;
   const outOfStock = maxQty != null && maxQty <= 0;
 
-  const stockLabel = (product: CatalogProduct): string => {
+  const stockLabel = (product: OrderCatalogProduct): string => {
     const stock = stockOf(product);
     if (stock == null) return "";
     return t("orders.addItem.stock", {count: stock});
+  };
+
+  const formatProductLabel = (product: OrderCatalogProduct): string => {
+    const stock = stockOf(product);
+    const outOfStockSuffix = stock != null && stock <= 0 ? t("orders.addItem.outOfStock") : "";
+    return `${product.name} — ${displayPrice(product)}${stockLabel(product)}${outOfStockSuffix}`;
+  };
+
+  const handleProductChange = (id: string) => {
+    setProductId(id);
+    const product =
+      catalog.find((item) => String(item.id) === id) ??
+      storeCatalog.find((item) => String(item.id) === id) ??
+      null;
+    setSelectedProduct(product);
   };
 
   const handleAdd = () => {
@@ -113,8 +131,32 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
       quantity,
     });
     setProductId("");
+    setSelectedProduct(null);
     setQuantity(1);
+    setProductSearch("");
+    void loadCatalog(itemType, "", storeCatalog);
   };
+
+  const catalogForOptions = useMemo(() => {
+    if (!selected) return catalog;
+    if (catalog.some((product) => product.id === selected.id)) return catalog;
+    return [selected, ...catalog];
+  }, [catalog, selected]);
+
+  const productOptions = useMemo(
+    () =>
+      catalogForOptions.map((product) => {
+        const stock = stockOf(product);
+        const isOutOfStock = stock != null && stock <= 0;
+        return {
+          value: String(product.id),
+          disabled: isOutOfStock,
+          label: formatProductLabel(product),
+          searchText: product.name,
+        };
+      }),
+    [catalogForOptions, displayPrice, t]
+  );
 
   const pillClass = (active: boolean) =>
     `rounded-full border px-3 py-1 text-sm font-medium transition ${
@@ -143,25 +185,22 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
           <Label label={t("orders.addItem.product")}>
-            <Select
+            <SearchableSelect
+              key={itemType}
               name="order_item_product"
               value={productId}
-              onChange={setProductId}
-              disabled={catalogLoading}
-            >
-              <option value="">{catalogLoading ? t("orders.addItem.loading") : t("orders.addItem.select")}</option>
-              {catalog.map((product) => {
-                const stock = stockOf(product);
-                const disabled = stock != null && stock <= 0;
-                return (
-                  <option key={product.id} value={product.id} disabled={disabled}>
-                    {product.name} — {displayPrice(product)}
-                    {stockLabel(product)}
-                    {disabled ? t("orders.addItem.outOfStock") : ""}
-                  </option>
-                );
-              })}
-            </Select>
+              onChange={handleProductChange}
+              onQueryChange={setProductSearch}
+              filterLocally={false}
+              loading={catalogLoading}
+              loadingMessage={t("orders.addItem.loading")}
+              selectedLabel={selected ? formatProductLabel(selected) : undefined}
+              disabled={false}
+              placeholder={t("orders.addItem.select")}
+              searchPlaceholder={t("orders.addItem.searchPlaceholder")}
+              emptyMessage={t("orders.addItem.noResults")}
+              options={productOptions}
+            />
           </Label>
         </div>
 
@@ -192,7 +231,13 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
         </p>
       )}
 
-      {overStock && (
+      {outOfStock && (
+        <p className="text-xs text-red-600 dark:text-red-400">
+          {t("orders.addItem.notEnoughStock", {max: 0})}
+        </p>
+      )}
+
+      {overStock && !outOfStock && (
         <p className="text-xs text-red-600 dark:text-red-400">
           {t("orders.addItem.notEnoughStock", {max: Math.max(0, maxQty ?? 0)})}
         </p>
