@@ -25,6 +25,9 @@ export type MessageCatalog = {
     maker: string;
     abv: string;
     ibu: string;
+    notFound: string;
+    price: string;
+    stock: string;
   };
   nav: {
     dashboard: string;
@@ -170,6 +173,10 @@ export type MessageCatalog = {
     };
     noItems: string;
     columnItems: string;
+    ticketQty: string;
+    ticketOrder: string;
+    ticketTable: string;
+    defaultDishName: string;
   };
   catalog: {
     tablesPlaceholder: string;
@@ -177,6 +184,17 @@ export type MessageCatalog = {
     wineStylesPlaceholder: string;
     usersPlaceholder: string;
     organizationsPlaceholder: string;
+    validUntil: string;
+    ingredients: string;
+    quantityInStock: string;
+    grapes: string;
+    ripening: string;
+    vintageWine: string;
+    visual: string;
+    country: string;
+    editDish: string;
+    noIngredientsListed: string;
+    foodFallback: string;
   };
   forms: {
     newBeer: string;
@@ -203,6 +221,37 @@ export type MessageCatalog = {
     updateFoodSubmit: string;
     saveMaker: string;
     updateMakerSubmit: string;
+    fields: {
+      name: string;
+      description: string;
+      price: string;
+      stockQuantity: string;
+      image: string;
+      imagePreview: string;
+      flavor: string;
+      abv: string;
+      ibu: string;
+      grapes: string;
+      ripening: string;
+      vintageWine: string;
+      visual: string;
+      wineStyle: string;
+      beerStyle: string;
+      maker: string;
+      country: string;
+      logo: string;
+      validUntil: string;
+      food: string;
+      quantity: string;
+      selectStyle: string;
+      selectMaker: string;
+      selectFood: string;
+      ingredients: string;
+      addIngredient: string;
+      removeIngredient: string;
+      noIngredients: string;
+      noFoodsForIngredients: string;
+    };
   };
   forbidden: {
     title: string;
