@@ -7,6 +7,8 @@ import {
   ordersService,
   UpdateOrderPayload,
 } from "@/app/_services/orders.service";
+import {RootState} from "@/app/_store";
+import {findMatchingOrderLine} from "@/app/orders/_lib/order-items";
 
 const crud = createCrudThunks<Order>("orders", {paginated: true});
 
@@ -90,6 +92,36 @@ const addOrderItem = createAsyncThunk(
   }
 );
 
+const addOrIncrementOrderItem = createAsyncThunk(
+  "orders/addOrIncrementOrderItem",
+  async ({orderId, data}: {orderId: number; data: ItemOrderSend}, {getState, rejectWithValue}) => {
+    const orderItems = (getState() as RootState).orders.orderItems;
+    const existing = findMatchingOrderLine(orderItems, data);
+
+    try {
+      if (existing?.id) {
+        const item = await ordersService.updateItem(orderId, Number(existing.id), {
+          quantity: (existing.quantity ?? 0) + data.quantity,
+        });
+        const order = await ordersService.show(orderId);
+        return {mode: "updated" as const, item, order};
+      }
+
+      const item = await ordersService.addItem(orderId, data);
+      const [order, items] = await Promise.all([
+        ordersService.show(orderId),
+        ordersService.listItems(orderId),
+      ]);
+      return {mode: "added" as const, item, order, items};
+    } catch (err) {
+      if (err instanceof ApiError) {
+        return rejectWithValue(err.data);
+      }
+      return rejectWithValue(["Could not add item"]);
+    }
+  }
+);
+
 const updateOrderItem = createAsyncThunk(
   "orders/updateOrderItem",
   async (
@@ -149,6 +181,7 @@ export const ordersThunks = {
   createOrder,
   updateOrder,
   addOrderItem,
+  addOrIncrementOrderItem,
   updateOrderItem,
   removeOrderItem,
   refreshOrder,

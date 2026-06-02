@@ -318,6 +318,8 @@ const en: MessageCatalog = {
       quantity: "Quantity",
       loading: "Loading…",
       select: "Select…",
+      searchPlaceholder: "Type to search products…",
+      noResults: "No products match your search.",
       outOfStock: " (out of stock)",
       stock: " · stock: {count}",
       selected: "Selected: {name} at {price}{stock}",

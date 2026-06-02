@@ -319,6 +319,8 @@ const ptBR: MessageCatalog = {
       quantity: "Quantidade",
       loading: "Carregando…",
       select: "Selecione…",
+      searchPlaceholder: "Digite para buscar produtos…",
+      noResults: "Nenhum produto corresponde à busca.",
       outOfStock: " (sem estoque)",
       stock: " · estoque: {count}",
       selected: "Selecionado: {name} por {price}{stock}",

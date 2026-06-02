@@ -24,6 +24,7 @@ Backend work: [`ubuteco_api/docs/plans`](../../../ubuteco_api/docs/plans/README.
 | 11 | [Inventory UI](./11-inventory-ui.md) | P2 | [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md) |
 | 12 | [Appearance — dark mode](./12-appearance-dark-mode.md) | P2 | — |
 | 13 | [App shell & navigation](./13-app-shell-navigation.md) | P1 | — |
+| 14 | [Marketing landing page](./14-landing-page.md) | P2 | — |
 | 3 | [Subscription plans](./03-subscription-plans.md) | P2 | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).

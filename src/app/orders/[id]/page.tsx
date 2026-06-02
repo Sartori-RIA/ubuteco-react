@@ -75,27 +75,13 @@ export default function OrderPage() {
   );
 
   const handleAddItem = async (payload: ItemOrderSend) => {
-    const existing = orderItems.find(
-      (line) => line.item_type === payload.item_type && line.item_id === payload.item_id
-    );
+    const result = await dispatch(ordersThunks.addOrIncrementOrderItem({orderId, data: payload}));
 
-    if (existing?.id) {
-      const result = await dispatch(
-        ordersThunks.updateOrderItem({
-          orderId,
-          itemId: Number(existing.id),
-          quantity: (existing.quantity ?? 0) + payload.quantity,
-        })
+    if (ordersThunks.addOrIncrementOrderItem.fulfilled.match(result)) {
+      showToast(
+        t(result.payload.mode === "updated" ? "orders.toast.itemQtyUpdated" : "orders.toast.itemAdded"),
+        "success"
       );
-      if (ordersThunks.updateOrderItem.fulfilled.match(result)) {
-        showToast(t("orders.toast.itemQtyUpdated"), "success");
-      }
-      return;
-    }
-
-    const result = await dispatch(ordersThunks.addOrderItem({orderId, data: payload}));
-    if (ordersThunks.addOrderItem.fulfilled.match(result)) {
-      showToast(t("orders.toast.itemAdded"), "success");
     }
   };
 

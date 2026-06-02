@@ -1,5 +1,6 @@
 import {ApiMetaData, Order, OrderItem, OrderStatus, PaginatedResponse} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
+import {findMatchingOrderLine} from "@/app/orders/_lib/order-items";
 import {ordersThunks} from "./ordersThunks";
 
 interface OrdersState {
@@ -201,6 +202,41 @@ const ordersSlice = createSlice({
       },
       rejected: (state, action) => {
         state.addingItem = false;
+        state.errors = action.payload as string[];
+      },
+    });
+
+    builder.addAsyncThunk(ordersThunks.addOrIncrementOrderItem, {
+      pending: (state, action) => {
+        state.addingItem = true;
+        state.itemsRefreshRequestId = null;
+        state.errors = undefined;
+        const existing = findMatchingOrderLine(state.orderItems, action.meta.arg.data);
+        if (existing?.id) {
+          const itemId = Number(existing.id);
+          if (!state.pendingItemIds.includes(itemId)) {
+            state.pendingItemIds.push(itemId);
+          }
+        }
+      },
+      fulfilled: (state, action) => {
+        state.addingItem = false;
+        if (action.payload.mode === "updated") {
+          state.pendingItemIds = state.pendingItemIds.filter(
+            (id) => id !== Number(action.payload.item.id)
+          );
+          syncOrderItems(state, action.payload.order, undefined, {item: action.payload.item});
+        } else {
+          syncOrderItems(state, action.payload.order, action.payload.items);
+        }
+      },
+      rejected: (state, action) => {
+        state.addingItem = false;
+        const existing = findMatchingOrderLine(state.orderItems, action.meta.arg.data);
+        if (existing?.id) {
+          const itemId = Number(existing.id);
+          state.pendingItemIds = state.pendingItemIds.filter((id) => id !== itemId);
+        }
         state.errors = action.payload as string[];
       },
     });

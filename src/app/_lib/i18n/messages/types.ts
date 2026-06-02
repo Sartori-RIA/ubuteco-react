@@ -315,6 +315,8 @@ export type MessageCatalog = {
       quantity: string;
       loading: string;
       select: string;
+      searchPlaceholder: string;
+      noResults: string;
       outOfStock: string;
       stock: string;
       selected: string;
