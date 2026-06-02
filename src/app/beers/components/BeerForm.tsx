@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {beerStylesThunks} from "@/app/_store/features/beer_styles/beerStylesThunks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface BeerFormProps {
   defaultValues?: Partial<Beer>;
@@ -28,6 +29,7 @@ export function BeerForm({
   const beerStyles = useAppSelector<BeerStyle[]>((state: RootState) => state.beerStyles.beerStyles);
   const makers = useAppSelector<Maker[]>((state: RootState) => state.makers.makers);
   const dispatch = useAppDispatch();
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Beer>>({
     name: defaultValues?.name ?? "",
@@ -56,7 +58,7 @@ export function BeerForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Beer" : "New Beer"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateBeer") : t("forms.newBeer")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>

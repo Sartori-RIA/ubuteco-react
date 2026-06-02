@@ -6,6 +6,7 @@ import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
 import {toDateInputValue} from "@/app/_lib/format-date";
 import {priceFromCents} from "@/app/_lib/money";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface FoodFormProps {
   defaultValues?: Partial<Food>;
@@ -22,6 +23,7 @@ export function FoodForm({
                             loading = false,
                             submitLabel = "Save Food",
                           }: FoodFormProps) {
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(defaultValues?.image_url ?? null);
   const [form, setForm] = useState<Partial<Food>>({
     name: defaultValues?.name ?? "",
@@ -46,7 +48,7 @@ export function FoodForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Food" : "New Food"} className="rounded-2xl shadow-lg hover:translate-y-0">
+      <Card title={defaultValues?.id ? t("forms.updateFood") : t("forms.newFood")} className="rounded-2xl shadow-lg hover:translate-y-0">
         <form
           onSubmit={handleSubmit}
           encType="multipart/form-data"

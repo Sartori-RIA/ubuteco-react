@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface DrinkFormProps {
   defaultValues?: Partial<Drink>;
@@ -21,6 +22,7 @@ export function DrinkForm({
                             loading = false,
                             submitLabel = "Save Drink",
                           }: DrinkFormProps) {
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Drink>>({
     name: defaultValues?.name ?? "",
@@ -41,7 +43,7 @@ export function DrinkForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Drink" : "New Drink"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateDrink") : t("forms.newDrink")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>

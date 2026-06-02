@@ -9,6 +9,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {wineStylesThunks} from "@/app/_store/features/wine_styles/wineStylesThunks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface WineFormProps {
   defaultValues?: Partial<Wine>;
@@ -28,6 +29,7 @@ export function WineForm({
   const makers: Maker[] = useAppSelector((state: RootState) => state.makers.makers);
   const wineStyles: WineStyle[] = useAppSelector((state: RootState) => state.wineStyles.wineStyles);
   const dispatch = useAppDispatch();
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Wine>>({
     name: defaultValues?.name ?? "",
@@ -57,7 +59,7 @@ export function WineForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Wine" : "New Wine"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateWine") : t("forms.newWine")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>

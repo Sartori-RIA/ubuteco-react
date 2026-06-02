@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface MakerFormProps {
   defaultValues?: Partial<Maker>;
@@ -21,6 +22,7 @@ export function MakerForm({
                             loading = false,
                             submitLabel = "Save Maker",
                           }: MakerFormProps) {
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(defaultValues?.logo_url ?? null);
   const [form, setForm] = useState<Partial<Maker>>({
     name: defaultValues?.name ?? "",
@@ -38,7 +40,7 @@ export function MakerForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Maker" : "New Maker"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateMaker") : t("forms.newMaker")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
