@@ -47,7 +47,7 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 - [x] Lightweight catalog in `src/app/_lib/i18n/` keyed to org `locale` (no `next-intl` — avoids App Router middleware/routing churn)
 - [x] `useTranslations()` hook reads locale from `useOrganizationSettings()`
 - [x] Orders module strings in `en` + `pt-BR` (list, detail, items table, add panel, toasts, confirms)
-- [ ] Full-app i18n pass (settings, catalog, kitchen, …) — separate increment or plan 02 phase extension
+- [x] Full-app i18n pass (settings, auth, catalog, kitchen, forms, placeholders) — incremental; form field labels and detail pages remain English for now
 
 **Note on sub-plans:** keep phases inside this plan while work stays one branch/PR. Create a sub-plan (or new numbered plan) only when a phase becomes its own epic — e.g. `next-intl` migration across all routes, or kitchen i18n with live cable labels.
 
