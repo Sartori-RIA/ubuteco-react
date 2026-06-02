@@ -4,12 +4,14 @@ import {FormEvent, useState} from "react";
 import {useRouter} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
 import {Buttons, Input} from "@/app/_components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {requestPasswordReset} from "@/app/_store/features/auth/authThunks";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const t = useTranslations();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,18 +31,20 @@ export default function ForgotPasswordPage() {
       return;
     }
 
-    setError(typeof result.payload === "string" ? result.payload : "Could not send reset code");
+    setError(typeof result.payload === "string" ? result.payload : t("auth.sendResetFailed"));
   };
 
   return (
     <AuthShell
-      title="Forgot password"
-      subtitle={sent ? "Check your email for the reset code." : "We will email you a code to reset your password."}
-      footer={<AuthFooterLink href="/login">Back to sign in</AuthFooterLink>}
+      title={t("auth.forgotTitle")}
+      subtitle={sent ? t("auth.forgotSubtitleSent") : t("auth.forgotSubtitle")}
+      footer={<AuthFooterLink href="/login">{t("auth.backToSignIn")}</AuthFooterLink>}
     >
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            {t("auth.email")}
+          </label>
           <Input
             id="email"
             type="email"
@@ -56,7 +60,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <Buttons type="submit" className="w-full rounded-xl" disabled={loading}>
-          {loading ? "Sending..." : "Send reset code"}
+          {loading ? t("auth.sending") : t("auth.sendCode")}
         </Buttons>
       </form>
     </AuthShell>
