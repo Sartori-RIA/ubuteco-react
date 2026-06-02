@@ -8,6 +8,7 @@ import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import dynamic from "next/dynamic";
 import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {setSearchTerm} from "@/app/_store/features/dishes/dishesSlice";
@@ -20,6 +21,7 @@ function Page() {
   const {dishes, loading} = useAppSelector((state: RootState) => state.dishes);
   const router = useRouter();
   const dispatch = useAppDispatch()
+  const t = useTranslations();
   const searchTerm = useAppSelector(state => state.dishes.searchTerm);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ function Page() {
   }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm(t("common.confirmDelete"))) return;
 
     dispatch(dishesThunks.delete(Number(id)))
     router.refresh();
@@ -41,7 +43,7 @@ function Page() {
     <ProductList addProductUrl="/dishes/new"
                  searchValue={searchTerm}
                  onSearch={(v) => dispatch(setSearchTerm(v))}
-                 title="Dishes">
+                 title={t("nav.dishes")}>
       {loading && <Loading/>}
       {!loading && dishes.map((dish: Dish) => (
         <ProductCard
