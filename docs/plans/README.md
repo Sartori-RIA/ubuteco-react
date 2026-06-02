@@ -2,6 +2,8 @@
 
 Companion plans for uButeco React (`ubuteco-react`) — **the only active frontend**. Angular `ubuteco_spa` is abandoned; no SPA migration plans.
 
+**AI assistants:** read [AGENTS.md](../../AGENTS.md) first, then [docs/context/](../context/). New plans: [TEMPLATE.md](./TEMPLATE.md) (full rules in API repo).
+
 Backend work: [`ubuteco_api/docs/plans`](../../../ubuteco_api/docs/plans/README.md).
 
 ## Suggested implementation order
@@ -24,3 +26,11 @@ Backend work: [`ubuteco_api/docs/plans`](../../../ubuteco_api/docs/plans/README.
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
 **Status legend:** `[ ]` not started · `[~]` in progress · `[x]` done
+
+## Also see
+
+| Doc | Purpose |
+|-----|---------|
+| [context/](../context/) | Frontend architecture and folder map |
+| [dev-setup.md](../dev-setup.md) | Env vars, ports, dev commands |
+| [API plans](../../../ubuteco_api/docs/plans/README.md) | Backend companions |

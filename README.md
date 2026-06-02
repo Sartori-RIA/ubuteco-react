@@ -9,6 +9,8 @@ The previous Angular app ([ubuteco_spa](https://github.com/Sartori-RIA/ubuteco_s
 
 **Improvement plans (frontend):** [docs/plans/README.md](docs/plans/README.md) — organizations, users, settings, testing, performance, and more.
 
+**AI / contributors:** [AGENTS.md](AGENTS.md) · [docs/context/](docs/context/) · [docs/dev-setup.md](docs/dev-setup.md)
+
 
 ## Getting Started
 
