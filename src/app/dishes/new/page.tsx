@@ -9,12 +9,14 @@ import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {useRouter} from "next/navigation";
 import {DishForm} from "@/app/dishes/components";
 import {Loading} from "@/app/_components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.dishes);
   const {foodOptions, optionsLoading} = useSelector((state: RootState) => state.foods);
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     dispatch(foodsThunks.fetchOptions())
@@ -36,7 +38,7 @@ export default function Page() {
     <DishForm
       foods={foodOptions}
       onSubmit={handleCreate}
-      submitLabel="Save Dish"
+      submitLabel={t("forms.saveDish")}
       loading={loading}
       errors={errors}
     />)

@@ -1,7 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
-import {Maker, WineStyle} from "@/app/_types";
+import React, {useEffect} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -9,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import {WineForm} from "@/app/wines/components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -16,6 +16,7 @@ export default function Page() {
   const wine = useSelector((state: RootState) => state.wines.wines.find((wine) => wine.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.wines);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     if (id) {
@@ -38,7 +39,7 @@ export default function Page() {
     <WineForm
       defaultValues={wine}
       action={handleEditWine}
-      submitLabel="Update Wine"
+      submitLabel={t("forms.updateWineSubmit")}
       errors={errors}
       loading={loading}
     />

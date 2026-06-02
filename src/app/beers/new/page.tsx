@@ -7,11 +7,13 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useRouter} from "next/navigation";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.beers);
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const t = useTranslations();
 
   async function handleCreateBeer(formData: FormData) {
     try {
@@ -24,7 +26,7 @@ export default function Page() {
   return (
     <BeerForm
       action={handleCreateBeer}
-      submitLabel="Save Beer"
+      submitLabel={t("forms.saveBeer")}
       loading={loading}
       errors={errors}
     />)
