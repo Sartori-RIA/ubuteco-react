@@ -12,11 +12,14 @@ import authReducer from "@/app/_store/features/auth/authSlice";
 import ordersReducer from "@/app/_store/features/orders/ordersSlice";
 import kitchenReducer from "@/app/_store/features/kitchen/kitchenSlice";
 
+import usersReducer from "@/app/_store/features/users/usersSlice";
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     orders: ordersReducer,
     kitchen: kitchenReducer,
+    users: usersReducer,
     beers: beersReducer,
     beerStyles: beerStylesReducer,
     dishes: dishesReducer,

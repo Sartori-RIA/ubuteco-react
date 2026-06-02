@@ -30,7 +30,7 @@ When a plan gets an issue, add `**GitHub:** owner/repo#NN` to the plan header (s
 | 1 | [Multi-tenant](./01-multi-tenant.md) | in progress | P0 | [API](../../../ubuteco_api/docs/plans/01-multi-tenant.md) |
 | 8 | [Settings — account deletion](./08-settings-account-deletion.md) | not started | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 6 | [Organizations UI](./06-organizations-ui.md) | not started | P1 | Organizations API + [02](../../../ubuteco_api/docs/plans/02-locale-and-currency.md) |
-| 7 | [Users admin UI](./07-users-ui.md) | not started | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
+| 7 | [Users admin UI](./07-users-ui.md) | in progress | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 5 | [Testing](./05-testing.md) | not started | P1 | [08-api-contract-ci](../../../ubuteco_api/docs/plans/08-api-contract-and-ci.md) |
 | 2 | [Locale & currency](./02-locale-and-currency.md) | completed | P1 | [API](../../../ubuteco_api/docs/plans/02-locale-and-currency.md) |
 | 4 | [Organization dashboard](./04-organization-dashboard.md) | not started | P1 | [API](../../../ubuteco_api/docs/plans/04-organization-dashboard.md) |

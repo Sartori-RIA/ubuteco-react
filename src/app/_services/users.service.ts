@@ -1,25 +1,41 @@
-import {ProfileUpdatePayload, User} from "@/app/_types";
-import {apiFetch} from "@/app/_services/api-fetch";
+import {
+  PaginatedResponse,
+  ProfileUpdatePayload,
+  User,
+  UserCreatePayload,
+  UserUpdatePayload,
+} from "@/app/_types";
+import {apiFetch, apiFetchPaginated} from "@/app/_services/api-fetch";
 
-async function index(): Promise<User[]> {
-  return await apiFetch<User[]>('v1/users');
+export type FetchUsersParams = {
+  search?: string;
+  page?: number;
+};
+
+async function fetchAll(params: FetchUsersParams = {}): Promise<PaginatedResponse<User>> {
+  const {search = "", page = 1} = params;
+  const qs = new URLSearchParams();
+  if (search) qs.set("q", search);
+  if (page > 1) qs.set("page", String(page));
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return await apiFetchPaginated<User>(`v1/users${query}`);
 }
 
 async function show(id: number): Promise<User> {
   return await apiFetch<User>(`v1/users/${id}`);
 }
 
-async function create(data: User): Promise<User> {
-  return await apiFetch<User>('v1/users', {
+async function create(data: UserCreatePayload): Promise<User> {
+  return await apiFetch<User>("v1/users", {
     body: JSON.stringify(data),
-    method: 'POST'
+    method: "POST",
   });
 }
 
-async function update(id: number, data: User | ProfileUpdatePayload): Promise<User> {
+async function update(id: number, data: UserUpdatePayload | ProfileUpdatePayload): Promise<User> {
   return await apiFetch<User>(`v1/users/${id}`, {
     body: JSON.stringify(data),
-    method: 'PATCH'
+    method: "PUT",
   });
 }
 
@@ -28,14 +44,14 @@ async function updateProfile(id: number, data: ProfileUpdatePayload): Promise<Us
 }
 
 async function destroy(id: number): Promise<void> {
-  return await apiFetch<void>(`v1/users/${id}`, {method: 'DELETE'});
+  return await apiFetch<void>(`v1/users/${id}`, {method: "DELETE"});
 }
 
 export const usersService = {
+  fetchAll,
+  show,
+  create,
   update,
   updateProfile,
-  create,
-  index,
-  show,
   destroy,
-}
+};

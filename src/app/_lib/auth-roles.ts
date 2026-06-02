@@ -43,6 +43,22 @@ export function isKitchenStaff(user: User | null | undefined): boolean {
   return getRoleName(user) === "KITCHEN";
 }
 
+export function isAdmin(user: User | null | undefined): boolean {
+  return getRoleName(user) === "ADMIN";
+}
+
+/** Org staff user management (list, create, edit, delete). */
+export function canManageUsers(user: User | null | undefined): boolean {
+  return isAdmin(user);
+}
+
+/** Paths restricted to org admins (staff user management). */
+const ADMIN_ONLY_PATH = /^\/users(\/|$)/;
+
+export function isAdminOnlyPath(pathname: string): boolean {
+  return ADMIN_ONLY_PATH.test(pathname);
+}
+
 /** Paths kitchen-only users may use (queue + account). */
 const KITCHEN_ALLOWED_PATH = /^\/(kitchen|settings)(\/|$)/;
 

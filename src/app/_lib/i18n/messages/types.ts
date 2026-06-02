@@ -361,6 +361,39 @@ export type MessageCatalog = {
       orderDeleted: string;
     };
   };
+  users: {
+    title: string;
+    list: {
+      title: string;
+      name: string;
+      email: string;
+      role: string;
+      createdAt: string;
+      edit: string;
+      empty: string;
+    };
+    form: {
+      newTitle: string;
+      editTitle: string;
+      name: string;
+      email: string;
+      role: string;
+      password: string;
+      selectRole: string;
+      createSubmit: string;
+      updateSubmit: string;
+      deleteUser: string;
+    };
+    roles: {
+      ADMIN: string;
+      KITCHEN: string;
+      WAITER: string;
+      CASH_REGISTER: string;
+    };
+    confirm: {
+      delete: ConfirmMessages;
+    };
+  };
 };
 
 type JoinKeys<P extends string, K extends string> = P extends "" ? K : `${P}.${K}`;
