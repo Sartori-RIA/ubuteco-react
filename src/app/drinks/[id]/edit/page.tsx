@@ -33,7 +33,7 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (drink === undefined) return <h1>Not Found</h1>
+  if (drink === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <DrinkForm

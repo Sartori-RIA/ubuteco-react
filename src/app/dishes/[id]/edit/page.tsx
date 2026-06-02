@@ -36,7 +36,7 @@ export default function Page() {
   }
 
   if (loading && !dish) return <Loading/>;
-  if (dish === undefined) return <h1>Not Found</h1>
+  if (dish === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <DishForm

@@ -34,7 +34,7 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (beer === undefined) return <h1>Not Found</h1>
+  if (beer === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <BeerForm
