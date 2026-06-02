@@ -2,15 +2,18 @@
 
 import {AppearanceMode} from "@/app/_lib/appearance";
 import {useAppearance} from "@/app/_components/AppearanceProvider";
+import {useTranslations} from "@/app/_hooks/useTranslations";
+import {TranslationKey} from "@/app/_lib/i18n";
 
-const OPTIONS: {value: AppearanceMode; label: string; description: string}[] = [
-  {value: "light", label: "Light", description: "Always use light mode"},
-  {value: "dark", label: "Dark", description: "Always use dark mode"},
-  {value: "system", label: "System", description: "Match your device setting"},
+const OPTIONS: {value: AppearanceMode; labelKey: TranslationKey; descKey: TranslationKey}[] = [
+  {value: "light", labelKey: "appearance.light", descKey: "appearance.lightDesc"},
+  {value: "dark", labelKey: "appearance.dark", descKey: "appearance.darkDesc"},
+  {value: "system", labelKey: "appearance.system", descKey: "appearance.systemDesc"},
 ];
 
 export function AppearanceSettings() {
   const {mode, setMode} = useAppearance();
+  const t = useTranslations();
 
   return (
     <div className="grid gap-2 sm:grid-cols-3">
@@ -27,8 +30,8 @@ export function AppearanceSettings() {
                 : "border-border bg-surface hover:bg-surface-muted"
             }`}
           >
-            <span className="block text-sm font-semibold text-foreground">{option.label}</span>
-            <span className="mt-1 block text-xs text-muted">{option.description}</span>
+            <span className="block text-sm font-semibold text-foreground">{t(option.labelKey)}</span>
+            <span className="mt-1 block text-xs text-muted">{t(option.descKey)}</span>
           </button>
         );
       })}
