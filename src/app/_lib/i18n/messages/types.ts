@@ -46,6 +46,12 @@ export type MessageCatalog = {
     users: string;
     settings: string;
     platformReadOnly: string;
+    groups: {
+      operations: string;
+      menuCatalog: string;
+      administration: string;
+      platform: string;
+    };
   };
   auth: {
     signInTitle: string;

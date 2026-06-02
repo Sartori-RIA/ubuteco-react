@@ -42,6 +42,12 @@ const en: MessageCatalog = {
     users: "Users",
     settings: "Settings",
     platformReadOnly: "Platform — catalog read-only",
+    groups: {
+      operations: "Operations",
+      menuCatalog: "Menu & catalog",
+      administration: "Administration",
+      platform: "Platform",
+    },
   },
   auth: {
     signInTitle: "Ubuteco",

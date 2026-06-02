@@ -42,6 +42,12 @@ const ptBR: MessageCatalog = {
     users: "Usuários",
     settings: "Configurações",
     platformReadOnly: "Plataforma — catálogo somente leitura",
+    groups: {
+      operations: "Operações",
+      menuCatalog: "Cardápio e catálogo",
+      administration: "Administração",
+      platform: "Plataforma",
+    },
   },
   auth: {
     signInTitle: "Ubuteco",
