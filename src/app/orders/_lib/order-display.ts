@@ -1,5 +1,5 @@
 import {Order, OrderItem} from "@/app/_types";
-import {translate} from "@/app/_lib/i18n";
+import {translate, TranslationKey} from "@/app/_lib/i18n";
 import {DEFAULT_LOCALE} from "@/app/_lib/organization-settings";
 import {displayMoneyField, displayPrice, formatAmount, parseMoneyValue} from "@/app/_lib/money";
 
@@ -41,14 +41,16 @@ export function orderItemLineTotal(item: OrderItem): string {
 
 export function formatOrderStatus(status?: string, locale: string = DEFAULT_LOCALE): string {
   if (!status) return "—";
-  const label = translate(locale, `orders.status.${status}`);
-  return label === `orders.status.${status}` ? status : label;
+  const key = `orders.status.${status}` as TranslationKey;
+  const label = translate(locale, key);
+  return label === key ? status : label;
 }
 
 export function formatOrderItemStatus(status?: string, locale: string = DEFAULT_LOCALE): string {
   if (!status) return "—";
-  const label = translate(locale, `orders.itemStatus.${status}`);
-  return label === `orders.itemStatus.${status}` ? status : label;
+  const key = `orders.itemStatus.${status}` as TranslationKey;
+  const label = translate(locale, key);
+  return label === key ? status : label;
 }
 
 export function orderHasDiscount(order: Order): boolean {
