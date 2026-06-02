@@ -30,4 +30,20 @@ describe("getVisibleNavGroups", () => {
     const links = groups.flatMap((group) => group.items.map((item) => item.link));
     expect(links).toContain("/organizations");
   });
+
+  it("hides users for non-admin roles", () => {
+    for (const role of ["WAITER", "KITCHEN", "CASH_REGISTER", "SUPER_ADMIN"]) {
+      const links = getVisibleNavGroups(userWithRole(role)).flatMap((group) =>
+        group.items.map((item) => item.link)
+      );
+      expect(links).not.toContain("/users");
+    }
+  });
+
+  it("shows users for org admin", () => {
+    const links = getVisibleNavGroups(userWithRole("ADMIN")).flatMap((group) =>
+      group.items.map((item) => item.link)
+    );
+    expect(links).toContain("/users");
+  });
 });

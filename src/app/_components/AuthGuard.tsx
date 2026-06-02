@@ -5,7 +5,9 @@ import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {
+  canManageUsers,
   hasOrganization,
+  isAdminOnlyPath,
   isKitchenAllowedPath,
   isKitchenStaff,
   isOperationalMutationPath,
@@ -49,6 +51,11 @@ export default function AuthGuard({children}: {children: ReactNode}) {
 
     if (user && isKitchenStaff(user) && !isKitchenAllowedPath(pathname)) {
       router.replace("/kitchen");
+      return;
+    }
+
+    if (user && isAdminOnlyPath(pathname) && !canManageUsers(user)) {
+      router.replace("/");
     }
   }, [ready, pathname, router, authStatus, canMutateOperationalData, user]);
 

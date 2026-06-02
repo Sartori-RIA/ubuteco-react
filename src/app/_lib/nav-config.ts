@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type {TranslationKey} from "@/app/_lib/i18n";
 import {User} from "@/app/_types";
-import {canAccessKitchen, isKitchenStaff, isSuperAdmin} from "@/app/_lib/auth-roles";
+import {canAccessKitchen, canManageUsers, isKitchenStaff, isSuperAdmin} from "@/app/_lib/auth-roles";
 
 export type NavItem = {
   labelKey: TranslationKey;
@@ -23,6 +23,7 @@ export type NavItem = {
   link: string;
   kitchen?: boolean;
   superAdminOnly?: boolean;
+  adminOnly?: boolean;
 };
 
 export type NavGroup = {
@@ -56,7 +57,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     labelKey: "nav.groups.administration",
     items: [
-      {labelKey: "nav.users", icon: faUsers, link: "/users"},
+      {labelKey: "nav.users", icon: faUsers, link: "/users", adminOnly: true},
       {labelKey: "nav.settings", icon: faGear, link: "/settings"},
     ],
   },
@@ -70,6 +71,7 @@ export const NAV_GROUPS: NavGroup[] = [
 
 function isItemVisible(item: NavItem, user: User | null | undefined): boolean {
   if (item.superAdminOnly && !isSuperAdmin(user)) return false;
+  if (item.adminOnly && !canManageUsers(user)) return false;
   if (item.kitchen && !canAccessKitchen(user)) return false;
   return true;
 }

@@ -383,6 +383,43 @@ const ptBR: MessageCatalog = {
       orderDeleted: "Pedido excluído",
     },
   },
+  users: {
+    title: "Usuários",
+    list: {
+      title: "Equipe",
+      name: "Nome",
+      email: "E-mail",
+      role: "Função",
+      createdAt: "Criado em",
+      edit: "Editar",
+      empty: "Nenhum usuário da equipe ainda. Adicione quem pode acessar o app.",
+    },
+    form: {
+      newTitle: "Novo usuário da equipe",
+      editTitle: "Editar usuário da equipe",
+      name: "Nome",
+      email: "E-mail",
+      role: "Função",
+      password: "Senha",
+      selectRole: "Selecione uma função…",
+      createSubmit: "Criar usuário",
+      updateSubmit: "Salvar alterações",
+      deleteUser: "Excluir usuário",
+    },
+    roles: {
+      ADMIN: "Administrador",
+      KITCHEN: "Cozinha",
+      WAITER: "Garçom",
+      CASH_REGISTER: "Caixa",
+    },
+    confirm: {
+      delete: {
+        title: "Excluir usuário",
+        message: "Remover {name} da organização? Esta ação não pode ser desfeita.",
+        confirm: "Excluir",
+      },
+    },
+  },
 };
 
 export default ptBR;

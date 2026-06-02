@@ -30,6 +30,20 @@ export type ProfileUpdatePayload = {
   password?: string;
 };
 
+export type UserCreatePayload = {
+  name: string;
+  email: string;
+  password: string;
+  role_id: number;
+};
+
+export type UserUpdatePayload = {
+  name?: string;
+  email?: string;
+  password?: string;
+  role_id?: number;
+};
+
 export interface SignUpPayload {
   user: {
     email: string;

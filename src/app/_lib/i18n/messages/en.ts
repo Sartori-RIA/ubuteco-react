@@ -381,6 +381,43 @@ const en: MessageCatalog = {
       orderDeleted: "Order deleted",
     },
   },
+  users: {
+    title: "Users",
+    list: {
+      title: "Staff",
+      name: "Name",
+      email: "Email",
+      role: "Role",
+      createdAt: "Created",
+      edit: "Edit",
+      empty: "No staff users yet. Add team members who can access the app.",
+    },
+    form: {
+      newTitle: "New staff user",
+      editTitle: "Edit staff user",
+      name: "Name",
+      email: "Email",
+      role: "Role",
+      password: "Password",
+      selectRole: "Select a role…",
+      createSubmit: "Create user",
+      updateSubmit: "Save changes",
+      deleteUser: "Delete user",
+    },
+    roles: {
+      ADMIN: "Admin",
+      KITCHEN: "Kitchen",
+      WAITER: "Waiter",
+      CASH_REGISTER: "Cash register",
+    },
+    confirm: {
+      delete: {
+        title: "Delete user",
+        message: "Remove {name} from your organization? This cannot be undone.",
+        confirm: "Delete",
+      },
+    },
+  },
 };
 
 export default en;
