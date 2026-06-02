@@ -15,13 +15,16 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {updateAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {User} from "@/app/_types";
 import {AppearanceSettings} from "@/app/settings/components/AppearanceSettings";
+import {LocaleSettings} from "@/app/settings/components/LocaleSettings";
 
 export default function SettingsPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const {user: sessionUser} = useAuthCapabilities();
+  const t = useTranslations();
 
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,7 +56,7 @@ export default function SettingsPage() {
       if (error instanceof ApiError) {
         setErrors(error.data);
       } else {
-        setErrors(["Could not load profile."]);
+        setErrors([t("settings.loadProfileFailed")]);
       }
     } finally {
       setLoading(false);
@@ -74,7 +77,7 @@ export default function SettingsPage() {
     if (!sessionUser?.id) return;
 
     if (password && password !== passwordConfirmation) {
-      setErrors(["Passwords do not match."]);
+      setErrors([t("auth.passwordsMismatch")]);
       return;
     }
 
@@ -100,7 +103,7 @@ export default function SettingsPage() {
       if (error instanceof ApiError) {
         setErrors(error.data);
       } else {
-        setErrors(["Could not save profile."]);
+        setErrors([t("settings.saveProfileFailed")]);
       }
     } finally {
       setSaving(false);
@@ -110,7 +113,7 @@ export default function SettingsPage() {
   const handleDeleteAccount = async () => {
     if (!sessionUser?.id || !profile?.email) return;
     if (deleteConfirm !== profile.email) {
-      setErrors(["Type your email exactly as shown on your profile to confirm."]);
+      setErrors([t("settings.deleteEmailMismatch")]);
       return;
     }
 
@@ -125,7 +128,7 @@ export default function SettingsPage() {
       if (error instanceof ApiError) {
         setErrors(error.data);
       } else {
-        setErrors(["Could not delete account."]);
+        setErrors([t("settings.deleteAccountFailed")]);
       }
       setDeleting(false);
     }
@@ -140,15 +143,13 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Manage your account, session, and preferences.
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900">{t("settings.title")}</h1>
+        <p className="mt-1 text-sm text-gray-500">{t("settings.subtitle")}</p>
       </div>
 
       {errors && <FormErrors errors={errors}/>}
 
-      <Card title="Your profile" className="hover:translate-y-0">
+      <Card title={t("settings.profile")} className="hover:translate-y-0">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           {displayUser?.avatar_url ? (
             <Image
@@ -169,42 +170,42 @@ export default function SettingsPage() {
           )}
           <dl className="grid flex-1 gap-2 text-sm sm:grid-cols-2">
             <div>
-              <dt className="text-gray-500">Name</dt>
+              <dt className="text-gray-500">{t("settings.name")}</dt>
               <dd className="font-medium text-gray-900">{displayUser?.name ?? "—"}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Email</dt>
+              <dt className="text-gray-500">{t("settings.email")}</dt>
               <dd className="font-medium text-gray-900">{displayUser?.email ?? "—"}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Role</dt>
+              <dt className="text-gray-500">{t("settings.role")}</dt>
               <dd className="font-medium text-gray-900">{formatRoleLabel(displayUser)}</dd>
             </div>
             <div>
-              <dt className="text-gray-500">Organization</dt>
+              <dt className="text-gray-500">{t("settings.organization")}</dt>
               <dd className="font-medium text-gray-900">{displayUser?.organization?.name ?? "—"}</dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-gray-500">Member since</dt>
+              <dt className="text-gray-500">{t("settings.memberSince")}</dt>
               <dd className="font-medium text-gray-900">{formatMemberSince(displayUser?.created_at)}</dd>
             </div>
           </dl>
         </div>
       </Card>
 
-      <Card title="Edit profile" className="hover:translate-y-0">
+      <Card title={t("settings.editProfile")} className="hover:translate-y-0">
         <form onSubmit={handleProfileSubmit} className="space-y-4">
-          <Label label="Name">
+          <Label label={t("settings.name")}>
             <Input
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
+              placeholder={t("settings.yourNamePlaceholder")}
               required
               className="!pl-4"
             />
           </Label>
-          <Label label="Email">
+          <Label label={t("settings.email")}>
             <Input
               name="email"
               type="email"
@@ -215,76 +216,72 @@ export default function SettingsPage() {
               className="!pl-4"
             />
           </Label>
-          <Label label="New password">
+          <Label label={t("settings.newPassword")}>
             <Input
               name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Leave blank to keep current password"
+              placeholder={t("settings.passwordKeepBlank")}
               className="!pl-4"
             />
           </Label>
-          <Label label="Confirm new password">
+          <Label label={t("settings.confirmNewPassword")}>
             <Input
               name="password_confirmation"
               type="password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
-              placeholder="Repeat new password"
+              placeholder={t("settings.repeatNewPassword")}
               className="!pl-4"
             />
           </Label>
           <div className="flex justify-end">
             <Buttons type="submit" loading={saving} disabled={loading}>
-              Save changes
+              {t("settings.saveChanges")}
             </Buttons>
           </div>
         </form>
       </Card>
 
-      <Card title="Appearance" className="hover:translate-y-0">
-        <p className="mb-4 text-sm text-muted">
-          Choose light, dark, or follow your system preference. Saved on this device.
-        </p>
+      <Card title={t("settings.appearance")} className="hover:translate-y-0">
+        <p className="mb-4 text-sm text-muted">{t("settings.appearanceHint")}</p>
         <AppearanceSettings/>
       </Card>
 
-      <Card title="Plan" className="hover:translate-y-0">
+      <Card title={t("settings.regional")} className="hover:translate-y-0">
+        <p className="mb-4 text-sm text-muted">{t("settings.regionalHint")}</p>
+        <LocaleSettings/>
+      </Card>
+
+      <Card title={t("settings.plan")} className="hover:translate-y-0">
         <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4">
-          <p className="text-sm font-medium text-gray-900">Current plan: coming soon</p>
-          <p className="mt-2 text-sm text-gray-600">
-            You will soon be able to view and manage your subscription, limits, and billing
-            here.
-          </p>
+          <p className="text-sm font-medium text-gray-900">{t("settings.planComingSoon")}</p>
+          <p className="mt-2 text-sm text-gray-600">{t("settings.planHint")}</p>
         </div>
       </Card>
 
-      <Card title="Session" className="hover:translate-y-0">
-        <p className="mb-4 text-sm text-gray-600">
-          Signs you out on this device. You can sign in again anytime.
-        </p>
+      <Card title={t("settings.session")} className="hover:translate-y-0">
+        <p className="mb-4 text-sm text-gray-600">{t("settings.sessionHint")}</p>
         <Buttons
           variant="outline"
           onClick={handleLogout}
           leftIcon={<FontAwesomeIcon icon={faRightFromBracket}/>}
         >
-          Sign out
+          {t("common.signOut")}
         </Buttons>
       </Card>
 
-      <Card title="Danger zone" className="border-red-100 hover:translate-y-0">
-        <p className="mb-4 text-sm text-gray-600">
-          Deleting your account is permanent and removes your access to the platform.
-        </p>
+      <Card title={t("settings.dangerZone")} className="border-red-100 hover:translate-y-0">
+        <p className="mb-4 text-sm text-gray-600">{t("settings.dangerHint")}</p>
         {!showDeletePanel ? (
           <Buttons variant="danger" onClick={() => setShowDeletePanel(true)}>
-            Delete my account
+            {t("settings.deleteAccount")}
           </Buttons>
         ) : (
           <div className="space-y-4 rounded-xl border border-red-200 bg-red-50/50 p-4">
             <p className="text-sm text-red-900">
-              To confirm, type your email: <strong>{profile?.email}</strong>
+              {t("settings.typeEmailConfirm", {email: profile?.email ?? ""})}
             </p>
             <Input
               name="delete_confirm"
@@ -300,7 +297,7 @@ export default function SettingsPage() {
                 onClick={handleDeleteAccount}
                 disabled={deleteConfirm !== profile?.email}
               >
-                Confirm deletion
+                {t("settings.confirmDeletion")}
               </Buttons>
               <Buttons
                 variant="ghost"
@@ -309,7 +306,7 @@ export default function SettingsPage() {
                   setDeleteConfirm("");
                 }}
               >
-                Cancel
+                {t("common.cancel")}
               </Buttons>
             </div>
           </div>

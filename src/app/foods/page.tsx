@@ -1,8 +1,7 @@
 "use client"
 
 import {Food} from "@/app/_types";
-import {formatDate} from "@/app/_lib/format-date";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
@@ -10,6 +9,7 @@ import {useRouter} from "next/navigation";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import dynamic from "next/dynamic";
 import {setSearchTerm} from "@/app/_store/features/foods/foodsSlice";
 
@@ -17,6 +17,8 @@ function Page() {
   const {foods, loading} = useAppSelector((state: RootState) => state.foods);
   const router = useRouter();
   const dispatch = useAppDispatch()
+  const t = useTranslations();
+  const {displayPrice, formatDate} = useMoneyFormat();
   const searchTerm = useAppSelector(state => state.foods.searchTerm);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function Page() {
   }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm(t("common.confirmDelete"))) return;
 
     dispatch(foodsThunks.delete(Number(id)))
     router.refresh();
@@ -36,7 +38,7 @@ function Page() {
 
   return (
     <ProductList addProductUrl="/foods/new"
-                 title="Foods"
+                 title={t("nav.foods")}
                  searchValue={searchTerm}
                  onSearch={(v) => dispatch(setSearchTerm(v))}
     >
@@ -49,9 +51,9 @@ function Page() {
           onDelete={() => handleDelete(Number(food.id))}
         >
           <>
-            <strong>Price</strong>: {displayPrice(food)}<br/>
-            <strong>Stock</strong>: {food.quantity_stock ?? 0}<br/>
-            <strong>Valid until</strong>: {formatDate(food.valid_until)}
+            <strong>{t("common.price")}</strong>: {displayPrice(food)}<br/>
+            <strong>{t("common.stock")}</strong>: {food.quantity_stock ?? 0}<br/>
+            <strong>{t("catalog.validUntil")}</strong>: {formatDate(food.valid_until)}
           </>
         </ProductCard>
       ))}

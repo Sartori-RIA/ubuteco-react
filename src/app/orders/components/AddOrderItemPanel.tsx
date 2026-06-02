@@ -8,7 +8,8 @@ import {ItemOrderSend, OrderItem, OrderItemType} from "@/app/_types/order";
 import {Wine} from "@/app/_types/wine";
 import {Buttons, Label, Select} from "@/app/_components";
 import {Input} from "@/app/_components/Inputs";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
@@ -18,12 +19,7 @@ import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 
 type CatalogProduct = Beer | Drink | Dish | Wine;
 
-const TYPES: {value: OrderItemType; label: string}[] = [
-  {value: "Beer", label: "Beer"},
-  {value: "Drink", label: "Drink"},
-  {value: "Dish", label: "Dish"},
-  {value: "Wine", label: "Wine"},
-];
+const TYPES: OrderItemType[] = ["Beer", "Drink", "Dish", "Wine"];
 
 type Props = {
   orderItems: OrderItem[];
@@ -38,13 +34,9 @@ function stockOf(product: CatalogProduct): number | null {
   return null;
 }
 
-function stockLabel(product: CatalogProduct): string {
-  const stock = stockOf(product);
-  if (stock != null) return ` · stock: ${stock}`;
-  return "";
-}
-
 export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
+  const t = useTranslations();
+  const {displayPrice} = useMoneyFormat();
   const dispatch = useAppDispatch();
   const {beers, loading: beersLoading} = useAppSelector((state: RootState) => state.beers);
   const {drinks, loading: drinksLoading} = useAppSelector((state: RootState) => state.drinks);
@@ -107,6 +99,12 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
   const overStock = maxQty != null && quantity > maxQty;
   const outOfStock = maxQty != null && maxQty <= 0;
 
+  const stockLabel = (product: CatalogProduct): string => {
+    const stock = stockOf(product);
+    if (stock == null) return "";
+    return t("orders.addItem.stock", {count: stock});
+  };
+
   const handleAdd = () => {
     if (!productId || overStock || outOfStock) return;
     onAdd({
@@ -118,37 +116,40 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
     setQuantity(1);
   };
 
+  const pillClass = (active: boolean) =>
+    `rounded-full border px-3 py-1 text-sm font-medium transition ${
+      active
+        ? "border-blue-600 bg-blue-600 text-white"
+        : "border-border bg-surface text-foreground hover:bg-surface-muted"
+    }`;
+
   return (
-    <div className="space-y-4 rounded-xl border border-gray-200 bg-gray-50/80 p-4">
-      <h4 className="text-sm font-semibold text-gray-900">Add item</h4>
+    <div className="space-y-4 rounded-xl border border-border bg-surface-muted p-4">
+      <h4 className="text-sm font-semibold text-foreground">{t("orders.addItem.title")}</h4>
 
       <div className="flex flex-wrap gap-2">
         {TYPES.map((type) => (
           <button
-            key={type.value}
+            key={type}
             type="button"
-            onClick={() => setItemType(type.value)}
-            className={`rounded-full px-3 py-1 text-sm font-medium transition ${
-              itemType === type.value
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-100"
-            }`}
+            onClick={() => setItemType(type)}
+            className={pillClass(itemType === type)}
           >
-            {type.label}
+            {t(`orders.itemType.${type}`)}
           </button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
-          <Label label="Product">
+          <Label label={t("orders.addItem.product")}>
             <Select
               name="order_item_product"
               value={productId}
               onChange={setProductId}
               disabled={catalogLoading}
             >
-              <option value="">{catalogLoading ? "Loading…" : "Select…"}</option>
+              <option value="">{catalogLoading ? t("orders.addItem.loading") : t("orders.addItem.select")}</option>
               {catalog.map((product) => {
                 const stock = stockOf(product);
                 const disabled = stock != null && stock <= 0;
@@ -156,7 +157,7 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
                   <option key={product.id} value={product.id} disabled={disabled}>
                     {product.name} — {displayPrice(product)}
                     {stockLabel(product)}
-                    {disabled ? " (out of stock)" : ""}
+                    {disabled ? t("orders.addItem.outOfStock") : ""}
                   </option>
                 );
               })}
@@ -164,7 +165,7 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
           </Label>
         </div>
 
-        <Label label="Quantity">
+        <Label label={t("orders.addItem.quantity")}>
           <Input
             type="number"
             min={1}
@@ -176,21 +177,24 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
       </div>
 
       {existingLine && (
-        <p className="text-xs text-amber-700">
-          This product is already on the order (qty {existingLine.quantity}). Adding will increase the line quantity.
+        <p className="text-xs text-amber-700 dark:text-amber-400">
+          {t("orders.addItem.alreadyOnOrder", {qty: existingLine.quantity ?? 0})}
         </p>
       )}
 
       {selected && (
-        <p className="text-xs text-gray-500">
-          Selected: {selected.name} at {displayPrice(selected)}
-          {stockLabel(selected)}
+        <p className="text-xs text-muted">
+          {t("orders.addItem.selected", {
+            name: selected.name,
+            price: displayPrice(selected),
+            stock: stockLabel(selected),
+          })}
         </p>
       )}
 
       {overStock && (
-        <p className="text-xs text-red-600">
-          Not enough stock. Maximum you can add: {Math.max(0, maxQty ?? 0)}.
+        <p className="text-xs text-red-600 dark:text-red-400">
+          {t("orders.addItem.notEnoughStock", {max: Math.max(0, maxQty ?? 0)})}
         </p>
       )}
 
@@ -201,7 +205,7 @@ export function AddOrderItemPanel({orderItems, loading = false, onAdd}: Props) {
           loading={loading}
           disabled={!productId || overStock || outOfStock}
         >
-          Add to order
+          {t("orders.addItem.submit")}
         </Buttons>
       </div>
     </div>

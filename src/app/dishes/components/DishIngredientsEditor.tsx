@@ -6,6 +6,7 @@ import {Buttons, Label, Select} from "@/app/_components";
 import {Input} from "@/app/_components/Inputs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
   foods: FoodOption[];
@@ -19,6 +20,7 @@ function emptyRow(): DishIngredientAttribute {
 }
 
 export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = false}: Props) {
+  const t = useTranslations();
   const visibleIngredients = ingredients.filter((item) => !item._destroy);
 
   const updateRow = (index: number, patch: Partial<DishIngredientAttribute>) => {
@@ -52,7 +54,7 @@ export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = 
   if (foods.length === 0) {
     return (
       <p className="text-sm text-amber-700 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-        Create foods before adding ingredients to a dish.
+        {t("forms.fields.noFoodsForIngredients")}
       </p>
     );
   }
@@ -60,19 +62,19 @@ export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = 
   return (
     <div className="space-y-3">
       {visibleIngredients.length === 0 && (
-        <p className="text-sm text-gray-500">No ingredients yet.</p>
+        <p className="text-sm text-gray-500">{t("forms.fields.noIngredients")}</p>
       )}
 
       {visibleIngredients.map((row, index) => (
         <div key={row.id ?? `new-${index}`} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_120px_auto] items-end">
-          <Label label="Food">
+          <Label label={t("forms.fields.food")}>
             <Select
               name={`ingredient-food-${index}`}
               value={row.food_id || ""}
               className={readOnly ? "opacity-60 pointer-events-none" : undefined}
               onChange={(value) => updateRow(index, {food_id: Number(value)})}
             >
-              <option value="" disabled>Select food</option>
+              <option value="" disabled>{t("forms.fields.selectFood")}</option>
               {foods.map((food) => (
                 <option key={food.id} value={food.id}>
                   {food.name}
@@ -81,7 +83,7 @@ export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = 
             </Select>
           </Label>
 
-          <Label label="Quantity">
+          <Label label={t("forms.fields.quantity")}>
             <Input
               type="number"
               min={1}
@@ -97,7 +99,7 @@ export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = 
               variant="ghost"
               size="icon"
               onClick={() => removeRow(index)}
-              aria-label="Remove ingredient"
+              aria-label={t("forms.fields.removeIngredient")}
             >
               <FontAwesomeIcon icon={faTrash} className="text-red-500"/>
             </Buttons>
@@ -107,7 +109,7 @@ export function DishIngredientsEditor({foods, ingredients, onChange, readOnly = 
 
       {!readOnly && (
         <Buttons type="button" variant="outline" onClick={addRow} leftIcon={<FontAwesomeIcon icon={faPlus}/>}>
-          Add ingredient
+          {t("forms.fields.addIngredient")}
         </Buttons>
       )}
     </div>

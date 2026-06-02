@@ -7,7 +7,8 @@ import {Buttons, Card, FormErrors, Label, Loading} from "@/app/_components";
 import {Select} from "@/app/_components/Selects";
 import {Input} from "@/app/_components/Inputs";
 import {useToast} from "@/app/_components/Toast/ToastProvider";
-import {DISPLAY_CURRENCY} from "@/app/_lib/money";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
 import {ordersThunks} from "@/app/_store/features/orders/ordersThunks";
@@ -19,6 +20,8 @@ export function NewOrderForm() {
   const tableFromQuery = searchParams.get("table_id") ?? "";
   const dispatch = useAppDispatch();
   const {showToast} = useToast();
+  const {defaultCurrency} = useOrganizationSettings();
+  const t = useTranslations();
   const {saving, errors} = useAppSelector((state: RootState) => state.orders);
   const {tables, loading: tablesLoading} = useAppSelector((state: RootState) => state.tables);
 
@@ -40,7 +43,7 @@ export function NewOrderForm() {
     );
 
     if (ordersThunks.createOrder.fulfilled.match(result)) {
-      showToast("Order created", "success");
+      showToast(t("orders.toastCreated"), "success");
       router.replace(`/orders/${result.payload.id}`);
     }
   };
@@ -53,28 +56,28 @@ export function NewOrderForm() {
     <div className="mx-auto max-w-lg space-y-6">
       <div>
         <Link href="/orders" className="text-sm text-blue-600 hover:text-blue-700">
-          ← Back to orders
+          ← {t("orders.back")}
         </Link>
-        <h1 className="mt-2 text-3xl font-bold text-gray-900">New order</h1>
-        <p className="text-sm text-gray-500 mt-1">Create an open order, then add items on the next screen.</p>
+        <h1 className="mt-2 text-3xl font-bold text-gray-900">{t("orders.new")}</h1>
+        <p className="mt-1 text-sm text-gray-500">{t("orders.newSubtitle")}</p>
       </div>
 
-      <Card title="Order details" className="hover:translate-y-0">
+      <Card title={t("orders.orderDetails")} className="hover:translate-y-0">
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormErrors errors={errors}/>
 
-          <Label label="Table (optional)">
+          <Label label={t("orders.tableOptional")}>
             <Select name="table_id" value={tableId} onChange={setTableId}>
-              <option value="">No table</option>
+              <option value="">{t("common.noTable")}</option>
               {tables.map((table) => (
                 <option key={table.id} value={table.id}>
-                  {table.name} ({table.chairs} seats)
+                  {table.name} ({t("common.seats", {count: table.chairs})})
                 </option>
               ))}
             </Select>
           </Label>
 
-          <Label label={`Discount (${DISPLAY_CURRENCY}, optional)`}>
+          <Label label={t("orders.discountOptional", {currency: defaultCurrency})}>
             <Input
               type="number"
               step="0.01"
@@ -86,7 +89,7 @@ export function NewOrderForm() {
           </Label>
 
           <Buttons type="submit" className="w-full rounded-xl" loading={saving}>
-            Create order
+            {t("orders.createOrder")}
           </Buttons>
         </form>
       </Card>

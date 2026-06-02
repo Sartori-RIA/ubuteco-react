@@ -1,8 +1,9 @@
 # Plan: Organization locale & currency (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [02-locale-and-currency.md](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
+**Branch:** `feature/locale-and-currency`  
 **Priority:** P1
 
 ---
@@ -15,47 +16,52 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 
 ## Phase 1 — Types & store
 
-- [ ] Extend `Organization` type: `locale`, `default_currency`, `timezone`
-- [ ] Hydrate from `fetchCurrentUser` / organization endpoint
-- [ ] Redux or context: `useOrganizationSettings()` hook
+- [x] Extend `Organization` type: `locale`, `default_currency`, `timezone`
+- [x] Hydrate from `fetchCurrentUser` / organization endpoint
+- [x] Redux or context: `useOrganizationSettings()` hook
 
 ---
 
 ## Phase 2 — Formatting utilities
 
-- [ ] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
-- [ ] `formatDate(date, options?)` using org `timezone` (e.g. `date-fns-tz` or `Intl`)
-- [ ] Replace ad-hoc formatting in orders, kitchen, catalog pages incrementally
+- [x] `formatMoney(cents, currency?)` using `Intl.NumberFormat` + org default
+- [x] `formatDate(date, options?)` using org `timezone` (via `Intl`)
+- [x] Orders pages use `useMoneyFormat()` for dates and money display
+- [x] Kitchen and catalog pages use `useMoneyFormat()` for prices and dates
 
 ---
 
 ## Phase 3 — Settings UI
 
-- [ ] Page or section under `/settings` (admin only):
+- [x] Page or section under `/settings` (admin only):
   - Locale select (`pt-BR`, `en`, …)
   - Currency select (ISO list, curated)
   - Timezone select
-- [ ] PATCH organization via `organizationsService`
-- [ ] Confirm dialog if changing currency (explain effect on new orders only)
+- [x] PATCH organization via `organizationsService`
+- [x] Confirm dialog if changing currency (explain effect on new orders only)
 
 ---
 
-## Phase 4 — i18n (optional v1.1)
+## Phase 4 — i18n (org locale)
 
-- [ ] If UI strings should follow org locale: integrate `next-intl` or similar keyed to org locale
-- [ ] v1 minimum: API error messages already localized; UI can stay single language until i18n pass
+- [x] Lightweight catalog in `src/app/_lib/i18n/` keyed to org `locale` (no `next-intl` — avoids App Router middleware/routing churn)
+- [x] `useTranslations()` hook reads locale from `useOrganizationSettings()`
+- [x] Orders module strings in `en` + `pt-BR` (list, detail, items table, add panel, toasts, confirms)
+- [x] Full-app i18n (settings, auth, catalog, kitchen, forms, detail pages)
+
+**Note on sub-plans:** keep phases inside this plan while work stays one branch/PR. Create a sub-plan (or new numbered plan) only when a phase becomes its own epic — e.g. `next-intl` migration across all routes.
 
 ---
 
 ## Phase 5 — Tests
 
-- [ ] Unit tests for format helpers
-- [ ] Settings form validation + successful PATCH mock
+- [x] Unit tests for format helpers (`src/app/_lib/format.test.ts`)
+- [x] Settings PATCH mock (`src/app/_services/organizations.service.test.ts`)
 
 ---
 
 ## Definition of done
 
-- [ ] Admin can change locale/currency/timezone
-- [ ] Money and dates on orders/kitchen reflect org settings
-- [ ] No hardcoded `BRL`/`R$` in new code
+- [x] Admin can change locale/currency/timezone (UI ready; requires API migration)
+- [x] Money and dates on orders reflect org settings
+- [x] No hardcoded `BRL`/`R$` in new code

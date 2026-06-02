@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label, Textarea} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface DrinkFormProps {
   defaultValues?: Partial<Drink>;
@@ -21,6 +22,7 @@ export function DrinkForm({
                             loading = false,
                             submitLabel = "Save Drink",
                           }: DrinkFormProps) {
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Drink>>({
     name: defaultValues?.name ?? "",
@@ -41,13 +43,13 @@ export function DrinkForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Drink" : "New Drink"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateDrink") : t("forms.newDrink")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -58,12 +60,12 @@ export function DrinkForm({
             {preview && (
               <img
                 src={preview}
-                alt="Preview"
+                alt={t("forms.fields.imagePreview")}
                 className="mt-2 h-32 rounded-xl object-cover"
               />
             )}
 
-            <Label label="Image">
+            <Label label={t("forms.fields.image")}>
               <Input
                 type="file"
                 name="image"
@@ -79,7 +81,7 @@ export function DrinkForm({
             </Label>
           </div>
 
-          <Label label="Description">
+          <Label label={t("forms.fields.description")}>
             <Textarea
               rows={4}
               name="description"
@@ -89,7 +91,7 @@ export function DrinkForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Flavor">
+            <Label label={t("forms.fields.flavor")}>
               <Input
                 name="flavor"
                 value={form.flavor}
@@ -98,7 +100,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="ABV">
+            <Label label={t("forms.fields.abv")}>
               <Input
                 type="number"
                 name="abv"
@@ -108,7 +110,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="Price">
+            <Label label={t("forms.fields.price")}>
               <Input
                 type="number"
                 step="0.01"
@@ -118,7 +120,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="Stock Quantity">
+            <Label label={t("forms.fields.stockQuantity")}>
               <Input
                 type="number"
                 name="quantity_stock"

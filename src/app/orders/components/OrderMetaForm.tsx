@@ -7,7 +7,9 @@ import {Label} from "@/app/_components";
 import {Select} from "@/app/_components/Selects";
 import {Input} from "@/app/_components/Inputs";
 import {useDebounce} from "@/app/_hooks/useDebounce";
-import {DISPLAY_CURRENCY, parseMoneyValue} from "@/app/_lib/money";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {useTranslations} from "@/app/_hooks/useTranslations";
+import {parseMoneyValue} from "@/app/_lib/money";
 
 function initialDiscount(order: Order): string {
   if (order.discount_cents != null) return String(order.discount_cents / 100);
@@ -24,6 +26,8 @@ type Props = {
 };
 
 export function OrderMetaForm({order, tables, readOnly = false, onSave}: Props) {
+  const {defaultCurrency} = useOrganizationSettings();
+  const t = useTranslations();
   const [tableId, setTableId] = useState(order.table_id ? String(order.table_id) : "");
   const [discount, setDiscount] = useState(() => initialDiscount(order));
   const debouncedTableId = useDebounce(tableId, 500);
@@ -44,23 +48,23 @@ export function OrderMetaForm({order, tables, readOnly = false, onSave}: Props) 
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <Label label="Table">
+      <Label label={t("orders.meta.table")}>
         <Select
           name="table_id"
           value={tableId}
           onChange={setTableId}
           disabled={readOnly}
         >
-          <option value="">No table</option>
+          <option value="">{t("orders.meta.noTable")}</option>
           {tables.map((table) => (
             <option key={table.id} value={table.id}>
-              {table.name} ({table.chairs} seats)
+              {table.name} ({t("orders.meta.seats", {count: table.chairs ?? 0})})
             </option>
           ))}
         </Select>
       </Label>
 
-      <Label label={`Discount (${DISPLAY_CURRENCY})`}>
+      <Label label={t("orders.meta.discount", {currency: defaultCurrency})}>
         <Input
           type="number"
           step="0.01"
@@ -73,7 +77,7 @@ export function OrderMetaForm({order, tables, readOnly = false, onSave}: Props) 
       </Label>
 
       {!readOnly && (
-        <p className="md:col-span-2 text-xs text-gray-500">Changes save automatically.</p>
+        <p className="md:col-span-2 text-xs text-muted">{t("orders.meta.autoSave")}</p>
       )}
     </div>
   );

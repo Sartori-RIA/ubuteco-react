@@ -9,6 +9,7 @@ import {useRouter} from "next/navigation";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import dynamic from "next/dynamic";
 import {setSearchTerm} from "@/app/_store/features/beers/beersSlice";
 
@@ -16,6 +17,7 @@ function Page() {
   const {beers, loading} = useAppSelector((state: RootState) => state.beers);
   const router = useRouter();
   const dispatch = useAppDispatch()
+  const t = useTranslations();
   const searchTerm = useAppSelector(state => state.beers.searchTerm);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function Page() {
   }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm(t("common.confirmDelete"))) return;
 
     dispatch(beerThunks.delete(Number(id)))
     router.refresh();
@@ -37,7 +39,7 @@ function Page() {
     <ProductList addProductUrl="/beers/new"
                  searchValue={searchTerm}
                  onSearch={(v) => dispatch(setSearchTerm(v))}
-                 title="Beers">
+                 title={t("nav.beers")}>
       {loading && <Loading/>}
       {!loading && beers.map((product: Beer) => (
         <ProductCard
@@ -47,9 +49,9 @@ function Page() {
           onDelete={() => handleDelete(Number(product.id))}
         >
           <>
-            <strong>Style</strong>: {product.beer_style?.name} <br/>
-            <strong>Maker</strong>: {product.maker?.name} <br/>
-            <strong>ABV</strong>: {product.abv}&nbsp;<strong>IBU</strong>: {product.ibu}
+            <strong>{t("common.style")}</strong>: {product.beer_style?.name} <br/>
+            <strong>{t("common.maker")}</strong>: {product.maker?.name} <br/>
+            <strong>{t("common.abv")}</strong>: {product.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {product.ibu}
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

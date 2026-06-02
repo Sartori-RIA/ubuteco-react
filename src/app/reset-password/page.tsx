@@ -5,6 +5,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
 import {Buttons, Input} from "@/app/_components";
 import {Loading} from "@/app/_components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {resetPassword, validateResetCode} from "@/app/_store/features/auth/authThunks";
 import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
@@ -13,6 +14,7 @@ function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const t = useTranslations();
 
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ function ResetPasswordForm() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError(t("auth.passwordsMismatch"));
       return;
     }
 
@@ -36,7 +38,7 @@ function ResetPasswordForm() {
     const codeResult = await dispatch(validateResetCode(code.trim()));
     if (validateResetCode.rejected.match(codeResult)) {
       setLoading(false);
-      setError(typeof codeResult.payload === "string" ? codeResult.payload : "Invalid code");
+      setError(typeof codeResult.payload === "string" ? codeResult.payload : t("auth.invalidCode"));
       return;
     }
 
@@ -49,34 +51,38 @@ function ResetPasswordForm() {
       return;
     }
 
-    setError(typeof resetResult.payload === "string" ? resetResult.payload : "Could not reset password");
+    setError(typeof resetResult.payload === "string" ? resetResult.payload : t("auth.resetFailed"));
   };
 
   return (
     <AuthShell
-      title="Reset password"
+      title={t("auth.resetTitle")}
       subtitle={
         emailHint
-          ? `Enter the code sent to ${emailHint} and choose a new password.`
-          : "Enter the code from your email and choose a new password."
+          ? t("auth.resetSubtitleWithEmail", {email: emailHint})
+          : t("auth.resetSubtitle")
       }
-      footer={<AuthFooterLink href="/login">Back to sign in</AuthFooterLink>}
+      footer={<AuthFooterLink href="/login">{t("auth.backToSignIn")}</AuthFooterLink>}
     >
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
-          <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">Reset code</label>
+          <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+            {t("auth.resetCode")}
+          </label>
           <Input id="code" required autoFocus value={code} onChange={(e) => setCode(e.target.value)}/>
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">New password</label>
-          <Input id="password" type="password" required minLength={8} value={password}
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            {t("auth.newPassword")}
+          </label>
+          <Input id="password" type="password" required value={password}
                  onChange={(e) => setPassword(e.target.value)}/>
         </div>
         <div>
           <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 mb-1">
-            Confirm new password
+            {t("settings.confirmNewPassword")}
           </label>
-          <Input id="confirm_password" type="password" required minLength={8} value={confirmPassword}
+          <Input id="confirm_password" type="password" required value={confirmPassword}
                  onChange={(e) => setConfirmPassword(e.target.value)}/>
         </div>
 
@@ -85,7 +91,7 @@ function ResetPasswordForm() {
         )}
 
         <Buttons type="submit" className="w-full rounded-xl" disabled={loading}>
-          {loading ? "Updating..." : "Update password"}
+          {loading ? t("auth.updating") : t("auth.updatePassword")}
         </Buttons>
       </form>
     </AuthShell>

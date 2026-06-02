@@ -1,17 +1,17 @@
+"use client";
+
 import {TablesList} from "@/app/tables/components";
 import {Card} from "@/app/_components";
-import {Metadata} from "next";
-
-export const metadata: Metadata = {
-  title: "uButeco | Tables",
-};
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
+  const t = useTranslations();
+
   return (
-    <Card title="Tables">
+    <Card title={t("nav.tables")}>
       <div className="mx-auto max-w-xl space-y-4">
         <TablesList/>
       </div>
     </Card>
-  )
+  );
 }

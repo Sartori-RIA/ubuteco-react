@@ -1,4 +1,6 @@
 import {Order, OrderItem} from "@/app/_types";
+import {translate, TranslationKey} from "@/app/_lib/i18n";
+import {DEFAULT_LOCALE} from "@/app/_lib/organization-settings";
 import {displayMoneyField, displayPrice, formatAmount, parseMoneyValue} from "@/app/_lib/money";
 
 export function displayOrderAmount(
@@ -37,36 +39,18 @@ export function orderItemLineTotal(item: OrderItem): string {
   return formatAmount(parsed.amount * item.quantity);
 }
 
-export function formatOrderStatus(status?: string): string {
-  switch (status) {
-    case "open":
-      return "Open";
-    case "closed":
-      return "Closed";
-    case "payed":
-      return "Paid";
-    default:
-      return status ?? "—";
-  }
+export function formatOrderStatus(status?: string, locale: string = DEFAULT_LOCALE): string {
+  if (!status) return "—";
+  const key = `orders.status.${status}` as TranslationKey;
+  const label = translate(locale, key);
+  return label === key ? status : label;
 }
 
-export function formatOrderItemStatus(status?: string): string {
-  switch (status) {
-    case "awaiting":
-      return "Awaiting";
-    case "cooking":
-      return "Cooking";
-    case "ready":
-      return "Ready";
-    case "with_the_client":
-      return "With client";
-    case "canceled":
-      return "Canceled";
-    case "empty_stock":
-      return "Out of stock";
-    default:
-      return status ?? "—";
-  }
+export function formatOrderItemStatus(status?: string, locale: string = DEFAULT_LOCALE): string {
+  if (!status) return "—";
+  const key = `orders.itemStatus.${status}` as TranslationKey;
+  const label = translate(locale, key);
+  return label === key ? status : label;
 }
 
 export function orderHasDiscount(order: Order): boolean {

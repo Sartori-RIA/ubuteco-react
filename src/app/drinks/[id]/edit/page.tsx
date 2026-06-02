@@ -8,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {DrinkForm} from "@/app/drinks/components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -15,6 +16,7 @@ export default function Page() {
   const drink = useSelector((state: RootState) => state.drinks.drinks.find((drink) => drink.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     if (id) {
@@ -31,13 +33,13 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (drink === undefined) return <h1>Not Found</h1>
+  if (drink === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <DrinkForm
       defaultValues={drink}
       action={handleEditDrink}
-      submitLabel="Update Drink"
+      submitLabel={t("forms.updateDrinkSubmit")}
       errors={errors}
       loading={loading}
     />

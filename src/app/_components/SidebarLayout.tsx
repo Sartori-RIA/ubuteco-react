@@ -21,7 +21,8 @@ import {
   faWineBottle
 } from "@fortawesome/free-solid-svg-icons";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
-import {getPageTitle} from "@/app/_lib/page-titles";
+import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
+import type {TranslationKey} from "@/app/_lib/i18n";
 import {userInitials} from "@/app/_lib/user-display";
 import {Buttons} from ".";
 import Link from "next/link";
@@ -39,6 +40,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const user = useAppSelector((state) => state.auth.user);
   const {isSuperAdmin, user: capabilitiesUser} = useAuthCapabilities();
   const kitchenOnly = isKitchenStaff(capabilitiesUser);
+  const t = useTranslations();
+  const pageTitle = usePageTitle();
 
   if (isAuthPublicPath(pathname)) {
     return <>{children}</>;
@@ -49,22 +52,22 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
     router.replace("/login");
   };
 
-  const allMenuItems = [
-    {label: "Dashboard", icon: faHouse, link: "/"},
-    {label: "Kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
-    {label: "Beers", icon: faBeer, link: "/beers"},
-    {label: "Beer Styles", icon: faBeer, link: "/beer-styles"},
-    {label: "Drinks", icon: faGlassMartini, link: "/drinks"},
-    {label: "Wines", icon: faWineBottle, link: "/wines"},
-    {label: "Wine Styles", icon: faWineBottle, link: "/wine-styles"},
-    {label: "Dishes", icon: faHamburger, link: "/dishes"},
-    {label: "Food", icon: faHamburger, link: "/foods"},
-    {label: "Makers", icon: faIndustry, link: "/makers"},
-    {label: "Orders", icon: faCartShopping, link: "/orders"},
-    {label: "Organizations", icon: faBuilding, link: "/organizations"},
-    {label: "Tables", icon: faChair, link: "/tables"},
-    {label: "Users", icon: faUsers, link: "/users"},
-    {label: "Settings", icon: faGear, link: "/settings"},
+  const allMenuItems: {labelKey: TranslationKey; icon: typeof faHouse; link: string; kitchen?: boolean}[] = [
+    {labelKey: "nav.dashboard", icon: faHouse, link: "/"},
+    {labelKey: "nav.kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
+    {labelKey: "nav.beers", icon: faBeer, link: "/beers"},
+    {labelKey: "nav.beerStyles", icon: faBeer, link: "/beer-styles"},
+    {labelKey: "nav.drinks", icon: faGlassMartini, link: "/drinks"},
+    {labelKey: "nav.wines", icon: faWineBottle, link: "/wines"},
+    {labelKey: "nav.wineStyles", icon: faWineBottle, link: "/wine-styles"},
+    {labelKey: "nav.dishes", icon: faHamburger, link: "/dishes"},
+    {labelKey: "nav.foods", icon: faHamburger, link: "/foods"},
+    {labelKey: "nav.makers", icon: faIndustry, link: "/makers"},
+    {labelKey: "nav.orders", icon: faCartShopping, link: "/orders"},
+    {labelKey: "nav.organizations", icon: faBuilding, link: "/organizations"},
+    {labelKey: "nav.tables", icon: faChair, link: "/tables"},
+    {labelKey: "nav.users", icon: faUsers, link: "/users"},
+    {labelKey: "nav.settings", icon: faGear, link: "/settings"},
   ];
 
   const menuItems = kitchenOnly
@@ -93,13 +96,13 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
           >
             <div>
               <div className="border-b border-border p-6">
-                <h1 className="text-xl font-bold tracking-tight text-foreground">Ubuteco</h1>
+                <h1 className="text-xl font-bold tracking-tight text-foreground">{t("common.appName")}</h1>
                 <p className="text-sm text-muted">
-                  {user?.name ?? user?.email ?? "Admin Panel"}
+                  {user?.name ?? user?.email ?? t("common.adminPanel")}
                 </p>
                 {isSuperAdmin && (
                   <p className="mt-1 text-xs font-medium text-amber-700 dark:text-amber-400">
-                    Platform — catalog read-only
+                    {t("nav.platformReadOnly")}
                   </p>
                 )}
               </div>
@@ -108,11 +111,11 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
                 {menuItems.map((item) => (
                   <Link
                     href={item.link}
-                    key={item.label}
+                    key={item.link}
                     className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition hover:bg-surface-muted ${linkClass(item.link)}`}
                   >
                     <FontAwesomeIcon icon={item.icon} className="text-base"/>
-                    <span className="text-sm font-medium">{item.label}</span>
+                    <span className="text-sm font-medium">{t(item.labelKey)}</span>
                   </Link>
                 ))}
               </nav>
@@ -120,7 +123,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
 
             <div className="border-t border-border p-4">
               <Buttons onClick={handleLogout} className="flex w-full items-center gap-2 rounded-2xl">
-                <FontAwesomeIcon icon={faRightFromBracket}/> Sign out
+                <FontAwesomeIcon icon={faRightFromBracket}/> {t("common.signOut")}
               </Buttons>
             </div>
           </motion.aside>
@@ -138,7 +141,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             >
               <FontAwesomeIcon icon={faBars}/>
             </Buttons>
-            <h2 className="text-lg font-semibold text-foreground">{getPageTitle(pathname)}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{pageTitle}</h2>
           </div>
 
           <Link
@@ -156,7 +159,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
               {user ? userInitials(user) : <FontAwesomeIcon icon={faUser}/>}
             </span>
             <span className="hidden max-w-[140px] truncate text-sm font-medium text-foreground sm:inline">
-              {user?.name ?? user?.email ?? "My account"}
+              {user?.name ?? user?.email ?? t("common.myAccount")}
             </span>
           </Link>
         </header>

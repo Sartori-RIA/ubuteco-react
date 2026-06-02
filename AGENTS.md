@@ -54,6 +54,7 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 | Pages | `src/app/**/page.tsx` |
 | Shared UI | `src/app/_components/` |
 | Hooks | `src/app/_hooks/` |
+| i18n | `src/app/_lib/i18n/` |
 | Redux | `src/app/_store/` |
 
 ## Companion repo

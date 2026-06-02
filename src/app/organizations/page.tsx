@@ -1,3 +1,8 @@
+"use client";
+
+import {useTranslations} from "@/app/_hooks/useTranslations";
+
 export default function Page() {
-  return (<h1>Tables index page</h1>)
+  const t = useTranslations();
+  return <h1>{t("catalog.organizationsPlaceholder")}</h1>;
 }

@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {motion} from "motion/react";
 import Form from "next/form";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface MakerFormProps {
   defaultValues?: Partial<Maker>;
@@ -21,6 +22,7 @@ export function MakerForm({
                             loading = false,
                             submitLabel = "Save Maker",
                           }: MakerFormProps) {
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(defaultValues?.logo_url ?? null);
   const [form, setForm] = useState<Partial<Maker>>({
     name: defaultValues?.name ?? "",
@@ -38,13 +40,13 @@ export function MakerForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Maker" : "New Maker"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateMaker") : t("forms.newMaker")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -53,7 +55,7 @@ export function MakerForm({
               />
             </Label>
 
-            <Label label="Country">
+            <Label label={t("forms.fields.country")}>
               <Input
                 value={form.country ?? ""}
                 onChange={(e) => setField("country", e.target.value)}
@@ -72,7 +74,7 @@ export function MakerForm({
               />
             )}
 
-            <Label label="Logo">
+            <Label label={t("forms.fields.logo")}>
               <Input
                 type="file"
                 name="logo"

@@ -7,10 +7,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
+  const t = useTranslations();
 
   const drink = useSelector((state: RootState) => state.drinks.drinks.find((drink) => drink.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.drinks);
@@ -22,7 +24,7 @@ export default function Page() {
   }, [dispatch, id])
 
   if (loading) return <Loading/>;
-  if (drink === undefined) return <h1>Not Found</h1>
+  if (drink === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <Card title={drink.name}>

@@ -8,6 +8,7 @@ import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import dynamic from "next/dynamic";
 import {setSearchTerm} from "@/app/_store/features/wines/winesSlice";
@@ -16,7 +17,8 @@ function Page() {
   const {wines, loading} = useAppSelector((state: RootState) => state.wines);
   const router = useRouter();
   const dispatch = useAppDispatch()
-  const searchTerm = useAppSelector(state => state.beers.searchTerm);
+  const t = useTranslations();
+  const searchTerm = useAppSelector(state => state.wines.searchTerm);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -27,7 +29,7 @@ function Page() {
   }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm(t("common.confirmDelete"))) return;
 
     dispatch(winesThunks.delete(Number(id)))
     router.refresh();
@@ -35,7 +37,7 @@ function Page() {
 
   return (
     <ProductList addProductUrl="/wines/new"
-                 title="Wines"
+                 title={t("nav.wines")}
                  searchValue={searchTerm}
                  onSearch={(v) => dispatch(setSearchTerm(v))}
     >
@@ -48,12 +50,12 @@ function Page() {
           onDelete={() => handleDelete(Number(product.id))}
         >
           <>
-            <strong>Grapes</strong>: {product.grapes} <br/>
-            <strong>Ripening</strong>: {product.ripening} <br/>
-            <strong>Vintage wine</strong>: {product.vintage_wine} <br/>
-            <strong>Visual</strong>: {product.visual} <br/>
-            <strong>Maker</strong>: {product.maker?.name} <br/>
-            <strong>ABV</strong>: {product.abv}
+            <strong>{t("catalog.grapes")}</strong>: {product.grapes} <br/>
+            <strong>{t("catalog.ripening")}</strong>: {product.ripening} <br/>
+            <strong>{t("catalog.vintageWine")}</strong>: {product.vintage_wine} <br/>
+            <strong>{t("catalog.visual")}</strong>: {product.visual} <br/>
+            <strong>{t("common.maker")}</strong>: {product.maker?.name} <br/>
+            <strong>{t("common.abv")}</strong>: {product.abv}
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

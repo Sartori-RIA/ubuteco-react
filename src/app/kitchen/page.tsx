@@ -22,6 +22,7 @@ import {fetchCurrentUser} from "@/app/_store/features/auth/authThunks";
 import {kitchenThunks} from "@/app/_store/features/kitchen/kitchenThunks";
 import {ActionCableKitchenMessage} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useRouter} from "next/navigation";
 
 function KitchenPage() {
@@ -29,6 +30,7 @@ function KitchenPage() {
   const dispatch = useAppDispatch();
   const {showToast} = useToast();
   const {confirm, confirmDialogProps} = useConfirm();
+  const t = useTranslations();
   const {user: capabilitiesUser} = useAuthCapabilities();
   const authUser = useAppSelector((state: RootState) => state.auth.user);
   const user = authUser ?? capabilitiesUser;
@@ -48,12 +50,12 @@ function KitchenPage() {
       if (!isKitchenOpen) return;
 
       if (message.action === "create") {
-        showToast("New dish order received", "info");
+        showToast(t("kitchen.toastNewDish"), "info");
       } else if (message.action === "update") {
-        showToast("Dish status updated", "info");
+        showToast(t("kitchen.toastStatusUpdated"), "info");
       }
     },
-    [isKitchenOpen, showToast]
+    [isKitchenOpen, showToast, t]
   );
 
   useKitchenCable(canUseKitchen && isKitchenOpen, {
@@ -91,10 +93,10 @@ function KitchenPage() {
 
       const result = await dispatch(kitchenThunks.updateTicketStatus({id, status}));
       if (kitchenThunks.updateTicketStatus.fulfilled.match(result)) {
-        showToast("Status updated", "success");
+        showToast(t("kitchen.toastStatusSaved"), "success");
       }
     },
-    [dispatch, isKitchenOpen, showToast]
+    [dispatch, isKitchenOpen, showToast, t]
   );
 
   const handleOperationalToggle = useCallback(async () => {
@@ -104,10 +106,9 @@ function KitchenPage() {
     const closing = isKitchenOpen;
     if (closing) {
       const ok = await confirm({
-        title: "Close kitchen",
-        message:
-          "Close the kitchen for this shift? All open orders will be closed automatically and the live queue will clear.",
-        confirmLabel: "Close kitchen",
+        title: t("kitchen.closeKitchen"),
+        message: t("kitchen.closeKitchenMessage"),
+        confirmLabel: t("kitchen.closeKitchenConfirm"),
         variant: "danger",
       });
       if (!ok) return;
@@ -125,17 +126,15 @@ function KitchenPage() {
       );
       loadQueue();
       showToast(
-        operational_status === "open"
-          ? "Kitchen is now open"
-          : "Kitchen closed — open orders were closed",
+        operational_status === "open" ? t("kitchen.toastOpened") : t("kitchen.toastClosed"),
         "success"
       );
     } catch {
-      showToast("Could not update kitchen status", "error");
+      showToast(t("kitchen.toastOperationalFailed"), "error");
     } finally {
       setTogglingOperational(false);
     }
-  }, [confirm, dispatch, isKitchenOpen, loadQueue, showToast, user]);
+  }, [confirm, dispatch, isKitchenOpen, loadQueue, showToast, t, user]);
 
   if (!canUseKitchen) {
     return <Loading/>;
@@ -147,12 +146,8 @@ function KitchenPage() {
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Kitchen</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            The queue loads when you open this page. New and updated <strong>Dish</strong> lines arrive live
-            while the kitchen is <strong>open</strong>. Closing the kitchen also closes all open orders for
-            this shift.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">{t("kitchen.title")}</h1>
+          <p className="mt-1 text-sm text-muted">{t("kitchen.description")}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-sm">
           <button
@@ -161,51 +156,53 @@ function KitchenPage() {
             onClick={handleOperationalToggle}
             className={`rounded-full border px-3 py-1 font-medium transition-colors disabled:opacity-60 ${
               isKitchenOpen
-                ? "border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100"
-                : "border-gray-300 bg-gray-100 text-gray-800 hover:bg-gray-200"
+                ? "border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                : "border-border bg-surface-muted text-foreground hover:bg-border"
             }`}
           >
-            {togglingOperational ? "Updating…" : isKitchenOpen ? "Open — close kitchen" : "Closed — open kitchen"}
+            {togglingOperational
+              ? t("kitchen.updating")
+              : isKitchenOpen
+                ? t("kitchen.openCloseOpen")
+                : t("kitchen.openCloseClosed")}
           </button>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium ${
               cableConnected
-                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                : "border-amber-200 bg-amber-50 text-amber-800"
+                ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                : "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
             }`}
           >
             <span
               className={`h-2 w-2 rounded-full ${cableConnected ? "bg-emerald-500" : "bg-amber-500"}`}
             />
-            {cableConnected ? "Live" : "Connecting…"}
+            {cableConnected ? t("kitchen.live") : t("kitchen.connecting")}
           </span>
           <button
             type="button"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1 text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-border bg-surface px-3 py-1 text-foreground hover:bg-surface-muted"
             onClick={loadQueue}
             disabled={!isKitchenOpen || loading}
           >
-            Refresh
+            {t("kitchen.refresh")}
           </button>
-          <span className="text-xs text-gray-500">{tickets.length} items</span>
+          <span className="text-xs text-muted">{t("kitchen.itemsCount", {count: tickets.length})}</span>
         </div>
       </div>
 
       <FormErrors errors={errors}/>
 
       {!isKitchenOpen ? (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Kitchen is <strong>closed</strong>. Use the button above to <strong>open the kitchen</strong>{" "}
-          when service starts. Closing the kitchen also closes all open orders for this shift.
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+          {t("kitchen.closedBanner")}
         </div>
       ) : null}
 
       {loading && tickets.length === 0 ? (
         <Loading/>
       ) : tickets.length === 0 && isKitchenOpen ? (
-        <p className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-8 text-center text-sm text-gray-600">
-          No dish items on <strong>open orders</strong> yet. Add a <strong>Dish</strong> line to an open order —
-          it will appear here and trigger a live notification.
+        <p className="rounded-lg border border-dashed border-border bg-surface-muted px-4 py-8 text-center text-sm text-muted">
+          {t("kitchen.emptyQueue")}
         </p>
       ) : (
         <KitchenBoard

@@ -16,7 +16,7 @@ async function create(data: Organization): Promise<Organization> {
   });
 }
 
-async function update(id: number, data: Organization): Promise<Organization> {
+async function update(id: number, data: Partial<Organization>): Promise<Organization> {
   return await apiFetch<Organization>(`v1/organizations/${id}`, {
     body: JSON.stringify(data),
     method: 'PATCH'

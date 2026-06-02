@@ -9,6 +9,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {wineStylesThunks} from "@/app/_store/features/wine_styles/wineStylesThunks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface WineFormProps {
   defaultValues?: Partial<Wine>;
@@ -28,6 +29,7 @@ export function WineForm({
   const makers: Maker[] = useAppSelector((state: RootState) => state.makers.makers);
   const wineStyles: WineStyle[] = useAppSelector((state: RootState) => state.wineStyles.wineStyles);
   const dispatch = useAppDispatch();
+  const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Wine>>({
     name: defaultValues?.name ?? "",
@@ -57,13 +59,13 @@ export function WineForm({
       transition={{duration: 0.25}}
       className="max-w-2xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Wine" : "New Wine"} className="rounded-2xl shadow-lg">
+      <Card title={defaultValues?.id ? t("forms.updateWine") : t("forms.newWine")} className="rounded-2xl shadow-lg">
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -75,12 +77,12 @@ export function WineForm({
               {preview && (
                 <img
                   src={preview}
-                  alt="Preview"
+                  alt={t("forms.fields.imagePreview")}
                   className="mt-2 h-32 rounded-xl object-cover"
                 />
               )}
 
-              <Label label="Image">
+              <Label label={t("forms.fields.image")}>
                 <Input
                   type="file"
                   name="image"
@@ -97,7 +99,7 @@ export function WineForm({
             </div>
           </div>
 
-          <Label label="Description">
+          <Label label={t("forms.fields.description")}>
             <Textarea
               rows={4}
               name="description"
@@ -107,7 +109,7 @@ export function WineForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Grapes">
+            <Label label={t("forms.fields.grapes")}>
               <Input
                 name="grapes"
                 value={form.grapes}
@@ -115,7 +117,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="Ripening">
+            <Label label={t("forms.fields.ripening")}>
               <Input
                 name="ripening"
                 value={form.ripening}
@@ -123,7 +125,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="Vintage Wine">
+            <Label label={t("forms.fields.vintageWine")}>
               <Input
                 name="vintage_wine"
                 value={form.vintage_wine}
@@ -131,7 +133,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="Visual">
+            <Label label={t("forms.fields.visual")}>
               <Input
                 name="visual"
                 value={form.visual}
@@ -139,7 +141,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="ABV">
+            <Label label={t("forms.fields.abv")}>
               <Input
                 type="number"
                 name="abv"
@@ -148,7 +150,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="Price">
+            <Label label={t("forms.fields.price")}>
               <Input
                 type="number"
                 step="0.01"
@@ -158,7 +160,7 @@ export function WineForm({
               />
             </Label>
 
-            <Label label="Stock Quantity">
+            <Label label={t("forms.fields.stockQuantity")}>
               <Input
                 type="number"
                 name="quantity_stock"
@@ -168,13 +170,13 @@ export function WineForm({
             </Label>
 
             {wineStyles.length > 0 && (
-              <Label label="Wine Style">
+              <Label label={t("forms.fields.wineStyle")}>
                 <Select
                   name="wine_style_id"
                   value={form.wine_style_id ?? ""}
                   onChange={(value) => setField("wine_style_id", Number(value))}
                 >
-                  <option value="">Select style</option>
+                  <option value="">{t("forms.fields.selectStyle")}</option>
                   {wineStyles.map((style) => (
                     <option key={style.id} value={style.id}>
                       {style.name}
@@ -185,13 +187,13 @@ export function WineForm({
             )}
 
             {makers.length > 0 && (
-              <Label label="Maker">
+              <Label label={t("forms.fields.maker")}>
                 <Select
                   name="maker_id"
                   value={form.maker_id ?? ""}
                   onChange={(value) => setField("maker_id", Number(value))}
                 >
-                  <option value="">Select Maker</option>
+                  <option value="">{t("forms.fields.selectMaker")}</option>
                   {makers.map((maker) => (
                     <option key={maker.id} value={maker.id}>
                       {maker.name}

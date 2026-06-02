@@ -8,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {MakerForm} from "@/app/makers/components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -15,6 +16,7 @@ export default function Page() {
   const maker = useSelector((state: RootState) => state.makers.makers.find((m) => m.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.makers);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     if (id) {
@@ -31,13 +33,13 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (maker === undefined) return <h1>Not Found</h1>
+  if (maker === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <MakerForm
       defaultValues={maker}
       action={handleEdit}
-      submitLabel="Update Maker"
+      submitLabel={t("forms.updateMakerSubmit")}
       errors={errors}
       loading={loading}
     />

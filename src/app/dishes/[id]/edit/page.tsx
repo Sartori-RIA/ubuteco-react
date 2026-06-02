@@ -9,6 +9,7 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {DishForm} from "@/app/dishes/components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -17,6 +18,7 @@ export default function Page() {
   const {foodOptions} = useSelector((state: RootState) => state.foods);
   const {loading, errors} = useSelector((state: RootState) => state.dishes);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     dispatch(foodsThunks.fetchOptions())
@@ -34,7 +36,7 @@ export default function Page() {
   }
 
   if (loading && !dish) return <Loading/>;
-  if (dish === undefined) return <h1>Not Found</h1>
+  if (dish === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <DishForm
@@ -42,7 +44,7 @@ export default function Page() {
       defaultValues={dish}
       foods={foodOptions}
       onSubmit={handleEdit}
-      submitLabel="Update Dish"
+      submitLabel={t("forms.updateDishSubmit")}
       errors={errors}
       loading={loading}
     />

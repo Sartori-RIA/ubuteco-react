@@ -9,6 +9,7 @@ import {priceFromCents} from "@/app/_lib/money";
 import {buildDishFormData} from "@/app/dishes/_lib/buildDishFormData";
 import {DishIngredientsEditor} from "@/app/dishes/components/DishIngredientsEditor";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 interface DishFormProps {
   defaultValues?: Partial<Dish>;
@@ -37,6 +38,7 @@ export function DishForm({
                             submitLabel = "Save Dish",
                           }: DishFormProps) {
   const {canMutateOperationalData} = useAuthCapabilities();
+  const t = useTranslations();
   const readOnly = !canMutateOperationalData;
 
   const [preview, setPreview] = useState<string | null>(defaultValues?.image_url ?? null);
@@ -65,7 +67,7 @@ export function DishForm({
       transition={{duration: 0.25}}
       className="max-w-3xl mx-auto"
     >
-      <Card title={defaultValues?.id ? "Update Dish" : "New Dish"} className="rounded-2xl shadow-lg hover:translate-y-0">
+      <Card title={defaultValues?.id ? t("forms.updateDish") : t("forms.newDish")} className="rounded-2xl shadow-lg hover:translate-y-0">
         <form onSubmit={handleSubmit} className="space-y-8">
 
           <FormErrors errors={errors}/>
@@ -74,7 +76,7 @@ export function DishForm({
             <h4 className="text-sm font-semibold text-gray-900">Dish details</h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Label label="Name">
+              <Label label={t("forms.fields.name")}>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -83,7 +85,7 @@ export function DishForm({
                 />
               </Label>
 
-              <Label label="Price">
+              <Label label={t("forms.fields.price")}>
                 <Input
                   type="number"
                   step="0.01"
@@ -95,7 +97,7 @@ export function DishForm({
               </Label>
             </div>
 
-            <Label label="Image">
+            <Label label={t("forms.fields.image")}>
               {preview && (
                 <img
                   src={preview}
@@ -119,7 +121,7 @@ export function DishForm({
           </section>
 
           <section className="space-y-4 border-t pt-6">
-            <h4 className="text-sm font-semibold text-gray-900">Ingredients</h4>
+            <h4 className="text-sm font-semibold text-gray-900">{t("forms.fields.ingredients")}</h4>
             <DishIngredientsEditor
               foods={foods}
               ingredients={ingredients}

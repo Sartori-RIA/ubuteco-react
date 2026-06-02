@@ -7,13 +7,15 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {useRouter} from "next/navigation";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const dispatch = useAppDispatch()
   const router = useRouter();
+  const t = useTranslations();
 
-  async function handleCreateBeer(formData: FormData) {
+  async function handleCreateDrink(formData: FormData) {
     try {
       const updatedDrink = await dispatch(drinkThunks.create(formData)).unwrap()
       router.push(`/drinks/${updatedDrink.id}`);
@@ -23,8 +25,8 @@ export default function Page() {
 
   return (
     <DrinkForm
-      action={handleCreateBeer}
-      submitLabel="Save Drink"
+      action={handleCreateDrink}
+      submitLabel={t("forms.saveDrink")}
       loading={loading}
       errors={errors}
     />)

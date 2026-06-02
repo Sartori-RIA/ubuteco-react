@@ -14,6 +14,8 @@ import {
 } from "@/app/orders/components";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useConfirm} from "@/app/_hooks/useConfirm";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useToast} from "@/app/_components/Toast/ToastProvider";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
@@ -21,7 +23,6 @@ import {ordersThunks} from "@/app/_store/features/orders/ordersThunks";
 import {clearActiveOrder} from "@/app/_store/features/orders/ordersSlice";
 import {tablesThunks} from "@/app/_store/features/tables/tablesThunks";
 import {ItemOrderSend, OrderItemStatus} from "@/app/_types";
-import {formatDate} from "@/app/_lib/format-date";
 
 export default function OrderPage() {
   const {id} = useParams<{id: string}>();
@@ -31,6 +32,8 @@ export default function OrderPage() {
   const {showToast} = useToast();
   const {confirm, confirmDialogProps} = useConfirm();
   const {canMutateOperationalData} = useAuthCapabilities();
+  const t = useTranslations();
+  const {formatDate} = useMoneyFormat();
 
   const {
     activeOrder,
@@ -85,14 +88,14 @@ export default function OrderPage() {
         })
       );
       if (ordersThunks.updateOrderItem.fulfilled.match(result)) {
-        showToast("Item quantity updated", "success");
+        showToast(t("orders.toast.itemQtyUpdated"), "success");
       }
       return;
     }
 
     const result = await dispatch(ordersThunks.addOrderItem({orderId, data: payload}));
     if (ordersThunks.addOrderItem.fulfilled.match(result)) {
-      showToast("Item added to order", "success");
+      showToast(t("orders.toast.itemAdded"), "success");
     }
   };
 
@@ -107,25 +110,25 @@ export default function OrderPage() {
 
   const handleRemoveItem = async (itemId: number) => {
     const ok = await confirm({
-      title: "Remove item",
-      message: "Remove this item from the order? Stock will be restored for stocked products.",
-      confirmLabel: "Remove",
+      title: t("orders.confirm.removeItem.title"),
+      message: t("orders.confirm.removeItem.message"),
+      confirmLabel: t("orders.confirm.removeItem.confirm"),
       variant: "danger",
     });
     if (!ok) return;
 
     const result = await dispatch(ordersThunks.removeOrderItem({orderId, itemId}));
     if (ordersThunks.removeOrderItem.fulfilled.match(result)) {
-      showToast("Item removed", "success");
+      showToast(t("orders.toast.itemRemoved"), "success");
     }
   };
 
   const handleCloseOrder = async () => {
     if (!activeOrder) return;
     const ok = await confirm({
-      title: "Close order",
-      message: "Close this order? You will not be able to add more items.",
-      confirmLabel: "Close order",
+      title: t("orders.confirm.close.title"),
+      message: t("orders.confirm.close.message"),
+      confirmLabel: t("orders.confirm.close.confirm"),
     });
     if (!ok) return;
 
@@ -133,16 +136,16 @@ export default function OrderPage() {
       ordersThunks.updateOrder({id: Number(activeOrder.id), data: {status: "closed"}})
     );
     if (ordersThunks.updateOrder.fulfilled.match(result)) {
-      showToast("Order closed", "success");
+      showToast(t("orders.toast.orderClosed"), "success");
     }
   };
 
   const handleMarkPaid = async () => {
     if (!activeOrder) return;
     const ok = await confirm({
-      title: "Mark as paid",
-      message: "Mark this order as paid?",
-      confirmLabel: "Mark paid",
+      title: t("orders.confirm.markPaid.title"),
+      message: t("orders.confirm.markPaid.message"),
+      confirmLabel: t("orders.confirm.markPaid.confirm"),
     });
     if (!ok) return;
 
@@ -150,23 +153,23 @@ export default function OrderPage() {
       ordersThunks.updateOrder({id: Number(activeOrder.id), data: {status: "payed"}})
     );
     if (ordersThunks.updateOrder.fulfilled.match(result)) {
-      showToast("Order marked as paid", "success");
+      showToast(t("orders.toast.orderPaid"), "success");
     }
   };
 
   const handleDeleteOrder = async () => {
     if (!activeOrder) return;
     const ok = await confirm({
-      title: "Delete order",
-      message: "Delete this order permanently?",
-      confirmLabel: "Delete",
+      title: t("orders.confirm.delete.title"),
+      message: t("orders.confirm.delete.message"),
+      confirmLabel: t("orders.confirm.delete.confirm"),
       variant: "danger",
     });
     if (!ok) return;
 
     const result = await dispatch(ordersThunks.delete(Number(activeOrder.id)));
     if (ordersThunks.delete.fulfilled.match(result)) {
-      showToast("Order deleted", "success");
+      showToast(t("orders.toast.orderDeleted"), "success");
       router.replace("/orders");
     }
   };
@@ -178,8 +181,10 @@ export default function OrderPage() {
   if (!activeOrder) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold">Order not found</h1>
-        <Link href="/orders" className="text-blue-600 text-sm">← Back to orders</Link>
+        <h1 className="text-2xl font-bold text-foreground">{t("orders.notFound")}</h1>
+        <Link href="/orders" className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          ← {t("orders.back")}
+        </Link>
       </div>
     );
   }
@@ -190,23 +195,25 @@ export default function OrderPage() {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <Link href="/orders" className="text-sm text-blue-600 hover:text-blue-700">
-            ← Back to orders
+          <Link href="/orders" className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">
+            ← {t("orders.back")}
           </Link>
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl font-bold text-gray-900">Order #{activeOrder.id}</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              {t("orders.orderNumber", {id: activeOrder.id ?? ""})}
+            </h1>
             <OrderStatusBadge status={activeOrder.status}/>
           </div>
-          <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-600">
+          <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted">
             <div>
-              <dt className="inline font-medium text-gray-500">Created: </dt>
-              <dd className="inline">{formatDate(activeOrder.created_at)}</dd>
+              <dt className="inline font-medium">{t("orders.created")}: </dt>
+              <dd className="inline text-foreground">{formatDate(activeOrder.created_at)}</dd>
             </div>
             <div>
-              <dt className="inline font-medium text-gray-500">Table: </dt>
-              <dd className="inline">
+              <dt className="inline font-medium">{t("orders.table")}: </dt>
+              <dd className="inline text-foreground">
                 {activeOrder.table?.name ? (
-                  <Link href="/tables" className="text-blue-600 hover:text-blue-700">
+                  <Link href="/tables" className="text-blue-600 hover:text-blue-700 dark:text-blue-400">
                     {activeOrder.table.name}
                   </Link>
                 ) : (
@@ -215,8 +222,8 @@ export default function OrderPage() {
               </dd>
             </div>
             <div>
-              <dt className="inline font-medium text-gray-500">Staff: </dt>
-              <dd className="inline">{activeOrder.user?.name ?? "—"}</dd>
+              <dt className="inline font-medium">{t("orders.staff")}: </dt>
+              <dd className="inline text-foreground">{activeOrder.user?.name ?? "—"}</dd>
             </div>
           </dl>
         </div>
@@ -225,17 +232,17 @@ export default function OrderPage() {
           <div className="flex flex-wrap gap-2">
             {isOpen && (
               <Buttons variant="outline" onClick={handleCloseOrder} loading={saving}>
-                Close order
+                {t("orders.closeOrder")}
               </Buttons>
             )}
             {isClosed && (
               <Buttons variant="default" onClick={handleMarkPaid} loading={saving}>
-                Mark as paid
+                {t("orders.markPaid")}
               </Buttons>
             )}
             {isOpen && (
               <Buttons variant="danger" onClick={handleDeleteOrder} loading={saving}>
-                Delete
+                {t("orders.delete")}
               </Buttons>
             )}
           </div>
@@ -244,7 +251,7 @@ export default function OrderPage() {
 
       <FormErrors errors={errors}/>
 
-      <Card title="Table & discount" className="hover:translate-y-0">
+      <Card title={t("orders.tableAndDiscount")} className="hover:translate-y-0">
         <OrderMetaForm
           key={`${activeOrder.id}-${activeOrder.table_id ?? ""}-${activeOrder.discount_cents ?? 0}`}
           order={activeOrder}
@@ -254,7 +261,7 @@ export default function OrderPage() {
         />
       </Card>
 
-      <Card title="Items" className="hover:translate-y-0">
+      <Card title={t("orders.items")} className="hover:translate-y-0">
         {!readOnly && (
           <div className="mb-6">
             <AddOrderItemPanel
@@ -275,7 +282,7 @@ export default function OrderPage() {
         />
       </Card>
 
-      <Card title="Totals" className="hover:translate-y-0">
+      <Card title={t("orders.totals")} className="hover:translate-y-0">
         <OrderSummary order={activeOrder}/>
       </Card>
     </div>

@@ -1,11 +1,11 @@
-/** Money-Rails JSON shape when serializing monetized fields via `extract! :total`. */
+import {OrganizationSettings} from "@/app/_lib/organization-settings";
+import {formatAmount as formatAmountWithLocale, formatMoney} from "@/app/_lib/format";
+
+/** @deprecated Use formatMoney/formatAmount from `@/app/_lib/format` with org settings. */
 export type MoneyJson = {
   cents?: number;
   currency_iso?: string;
 };
-
-/** All amounts are shown in USD in the UI (values are not converted). */
-export const DISPLAY_CURRENCY = "USD";
 
 type Priced = {
   price?: number | MoneyJson;
@@ -15,7 +15,7 @@ type Priced = {
 
 export function parseMoneyValue(
   value: unknown,
-  currencyFallback = DISPLAY_CURRENCY
+  currencyFallback = "BRL"
 ): {amount: number; currency: string} | null {
   if (value == null) return null;
 
@@ -28,7 +28,7 @@ export function parseMoneyValue(
     if (typeof money.cents === "number") {
       return {
         amount: money.cents / 100,
-        currency: DISPLAY_CURRENCY,
+        currency: money.currency_iso ?? currencyFallback,
       };
     }
   }
@@ -36,24 +36,21 @@ export function parseMoneyValue(
   return null;
 }
 
-export function formatAmount(amount: number): string {
-  if (Number.isNaN(amount)) return "—";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: DISPLAY_CURRENCY,
-  }).format(amount);
-}
+export function displayPrice(item: Priced, settings?: Partial<OrganizationSettings>): string {
+  if (item.price_cents != null) {
+    return formatMoney(item.price_cents, {
+      currency: item.price_currency,
+      ...settings,
+    });
+  }
 
-export function displayPrice(item: Priced): string {
-  const fromCents =
-    item.price_cents != null
-      ? {amount: item.price_cents / 100, currency: DISPLAY_CURRENCY}
-      : null;
-  const fromPrice = parseMoneyValue(item.price, item.price_currency);
-  const parsed = fromCents ?? fromPrice;
-
+  const parsed = parseMoneyValue(item.price, item.price_currency ?? settings?.defaultCurrency);
   if (!parsed) return "—";
-  return formatAmount(parsed.amount);
+
+  return formatAmountWithLocale(parsed.amount, {
+    currency: parsed.currency,
+    ...settings,
+  });
 }
 
 export function priceFromCents(item: Priced): number {
@@ -65,13 +62,23 @@ export function priceFromCents(item: Priced): number {
 
 export function displayMoneyField(
   cents: number | undefined,
-  _currency: string | undefined,
-  legacyValue: unknown
+  currency: string | undefined,
+  legacyValue: unknown,
+  settings?: Partial<OrganizationSettings>
 ): string {
   if (cents != null) {
-    return formatAmount(cents / 100);
+    return formatMoney(cents, {currency, ...settings});
   }
-  const parsed = parseMoneyValue(legacyValue);
-  if (parsed) return formatAmount(parsed.amount);
+
+  const parsed = parseMoneyValue(legacyValue, currency ?? settings?.defaultCurrency);
+  if (parsed) {
+    return formatAmountWithLocale(parsed.amount, {
+      currency: parsed.currency,
+      ...settings,
+    });
+  }
+
   return "—";
 }
+
+export {formatAmount, formatMoney} from "@/app/_lib/format";

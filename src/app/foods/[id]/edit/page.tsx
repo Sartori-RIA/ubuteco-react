@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -15,6 +16,7 @@ export default function Page() {
   const food = useSelector((state: RootState) => state.foods.foods.find((food) => food.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.foods);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     if (id) {
@@ -31,13 +33,13 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (food === undefined) return <h1>Not Found</h1>
+  if (food === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <FoodForm
       defaultValues={food}
       action={handleEditFood}
-      submitLabel="Update Food"
+      submitLabel={t("forms.updateFoodSubmit")}
       errors={errors}
       loading={loading}
     />

@@ -8,13 +8,16 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const {canMutateOperationalData} = useAuthCapabilities()
+  const t = useTranslations();
+  const {displayPrice} = useMoneyFormat();
 
   const dish = useSelector((state: RootState) => state.dishes.dishes.find((item) => item.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.dishes);
@@ -26,7 +29,7 @@ export default function Page() {
   }, [dispatch, id])
 
   if (loading) return <Loading/>;
-  if (dish === undefined) return <h1>Not Found</h1>
+  if (dish === undefined) return <h1>{t("common.notFound")}</h1>
 
   const ingredients = dish.dish_ingredients ?? [];
 
@@ -38,7 +41,7 @@ export default function Page() {
             href={`/dishes/${dish.id}/edit`}
             className="text-sm font-medium text-blue-600 hover:text-blue-800"
           >
-            Edit dish
+            {t("catalog.editDish")}
           </Link>
         </div>
       )}
@@ -46,27 +49,29 @@ export default function Page() {
       <Card title={dish.name} className="hover:translate-y-0">
         <div className="grid xs:grid-cols-1 grid-cols-2 gap-4 mb-6">
           <p className="text-sm text-gray-600">
-            <strong>Price</strong>: {displayPrice(dish)}
+            <strong>{t("common.price")}</strong>: {displayPrice(dish)}
           </p>
           <ProductDetailImage src={dish.image_url} alt={dish.name}/>
         </div>
 
-        <h4 className="text-sm font-semibold text-gray-900 mb-3">Ingredients</h4>
+        <h4 className="text-sm font-semibold text-gray-900 mb-3">{t("catalog.ingredients")}</h4>
         {ingredients.length === 0 ? (
-          <p className="text-sm text-gray-500">No ingredients listed.</p>
+          <p className="text-sm text-gray-500">{t("catalog.noIngredientsListed")}</p>
         ) : (
           <div className="overflow-hidden rounded-xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-left text-gray-600">
                 <tr>
-                  <th className="px-4 py-2 font-medium">Food</th>
-                  <th className="px-4 py-2 font-medium">Quantity</th>
+                  <th className="px-4 py-2 font-medium">{t("forms.fields.food")}</th>
+                  <th className="px-4 py-2 font-medium">{t("forms.fields.quantity")}</th>
                 </tr>
               </thead>
               <tbody>
                 {ingredients.map((ingredient) => (
                   <tr key={ingredient.id} className="border-t border-gray-100">
-                    <td className="px-4 py-2">{ingredient.food?.name ?? `Food #${ingredient.food_id}`}</td>
+                    <td className="px-4 py-2">
+                      {ingredient.food?.name ?? t("catalog.foodFallback", {id: ingredient.food_id})}
+                    </td>
                     <td className="px-4 py-2">{ingredient.quantity}</td>
                   </tr>
                 ))}

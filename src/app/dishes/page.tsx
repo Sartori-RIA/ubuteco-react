@@ -1,13 +1,14 @@
 "use client"
 
 import {Dish} from "@/app/_types";
-import {displayPrice} from "@/app/_lib/money";
+import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {ProductCard, ProductList} from "@/app/_components/Product";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
 import {RootState} from "@/app/_store";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 import dynamic from "next/dynamic";
 import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {setSearchTerm} from "@/app/_store/features/dishes/dishesSlice";
@@ -20,6 +21,8 @@ function Page() {
   const {dishes, loading} = useAppSelector((state: RootState) => state.dishes);
   const router = useRouter();
   const dispatch = useAppDispatch()
+  const t = useTranslations();
+  const {displayPrice} = useMoneyFormat();
   const searchTerm = useAppSelector(state => state.dishes.searchTerm);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ function Page() {
   }, [searchTerm, dispatch]);
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm(t("common.confirmDelete"))) return;
 
     dispatch(dishesThunks.delete(Number(id)))
     router.refresh();
@@ -41,7 +44,7 @@ function Page() {
     <ProductList addProductUrl="/dishes/new"
                  searchValue={searchTerm}
                  onSearch={(v) => dispatch(setSearchTerm(v))}
-                 title="Dishes">
+                 title={t("nav.dishes")}>
       {loading && <Loading/>}
       {!loading && dishes.map((dish: Dish) => (
         <ProductCard
@@ -51,8 +54,8 @@ function Page() {
           onDelete={() => handleDelete(Number(dish.id))}
         >
           <>
-            <strong>Price</strong>: {displayPrice(dish)}<br/>
-            <strong>Ingredients</strong>: {ingredientCount(dish)}
+            <strong>{t("common.price")}</strong>: {displayPrice(dish)}<br/>
+            <strong>{t("catalog.ingredients")}</strong>: {ingredientCount(dish)}
           </>
         </ProductCard>
       ))}

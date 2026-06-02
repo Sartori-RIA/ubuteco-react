@@ -8,9 +8,11 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
   const router = useRouter();
+  const t = useTranslations();
 
   const {id} = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
@@ -32,13 +34,13 @@ export default function Page() {
   }
 
   if (loading) return <Loading/>;
-  if (beer === undefined) return <h1>Not Found</h1>
+  if (beer === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
     <BeerForm
       defaultValues={beer}
       action={handleEditBeer}
-      submitLabel="Update Beer"
+      submitLabel={t("forms.updateBeerSubmit")}
       errors={errors}
       loading={loading}
     />
