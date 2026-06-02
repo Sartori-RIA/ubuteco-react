@@ -76,7 +76,7 @@ export function DishForm({
             <h4 className="text-sm font-semibold text-gray-900">Dish details</h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Label label="Name">
+              <Label label={t("forms.fields.name")}>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -85,7 +85,7 @@ export function DishForm({
                 />
               </Label>
 
-              <Label label="Price">
+              <Label label={t("forms.fields.price")}>
                 <Input
                   type="number"
                   step="0.01"
@@ -97,7 +97,7 @@ export function DishForm({
               </Label>
             </div>
 
-            <Label label="Image">
+            <Label label={t("forms.fields.image")}>
               {preview && (
                 <img
                   src={preview}

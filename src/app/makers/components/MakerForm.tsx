@@ -46,7 +46,7 @@ export function MakerForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -55,7 +55,7 @@ export function MakerForm({
               />
             </Label>
 
-            <Label label="Country">
+            <Label label={t("forms.fields.country")}>
               <Input
                 value={form.country ?? ""}
                 onChange={(e) => setField("country", e.target.value)}
@@ -74,7 +74,7 @@ export function MakerForm({
               />
             )}
 
-            <Label label="Logo">
+            <Label label={t("forms.fields.logo")}>
               <Input
                 type="file"
                 name="logo"

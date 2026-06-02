@@ -58,7 +58,7 @@ export function FoodForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -67,7 +67,7 @@ export function FoodForm({
               />
             </Label>
 
-            <Label label="Image">
+            <Label label={t("forms.fields.image")}>
               {preview && (
                 <img
                   src={preview}
@@ -89,7 +89,7 @@ export function FoodForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Price">
+            <Label label={t("forms.fields.price")}>
               <Input
                 type="number"
                 step="0.01"
@@ -100,7 +100,7 @@ export function FoodForm({
               />
             </Label>
 
-            <Label label="Stock quantity">
+            <Label label={t("forms.fields.stockQuantity")}>
               <Input
                 type="number"
                 min={0}
@@ -111,7 +111,7 @@ export function FoodForm({
               />
             </Label>
 
-            <Label label="Valid until">
+            <Label label={t("forms.fields.validUntil")}>
               <Input
                 type="date"
                 name="valid_until"

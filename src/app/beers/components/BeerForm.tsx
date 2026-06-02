@@ -64,7 +64,7 @@ export function BeerForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -76,12 +76,12 @@ export function BeerForm({
               {preview && (
                 <img
                   src={preview}
-                  alt="Preview"
+                  alt={t("forms.fields.imagePreview")}
                   className="mt-2 h-32 rounded-xl object-cover"
                 />
               )}
 
-              <Label label="Image">
+              <Label label={t("forms.fields.image")}>
                 <Input
                   type="file"
                   name="image"
@@ -98,7 +98,7 @@ export function BeerForm({
             </div>
           </div>
 
-          <Label label="Description">
+          <Label label={t("forms.fields.description")}>
             <Textarea
               rows={4}
               name="description"
@@ -108,7 +108,7 @@ export function BeerForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="IBU">
+            <Label label={t("forms.fields.ibu")}>
               <Input
                 type="number"
                 name="ibu"
@@ -118,7 +118,7 @@ export function BeerForm({
               />
             </Label>
 
-            <Label label="ABV">
+            <Label label={t("forms.fields.abv")}>
               <Input
                 type="number"
                 name="abv"
@@ -130,7 +130,7 @@ export function BeerForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Price">
+            <Label label={t("forms.fields.price")}>
               <Input
                 type="number"
                 step="0.01"
@@ -140,7 +140,7 @@ export function BeerForm({
               />
             </Label>
 
-            <Label label="Stock Quantity">
+            <Label label={t("forms.fields.stockQuantity")}>
               <Input
                 type="number"
                 name="quantity_stock"
@@ -151,13 +151,13 @@ export function BeerForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Beer Style">
+            <Label label={t("forms.fields.beerStyle")}>
               <Select
                 name="beer_style_id"
                 value={form.beer_style_id ?? ""}
                 onChange={(e) => setField("beer_style_id", Number(e))}
               >
-                <option value="">Select style</option>
+                <option value="">{t("forms.fields.selectStyle")}</option>
                 {beerStyles.map((style) => (
                   <option key={style.id} value={style.id}>
                     {style.name}
@@ -166,13 +166,13 @@ export function BeerForm({
               </Select>
             </Label>
 
-            <Label label="Maker">
+            <Label label={t("forms.fields.maker")}>
               <Select
                 name="maker_id"
                 value={form.maker_id}
                 onChange={(e) => setField("maker_id", Number(e))}
               >
-                <option value="">Select Maker</option>
+                <option value="">{t("forms.fields.selectMaker")}</option>
                 {makers.map((maker) => (
                   <option key={maker.id} value={maker.id}>
                     {maker.name}

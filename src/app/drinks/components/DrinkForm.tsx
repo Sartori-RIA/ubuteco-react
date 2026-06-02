@@ -49,7 +49,7 @@ export function DrinkForm({
           <FormErrors errors={errors}/>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Name">
+            <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
                 onChange={(e) => setField("name", e.target.value)}
@@ -60,12 +60,12 @@ export function DrinkForm({
             {preview && (
               <img
                 src={preview}
-                alt="Preview"
+                alt={t("forms.fields.imagePreview")}
                 className="mt-2 h-32 rounded-xl object-cover"
               />
             )}
 
-            <Label label="Image">
+            <Label label={t("forms.fields.image")}>
               <Input
                 type="file"
                 name="image"
@@ -81,7 +81,7 @@ export function DrinkForm({
             </Label>
           </div>
 
-          <Label label="Description">
+          <Label label={t("forms.fields.description")}>
             <Textarea
               rows={4}
               name="description"
@@ -91,7 +91,7 @@ export function DrinkForm({
           </Label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Label label="Flavor">
+            <Label label={t("forms.fields.flavor")}>
               <Input
                 name="flavor"
                 value={form.flavor}
@@ -100,7 +100,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="ABV">
+            <Label label={t("forms.fields.abv")}>
               <Input
                 type="number"
                 name="abv"
@@ -110,7 +110,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="Price">
+            <Label label={t("forms.fields.price")}>
               <Input
                 type="number"
                 step="0.01"
@@ -120,7 +120,7 @@ export function DrinkForm({
               />
             </Label>
 
-            <Label label="Stock Quantity">
+            <Label label={t("forms.fields.stockQuantity")}>
               <Input
                 type="number"
                 name="quantity_stock"
