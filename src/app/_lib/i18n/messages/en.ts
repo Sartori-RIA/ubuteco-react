@@ -418,6 +418,37 @@ const en: MessageCatalog = {
       },
     },
   },
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Organization performance for the selected date range.",
+    kpi: {
+      revenue: "Revenue",
+      orders: "Orders",
+      averageTicket: "Average ticket",
+      openOrders: "Open orders",
+    },
+    dateRange: {
+      title: "Date range",
+      from: "From",
+      to: "To",
+      hint: "Defaults to the last 7 days in your organization timezone (max 90 days).",
+    },
+    chart: {
+      revenueTitle: "Revenue over time",
+      empty: "No revenue data for this range.",
+    },
+    itemsByType: {
+      title: "Items by type",
+      empty: "No item mix data for this range.",
+    },
+    platform: {
+      title: "Platform",
+      subtitle: "Cross-organization tools for super admins.",
+      organizationsTitle: "Organizations",
+      organizationsHint: "Browse and manage tenant organizations on the platform.",
+      openOrganizations: "Open organizations",
+    },
+  },
   organizations: {
     profile: {
       title: "Organization",

@@ -33,7 +33,7 @@ When a plan gets an issue, add `**GitHub:** owner/repo#NN` to the plan header (s
 | 7 | [Users admin UI](./07-users-ui.md) | in progress | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 5 | [Testing](./05-testing.md) | not started | P1 | [08-api-contract-ci](../../../ubuteco_api/docs/plans/08-api-contract-and-ci.md) |
 | 2 | [Locale & currency](./02-locale-and-currency.md) | completed | P1 | [API](../../../ubuteco_api/docs/plans/02-locale-and-currency.md) |
-| 4 | [Organization dashboard](./04-organization-dashboard.md) | not started | P1 | [API](../../../ubuteco_api/docs/plans/04-organization-dashboard.md) |
+| 4 | [Organization dashboard](./04-organization-dashboard.md) | in progress | P1 | [API](../../../ubuteco_api/docs/plans/04-organization-dashboard.md) |
 | 9 | [Frontend performance](./09-frontend-performance.md) | not started | P2 | — |
 | 10 | [Browser document titles](./10-document-titles.md) | not started | P2 | — |
 | 11 | [Inventory UI](./11-inventory-ui.md) | not started | P2 | [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md) |

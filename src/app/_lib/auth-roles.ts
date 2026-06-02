@@ -81,3 +81,15 @@ const KITCHEN_ALLOWED_PATH = /^\/(kitchen|settings)(\/|$)/;
 export function isKitchenAllowedPath(pathname: string): boolean {
   return KITCHEN_ALLOWED_PATH.test(pathname);
 }
+
+const DASHBOARD_ROLES = new Set(["ADMIN", "CASH_REGISTER"]);
+
+/** Organization analytics dashboard at `/`. */
+export function canAccessDashboard(user: User | null | undefined): boolean {
+  const role = getRoleName(user);
+  return role != null && DASHBOARD_ROLES.has(role);
+}
+
+export function isDashboardPath(pathname: string): boolean {
+  return pathname === "/";
+}

@@ -1,8 +1,9 @@
 # Plan: Organization dashboard (frontend)
 
-**Status:** not started  
+**Status:** in progress  
 **Project:** ubuteco-react  
 **Backend:** [04-organization-dashboard.md](../../../ubuteco_api/docs/plans/04-organization-dashboard.md)  
+**Branch:** `feature/organization-dashboard`  
 **Priority:** P1
 
 ---
@@ -15,28 +16,28 @@ Admin dashboard page with KPI cards and charts fed by dedicated dashboard API (n
 
 ## Phase 1 — Routing & access
 
-- [ ] Route `/dashboard` (or `/` for admin landing)
-- [ ] `canAccessDashboard` by role (admin, cash_register)
-- [ ] Sidebar entry; hide if plan lacks feature (when plans exist)
+- [x] Route `/` for admin/cash_register landing (dashboard)
+- [x] `canAccessDashboard` by role (admin, cash_register)
+- [x] Sidebar entry hidden for waiter/kitchen; super admin sees platform home at `/`
 
 ---
 
 ## Phase 2 — Data fetching
 
-- [ ] `dashboardService.fetchSummary({ from, to })`
-- [ ] `dashboardService.fetchSeries({ from, to, grain, metric })`
-- [ ] Redux slice or React Query with cache keyed by date range
-- [ ] Default range: last 7 days; date pickers with org timezone ([02-locale-and-currency](./02-locale-and-currency.md))
+- [x] `dashboardService.fetchSummary({ from, to })`
+- [x] `dashboardService.fetchSeries({ from, to, grain, metric })`
+- [x] Redux `dashboardSlice` with cache keyed by date range
+- [x] Default range: last 7 days; date pickers with org timezone
 
 ---
 
 ## Phase 3 — UI components
 
-- [ ] KPI cards: revenue, orders, avg ticket, open orders
-- [ ] Line/bar chart: revenue over time (Recharts, Chart.js, or similar — match project stack)
-- [ ] Optional pie: items by type
-- [ ] Loading / empty / error states
-- [ ] Use `formatMoney` / `formatDate` helpers
+- [x] KPI cards: revenue, orders, avg ticket, open orders
+- [x] CSS bar chart: revenue over time (no extra chart dependency — lightweight SVG/CSS bars)
+- [x] Items-by-type panel (horizontal bars)
+- [x] Loading / empty / error states
+- [x] Use `formatMoney` / `formatDate` helpers
 
 ---
 
@@ -48,19 +49,20 @@ Admin dashboard page with KPI cards and charts fed by dedicated dashboard API (n
 
 ## Phase 5 — Tests
 
-- [ ] Render dashboard with mocked summary/series
-- [ ] Date range change triggers new fetch
+- [x] Service + date range unit tests
+- [x] Role guard: waiter/kitchen nav + auth-roles
+- [ ] Render dashboard with mocked summary/series (MSW — optional follow-up)
 
 ---
 
 ## Definition of done
 
-- [ ] Dashboard page with at least 4 KPIs + one time-series chart
-- [ ] Respects org currency/timezone formatting
-- [ ] No N+1 client-side aggregation from raw orders list
+- [x] Dashboard page with at least 4 KPIs + one time-series chart
+- [x] Respects org currency/timezone formatting
+- [x] No N+1 client-side aggregation from raw orders list
 
 ---
 
 ## Library note
 
-Pick chart library already in deps or add one lightweight dependency; document choice in PR when implementing.
+MVP uses a lightweight CSS bar chart (no Recharts/Chart.js) to avoid a new dependency; can swap later if needed.

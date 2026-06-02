@@ -47,6 +47,13 @@ describe("getVisibleNavGroups", () => {
     expect(links).not.toContain("/organizations");
   });
 
+  it("hides dashboard for waiter", () => {
+    const links = getVisibleNavGroups(userWithRole("WAITER")).flatMap((group) =>
+      group.items.map((item) => item.link)
+    );
+    expect(links).not.toContain("/");
+  });
+
   it("shows users for org admin", () => {
     const links = getVisibleNavGroups(userWithRole("ADMIN")).flatMap((group) =>
       group.items.map((item) => item.link)

@@ -1,6 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {
   canAccessOrganizations,
+  canAccessDashboard,
   canManageOrganization,
   isOrganizationPath,
 } from "@/app/_lib/auth-roles";
@@ -26,6 +27,13 @@ describe("organization access", () => {
     expect(canAccessOrganizations(userWithRole("KITCHEN"))).toBe(false);
     expect(canAccessOrganizations(userWithRole("WAITER"))).toBe(false);
     expect(canAccessOrganizations(userWithRole("CASH_REGISTER"))).toBe(false);
+    expect(canAccessDashboard(userWithRole("KITCHEN"))).toBe(false);
+    expect(canAccessDashboard(userWithRole("WAITER"))).toBe(false);
+  });
+
+  it("allows admin and cash register on dashboard", () => {
+    expect(canAccessDashboard(userWithRole("ADMIN"))).toBe(true);
+    expect(canAccessDashboard(userWithRole("CASH_REGISTER"))).toBe(true);
   });
 
   it("matches organization routes", () => {
