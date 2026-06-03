@@ -7,8 +7,7 @@ import {getCableUrl} from "@/app/_lib/cable-url";
 import {ActionCableKitchenMessage} from "@/app/_types/kitchen-dish";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {setCableConnected, ticketReceived} from "@/app/_store/features/kitchen/kitchenSlice";
-import {normalizeKitchenTicket} from "@/app/kitchen/_lib/normalize-ticket";
-import {parseKitchenCableMessage} from "@/app/kitchen/_lib/parse-kitchen-cable-message";
+import {applyKitchenCableMessage} from "@/app/kitchen/_lib/apply-kitchen-cable-message";
 
 function patchSubscriptionNotify(consumer: Consumer) {
   const subscriptions = consumer.subscriptions as {
@@ -80,21 +79,20 @@ export function useKitchenCable(enabled: boolean, options: Options = {}) {
         },
         received(raw: unknown) {
           try {
-            const message = parseKitchenCableMessage(raw);
-            if (!message.obj) {
-              console.warn("[KitchenCable] message without obj", message, raw);
+            const message = applyKitchenCableMessage(raw);
+            if (!message?.obj) {
+              console.warn("[KitchenCable] message without obj", raw);
               return;
             }
 
-            const ticket = normalizeKitchenTicket(message.obj);
             if (process.env.NODE_ENV === "development") {
               console.info("[KitchenCable] received", {
                 action: message.action,
-                orderItemId: ticket.id,
-                status: ticket.status,
+                orderItemId: message.obj.id,
+                status: message.obj.status,
               });
             }
-            dispatch(ticketReceived(ticket));
+            dispatch(ticketReceived(message.obj));
             onMessageRef.current?.(message);
           } catch (error) {
             console.error("[KitchenCable] Failed to handle message", error, raw);

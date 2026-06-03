@@ -1,6 +1,6 @@
 # Plan: Frontend testing
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [08-api-contract-and-ci](../../../ubuteco_api/docs/plans/08-api-contract-and-ci.md)  
 **Branch:** `feature/testing`  
@@ -17,9 +17,9 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 
 ## Current state
 
-- **Vitest** configured with path alias, MSW setup, and 50+ unit/integration tests.
-- **GitHub Actions** runs `npm test` + `npm run build` on push/PR.
-- E2E (Playwright) not yet added — deferred.
+- **Vitest** configured with path alias, MSW setup, and 55+ unit/integration tests.
+- **GitHub Actions** runs `npm ci`, `npm test`, and `npm run build` on push/PR.
+- **Playwright E2E** deferred — manual smoke path documented below.
 
 ---
 
@@ -43,24 +43,31 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 
 ## Phase 3 — Integration tests
 
-- [ ] Settings profile save (mock API)
-- [ ] Order add item updates state (mock API)
-- [ ] Kitchen page: cable message updates store (mock ActionCable)
+- [x] Settings profile save (mock API) — `usersService.updateProfile`
+- [x] Order add item updates state (mock API) — `ordersThunks.addOrderItem` + store
+- [x] Kitchen page: cable message updates store — `applyKitchenCableMessage` + `ticketReceived`
 - [x] `usersService.fetchAll` with MSW (no `organization_id` in query)
 
 ---
 
 ## Phase 4 — E2E (smoke)
 
-- [ ] Login → open order → add dish → item in table (API test env or docker)
-- [ ] Kitchen: second context or tab receives cable update (optional; flaky — mark optional)
+- [ ] Login → open order → add dish → item in table (Playwright — deferred)
+- [ ] Kitchen: second context or tab receives cable update (optional; flaky — deferred)
+
+### Manual E2E happy path (until Playwright)
+
+1. Start API + Redis (`CABLE_ADAPTER=redis`) and React (`npm run dev`).
+2. Log in as waiter → **Orders** → open an open order.
+3. Add a dish → confirm row appears in items table and total updates.
+4. Open **Kitchen** in another browser/profile → confirm new ticket appears (ActionCable).
 
 ---
 
 ## Phase 5 — CI
 
 - [x] GitHub Actions job runs `npm test` and `npm run build`
-- [ ] E2E on main only or nightly
+- [ ] E2E on main only or nightly (deferred with Playwright)
 
 ---
 
@@ -68,12 +75,14 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 
 - [x] `npm test` runs in CI
 - [x] Coverage on kitchen + orders slices and cable parsers
-- [ ] At least one E2E happy path documented
+- [x] At least one E2E happy path documented (manual smoke above)
 
 ---
 
 ## References
 
 - `src/test/setup.ts`, `src/test/msw/`
+- `src/app/kitchen/_lib/apply-kitchen-cable-message.ts`
 - `src/app/_hooks/useKitchenCable.ts`
 - `src/app/_store/features/orders/ordersSlice.ts`
+- `.github/workflows/ci.yml`

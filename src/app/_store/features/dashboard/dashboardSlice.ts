@@ -56,17 +56,17 @@ const dashboardSlice = createSlice({
     });
     builder.addAsyncThunk(dashboardThunks.fetchSummary, {
       fulfilled: (state, action) => {
-        state.summary = action.payload;
+        state.summary = action.payload as DashboardSummary;
       },
     });
     builder.addAsyncThunk(dashboardThunks.fetchSeries, {
       fulfilled: (state, action) => {
-        state.series = action.payload;
+        state.series = action.payload as DashboardSeries;
       },
     });
     builder.addAsyncThunk(dashboardThunks.fetchKitchen, {
       fulfilled: (state, action) => {
-        state.kitchen = action.payload;
+        state.kitchen = action.payload as DashboardKitchen;
       },
     });
   },

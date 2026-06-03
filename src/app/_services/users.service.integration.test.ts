@@ -20,6 +20,28 @@ describe("usersService integration (MSW)", () => {
     expect(result.data[0]?.email).toBe("kitchen@example.com");
   });
 
+  it("saves profile updates via PUT v1/users/:id", async () => {
+    server.use(
+      http.put(apiUrl("v1/users/1"), async ({request}) => {
+        const body = (await request.json()) as {name?: string; email?: string};
+        return HttpResponse.json({
+          id: 1,
+          name: body.name ?? "User",
+          email: body.email ?? "user@example.com",
+          role: {id: 2, name: "ADMIN"},
+        });
+      })
+    );
+
+    const updated = await usersService.updateProfile(1, {
+      name: "Updated Name",
+      email: "updated@example.com",
+    });
+
+    expect(updated.name).toBe("Updated Name");
+    expect(updated.email).toBe("updated@example.com");
+  });
+
   it("does not send organization_id in list requests", async () => {
     let requestUrl = "";
 
