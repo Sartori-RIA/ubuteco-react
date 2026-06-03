@@ -1,8 +1,9 @@
 # Plan: Frontend testing
 
-**Status:** not started  
+**Status:** in progress  
 **Project:** ubuteco-react  
 **Backend:** [08-api-contract-and-ci](../../../ubuteco_api/docs/plans/08-api-contract-and-ci.md)  
+**Branch:** `feature/testing`  
 **Priority:** P1  
 **Estimated effort:** 1 sprint
 
@@ -16,26 +17,27 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 
 ## Current state
 
-- No test runner in `package.json` (no Vitest/Jest/Playwright).
-- Manual testing only; regressions on orders/cable already occurred.
+- **Vitest** configured with path alias, MSW setup, and 50+ unit/integration tests.
+- **GitHub Actions** runs `npm test` + `npm run build` on push/PR.
+- E2E (Playwright) not yet added — deferred.
 
 ---
 
 ## Phase 1 — Tooling
 
-- [ ] Choose stack: **Vitest** + **Testing Library** for unit/integration; **Playwright** for E2E (recommended)
-- [ ] Scripts: `"test"`, `"test:e2e"`, CI integration
-- [ ] MSW for API mocking in unit tests
+- [x] Stack: **Vitest** + **Testing Library** (jsdom) for unit/integration; **Playwright** deferred for E2E
+- [x] Scripts: `"test"`, `"test:watch"`, `"test:coverage"`
+- [x] MSW for API mocking (`src/test/msw/`)
 
 ---
 
 ## Phase 2 — Unit tests (priority)
 
-- [ ] `parseKitchenCableMessage`, `normalizeKitchenTicket`
-- [ ] `auth-roles` helpers (`canAccessKitchen`, `isKitchenStaff`, …)
-- [ ] `kitchenSlice` — `ticketReceived`, loading flags
-- [ ] `ordersSlice` — `itemsRefreshRequestId` race fix behavior
-- [ ] `formatMoney` / date helpers (when [02-locale-and-currency](./02-locale-and-currency.md) adds them)
+- [x] `parseKitchenCableMessage`, `normalizeKitchenTicket`
+- [x] `auth-roles` helpers (`canAccessKitchen`, `canAccessDashboard`, …)
+- [x] `kitchenSlice` — `ticketReceived`, cable connection flag
+- [x] `ordersSlice` — `itemsRefreshRequestId` race fix behavior
+- [x] `formatMoney` / date helpers ([02-locale-and-currency](./02-locale-and-currency.md))
 
 ---
 
@@ -44,6 +46,7 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 - [ ] Settings profile save (mock API)
 - [ ] Order add item updates state (mock API)
 - [ ] Kitchen page: cable message updates store (mock ActionCable)
+- [x] `usersService.fetchAll` with MSW (no `organization_id` in query)
 
 ---
 
@@ -56,20 +59,21 @@ Automated tests for critical flows: auth, orders, kitchen realtime, and Redux lo
 
 ## Phase 5 — CI
 
-- [ ] GitHub Actions job runs `npm test` and `npm run build`
+- [x] GitHub Actions job runs `npm test` and `npm run build`
 - [ ] E2E on main only or nightly
 
 ---
 
 ## Definition of done
 
-- [ ] `npm test` runs in CI
-- [ ] Coverage on kitchen + orders slices and cable parsers
+- [x] `npm test` runs in CI
+- [x] Coverage on kitchen + orders slices and cable parsers
 - [ ] At least one E2E happy path documented
 
 ---
 
 ## References
 
+- `src/test/setup.ts`, `src/test/msw/`
 - `src/app/_hooks/useKitchenCable.ts`
 - `src/app/_store/features/orders/ordersSlice.ts`

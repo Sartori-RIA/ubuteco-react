@@ -16,10 +16,8 @@ Full **staff user management** for org admins: list, search, create, edit roles,
 
 ## Current state
 
-- `src/app/users/page.tsx` — placeholder (`<h1>Users index page</h1>`).
-- Sidebar “Users” for admins.
-- API: CRUD + Searchkick index on users in org.
-- Settings page: self-service profile for any logged-in user.
+- Full staff CRUD at `/users` for org ADMIN (merged).
+- Phase 7 MSW/UI tests partially covered by [05-testing](./05-testing.md) (`usersService` integration).
 
 ---
 
