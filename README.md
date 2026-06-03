@@ -1,6 +1,16 @@
 # ubuteco-react
 
+[![CI](https://github.com/Sartori-RIA/ubuteco-react/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Sartori-RIA/ubuteco-react/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-54_passing-brightgreen)](https://github.com/Sartori-RIA/ubuteco-react/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Sartori-RIA/ubuteco-react/main/.github/badges/coverage.json)](https://github.com/Sartori-RIA/ubuteco-react/actions/workflows/ci.yml)
+[![Node.js](https://img.shields.io/badge/node-20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![API](https://img.shields.io/badge/API-ubuteco__api-CC342D?logo=rubyonrails&logoColor=white)](https://github.com/Sartori-RIA/ubuteco_api)
+
 Staff UI for **uButeco** — orders, kitchen queue, catalog, and organization settings. Built with **Next.js** (App Router) and **Redux Toolkit**.
+
+> **Badges:** CI and coverage run on every push/PR. Coverage measures business-logic modules (`_lib`, `_services`, kitchen/orders store) — see `vitest.config.ts`. The coverage badge auto-updates on `main` after each CI run.
 
 The previous Angular app ([ubuteco_spa](https://github.com/Sartori-RIA/ubuteco_spa)) is **abandoned**. New features and fixes belong here only.
 
@@ -69,6 +79,7 @@ Open [http://localhost:3000](http://localhost:3000). API defaults to port 3001 (
 ```bash
 npm run build    # production build
 npm test         # vitest
+npm run test:coverage  # vitest + coverage report
 npm run lint     # eslint
 ```
 
