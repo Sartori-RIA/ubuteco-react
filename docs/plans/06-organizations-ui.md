@@ -1,9 +1,7 @@
 # Plan: Organizations UI
 
-**Status:** in progress  
-**Project:** ubuteco-react  
-**Backend:** [Organizations API](../../../ubuteco_api/app/controllers/api/v1/organizations_controller.rb), [02-locale-and-currency](../../../ubuteco_api/docs/plans/02-locale-and-currency.md)  
-**Branch:** `feature/organizations-ui`  
+**Status:** completed  
+**Branch:** `feature/organizations-ui` (merged)  
 **Priority:** P1  
 **Estimated effort:** 1–1.5 sprints
 

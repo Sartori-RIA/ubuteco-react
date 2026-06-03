@@ -1,6 +1,6 @@
 # Plan: Organization dashboard (frontend)
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [04-organization-dashboard.md](../../../ubuteco_api/docs/plans/04-organization-dashboard.md)  
 **Branch:** `feature/organization-dashboard`  
