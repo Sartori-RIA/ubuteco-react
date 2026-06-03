@@ -16,6 +16,7 @@ import {
 import type {TranslationKey} from "@/app/_lib/i18n";
 import {User} from "@/app/_types";
 import {
+  canAccessDashboard,
   canAccessKitchen,
   canAccessOrganizations,
   canManageUsers,
@@ -31,6 +32,7 @@ export type NavItem = {
   superAdminOnly?: boolean;
   adminOnly?: boolean;
   organizationAccess?: boolean;
+  dashboardAccess?: boolean;
 };
 
 export type NavGroup = {
@@ -42,7 +44,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     labelKey: "nav.groups.operations",
     items: [
-      {labelKey: "nav.dashboard", icon: faHouse, link: "/"},
+      {labelKey: "nav.dashboard", icon: faHouse, link: "/", dashboardAccess: true},
       {labelKey: "nav.orders", icon: faCartShopping, link: "/orders"},
       {labelKey: "nav.kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
       {labelKey: "nav.tables", icon: faChair, link: "/tables"},
@@ -75,6 +77,7 @@ function isItemVisible(item: NavItem, user: User | null | undefined): boolean {
   if (item.superAdminOnly && !isSuperAdmin(user)) return false;
   if (item.adminOnly && !canManageUsers(user)) return false;
   if (item.organizationAccess && !canAccessOrganizations(user)) return false;
+  if (item.dashboardAccess && !canAccessDashboard(user) && !isSuperAdmin(user)) return false;
   if (item.kitchen && !canAccessKitchen(user)) return false;
   return true;
 }

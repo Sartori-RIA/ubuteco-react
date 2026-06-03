@@ -394,6 +394,43 @@ export type MessageCatalog = {
       delete: ConfirmMessages;
     };
   };
+  dashboard: {
+    title: string;
+    subtitle: string;
+    kpi: {
+      revenue: string;
+      orders: string;
+      averageTicket: string;
+      openOrders: string;
+    };
+    dateRange: {
+      title: string;
+      from: string;
+      to: string;
+      hint: string;
+    };
+    chart: {
+      revenueTitle: string;
+      empty: string;
+    };
+    itemsByType: {
+      title: string;
+      empty: string;
+    };
+    kitchen: {
+      title: string;
+      openDishes: string;
+      avgPrep: string;
+      hint: string;
+    };
+    platform: {
+      title: string;
+      subtitle: string;
+      organizationsTitle: string;
+      organizationsHint: string;
+      openOrganizations: string;
+    };
+  };
   organizations: {
     profile: {
       title: string;

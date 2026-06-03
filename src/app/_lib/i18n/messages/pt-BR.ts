@@ -420,6 +420,43 @@ const ptBR: MessageCatalog = {
       },
     },
   },
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Desempenho da organização no período selecionado.",
+    kpi: {
+      revenue: "Receita",
+      orders: "Pedidos",
+      averageTicket: "Ticket médio",
+      openOrders: "Pedidos abertos",
+    },
+    dateRange: {
+      title: "Período",
+      from: "De",
+      to: "Até",
+      hint: "Padrão: últimos 7 dias no fuso da organização (máx. 90 dias).",
+    },
+    chart: {
+      revenueTitle: "Receita no período",
+      empty: "Sem receita neste período.",
+    },
+    itemsByType: {
+      title: "Itens por tipo",
+      empty: "Sem mix de itens neste período.",
+    },
+    kitchen: {
+      title: "Cozinha",
+      openDishes: "Pratos abertos na fila",
+      avgPrep: "Tempo médio de preparo (período)",
+      hint: "O tempo de preparo vai da criação do item até pronto, para pratos concluídos no período selecionado.",
+    },
+    platform: {
+      title: "Plataforma",
+      subtitle: "Ferramentas multi-organização para super admins.",
+      organizationsTitle: "Organizações",
+      organizationsHint: "Navegue e gerencie organizações na plataforma.",
+      openOrganizations: "Abrir organizações",
+    },
+  },
   organizations: {
     profile: {
       title: "Organização",
