@@ -56,4 +56,35 @@ describe("usersService integration (MSW)", () => {
 
     expect(requestUrl).not.toContain("organization_id");
   });
+
+  it("creates a user without sending organization_id in the body", async () => {
+    let capturedBody: Record<string, unknown> | undefined;
+
+    server.use(
+      http.post(apiUrl("v1/users"), async ({request}) => {
+        capturedBody = (await request.json()) as Record<string, unknown>;
+        return HttpResponse.json({
+          id: 2,
+          name: capturedBody.name,
+          email: capturedBody.email,
+          role: {id: 2, name: "WAITER"},
+        });
+      })
+    );
+
+    await usersService.create({
+      name: "New Waiter",
+      email: "waiter@example.com",
+      password: "secret123",
+      role_id: 2,
+    });
+
+    expect(capturedBody).toEqual({
+      name: "New Waiter",
+      email: "waiter@example.com",
+      password: "secret123",
+      role_id: 2,
+    });
+    expect(capturedBody).not.toHaveProperty("organization_id");
+  });
 });

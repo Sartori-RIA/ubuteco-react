@@ -1,6 +1,6 @@
 # Plan: Users admin UI
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md), existing `UsersController`  
 **Branch:** `feature/users-ui`  
@@ -17,7 +17,7 @@ Full **staff user management** for org admins: list, search, create, edit roles,
 ## Current state
 
 - Full staff CRUD at `/users` for org ADMIN (merged).
-- Phase 7 MSW/UI tests partially covered by [05-testing](./05-testing.md) (`usersService` integration).
+- Phase 7 MSW/store tests cover list, create payload, and admin-only route guards.
 
 ---
 
@@ -50,7 +50,7 @@ Full **staff user management** for org admins: list, search, create, edit roles,
 
 - [x] `/users/[id]/edit` — name, email, role, optional password reset
 - [x] Cannot edit users outside org (API 403)
-- [ ] Admin cannot edit self role to remove last admin (if API guard exists)
+- [ ] Admin cannot edit self role to remove last admin (optional — no API guard yet)
 
 ---
 
@@ -71,9 +71,9 @@ Full **staff user management** for org admins: list, search, create, edit roles,
 
 ## Phase 7 — Tests
 
-- [ ] List renders with MSW
-- [ ] Non-admin redirected from `/users`
-- [ ] Create user submits correct payload (no client `organization_id`)
+- [x] List loads via MSW + Redux (`users.integration.test.ts`)
+- [x] Non-admin blocked from `/users` paths (`canManageUsers`, `isAdminOnlyPath` in `auth-roles.test.ts`; `AuthGuard` uses same helpers)
+- [x] Create user submits correct payload without client `organization_id` (`users.service.integration.test.ts`)
 
 ---
 
