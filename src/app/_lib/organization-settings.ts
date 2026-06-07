@@ -9,6 +9,7 @@ export const SUPPORTED_LOCALES = [
   {value: "en", label: "English"},
   {value: "en-CA", label: "English (Canada)"},
   {value: "es", label: "Español"},
+  {value: "fr", label: "Français"},
   {value: "fr-CA", label: "Français (Canada)"},
 ] as const;
 
@@ -34,6 +35,7 @@ export const SUPPORTED_TIMEZONES = [
   {value: "America/Santiago", label: "America/Santiago"},
   {value: "America/Argentina/Buenos_Aires", label: "America/Argentina/Buenos_Aires"},
   {value: "Europe/Madrid", label: "Europe/Madrid"},
+  {value: "Europe/Paris", label: "Europe/Paris"},
   {value: "America/Toronto", label: "America/Toronto (Eastern)"},
   {value: "America/Vancouver", label: "America/Vancouver (Pacific)"},
   {value: "America/Edmonton", label: "America/Edmonton (Mountain)"},

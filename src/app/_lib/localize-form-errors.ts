@@ -16,6 +16,7 @@ const STATUS_TRANSITION_PATTERNS = [
   /cannot transition from (\w+) to (\w+)/i,
   /não é possível alterar de (\w+) para (\w+)/i,
   /no se puede cambiar de (\w+) a (\w+)/i,
+  /impossible de passer de (\w+) à (\w+)/i,
 ];
 
 function parseStatusTransition(message: string): {from: string; to: string} | null {
