@@ -4,6 +4,8 @@ import {
   canAccessDashboard,
   canDeleteOwnAccount,
   canManageOrganization,
+  canManageUsers,
+  isAdminOnlyPath,
   isOrganizationPath,
 } from "@/app/_lib/auth-roles";
 import {User} from "@/app/_types";
@@ -51,5 +53,22 @@ describe("canDeleteOwnAccount", () => {
     expect(canDeleteOwnAccount(userWithRole("KITCHEN"))).toBe(false);
     expect(canDeleteOwnAccount(userWithRole("WAITER"))).toBe(false);
     expect(canDeleteOwnAccount(userWithRole("CASH_REGISTER"))).toBe(false);
+  });
+});
+
+describe("users admin access", () => {
+  it("allows only org admin to manage users", () => {
+    expect(canManageUsers(userWithRole("ADMIN"))).toBe(true);
+    expect(canManageUsers(userWithRole("SUPER_ADMIN"))).toBe(false);
+    expect(canManageUsers(userWithRole("KITCHEN"))).toBe(false);
+    expect(canManageUsers(userWithRole("WAITER"))).toBe(false);
+    expect(canManageUsers(userWithRole("CASH_REGISTER"))).toBe(false);
+  });
+
+  it("matches admin-only user routes", () => {
+    expect(isAdminOnlyPath("/users")).toBe(true);
+    expect(isAdminOnlyPath("/users/new")).toBe(true);
+    expect(isAdminOnlyPath("/users/42/edit")).toBe(true);
+    expect(isAdminOnlyPath("/orders")).toBe(false);
   });
 });
