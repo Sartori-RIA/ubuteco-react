@@ -24,8 +24,11 @@ export const SUPPORTED_CURRENCIES = [
 ] as const;
 
 export const SUPPORTED_TIMEZONES = [
-  {value: "America/Sao_Paulo", label: "America/Sao_Paulo (Brasília)"},
-  {value: "America/Manaus", label: "America/Manaus"},
+  {value: "America/Sao_Paulo", label: "America/Sao_Paulo (Brasília, UTC−3)"},
+  {value: "America/Manaus", label: "America/Manaus (Amazônia, UTC−4)"},
+  {value: "America/Cuiaba", label: "America/Cuiaba (MT/MS, UTC−4)"},
+  {value: "America/Rio_Branco", label: "America/Rio_Branco (Acre, UTC−5)"},
+  {value: "America/Noronha", label: "America/Noronha (Fernando de Noronha, UTC−2)"},
   {value: "America/Mexico_City", label: "America/Mexico_City"},
   {value: "America/Bogota", label: "America/Bogota"},
   {value: "America/Santiago", label: "America/Santiago"},
