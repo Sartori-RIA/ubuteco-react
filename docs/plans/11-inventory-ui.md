@@ -43,6 +43,14 @@ Surface **stock levels** in catalog UI and allow admins to adjust quantity witho
 
 ---
 
+## Also shipped (same PR)
+
+- [x] Client i18n for inventory API error codes (`resolveApiErrorMessages`)
+- [x] Tables page i18n (`tablesPage.*`)
+- [x] Order items table: localized product type column (`orders.itemType.*`)
+
+---
+
 ## References
 
 - Product pages under `src/app/beers`, `wines`, `drinks`, `foods`
