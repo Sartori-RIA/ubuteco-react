@@ -3,6 +3,7 @@
 import {Beer} from "@/app/_types";
 import {truncateWords} from "@/app/_lib";
 import {ProductCard, ProductList} from "@/app/_components/Product";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
@@ -52,6 +53,8 @@ function Page() {
             <strong>{t("common.style")}</strong>: {product.beer_style?.name} <br/>
             <strong>{t("common.maker")}</strong>: {product.maker?.name} <br/>
             <strong>{t("common.abv")}</strong>: {product.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {product.ibu}
+            <br/>
+            <StockDisplay quantity={product.quantity_stock}/>
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

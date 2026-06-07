@@ -2,6 +2,7 @@
 
 import {useParams} from "next/navigation";
 import {Card, Loading, ProductDetailImage} from "@/app/_components";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -38,7 +39,7 @@ export default function Page() {
           </div>
           <div>
             <dt className="font-medium text-gray-900">{t("common.stock")}</dt>
-            <dd>{food.quantity_stock ?? 0}</dd>
+            <dd><StockDisplay quantity={food.quantity_stock}/></dd>
           </div>
           <div>
             <dt className="font-medium text-gray-900">{t("catalog.validUntil")}</dt>

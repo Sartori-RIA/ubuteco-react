@@ -2,6 +2,7 @@
 
 import {useParams} from "next/navigation";
 import {Card, Loading, ProductDetailImage} from "@/app/_components";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -32,7 +33,7 @@ export default function Page() {
         <p>
           <strong>{t("common.style")}</strong>: {beer.beer_style?.name} <br/>
           <strong>{t("common.maker")}</strong>: {beer.maker?.name} <br/>
-          <strong>{t("catalog.quantityInStock")}</strong>: {beer.quantity_stock} <br/>
+          <StockDisplay quantity={beer.quantity_stock}/> <br/>
           <strong>{t("common.abv")}</strong>: {beer.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {beer.ibu}
           <br/><br/>
           {beer.description}
