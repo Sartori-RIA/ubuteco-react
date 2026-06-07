@@ -5,7 +5,8 @@ import {KitchenTicket} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
 import {Select} from "@/app/_components/Selects";
 import {formatOrderItemStatus} from "@/app/orders/_lib/order-display";
-import {KITCHEN_STATUS_OPTIONS} from "@/app/kitchen/_lib/kitchen-columns";
+import {selectableOrderItemStatuses} from "@/app/orders/_lib/order-item-transitions";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
@@ -24,7 +25,9 @@ export function KitchenTicketCard({
   onStatusChange,
 }: Props) {
   const t = useTranslations();
+  const {locale} = useOrganizationSettings();
   const dishName = ticket.order_item?.name ?? t("kitchen.defaultDishName");
+  const statusOptions = selectableOrderItemStatuses(ticket.status ?? "awaiting", true);
 
   return (
     <article
@@ -65,9 +68,9 @@ export function KitchenTicketCard({
           disabled={saving || readOnly}
           onChange={(value) => onStatusChange(Number(ticket.id), value as OrderItemStatus)}
         >
-          {KITCHEN_STATUS_OPTIONS.map((status) => (
+          {statusOptions.map((status) => (
             <option key={status} value={status}>
-              {formatOrderItemStatus(status)}
+              {formatOrderItemStatus(status, locale)}
             </option>
           ))}
         </Select>
