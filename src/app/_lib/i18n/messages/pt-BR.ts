@@ -34,6 +34,8 @@ const ptBR: MessageCatalog = {
       kitchenClosed: "A cozinha está fechada.",
       searchUnavailable: "A busca está temporariamente indisponível.",
       deleteRestriction: "Não é possível excluir este registro porque existem dados dependentes.",
+      accountDeletionForbidden: "Você não tem permissão para excluir sua própria conta.",
+      roleAssignmentForbidden: "Você não pode atribuir este perfil.",
       invalidTransition: "Não é possível alterar de {from} para {to}",
     },
   },
@@ -152,6 +154,11 @@ const ptBR: MessageCatalog = {
     saveProfileFailed: "Não foi possível salvar o perfil.",
     deleteEmailMismatch: "Digite seu e-mail exatamente como aparece no perfil para confirmar.",
     deleteAccountFailed: "Não foi possível excluir a conta.",
+    accountRemoval: "Remoção de conta",
+    contactAdminForDeletion:
+      "Para remover seu acesso, fale com o administrador da organização.",
+    superAdminNoSelfDeletion:
+      "Contas de operador da plataforma não podem ser excluídas nas configurações. Fale com o suporte interno.",
     yourNamePlaceholder: "Seu nome",
     repeatNewPassword: "Repita a nova senha",
   },

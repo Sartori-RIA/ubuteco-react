@@ -38,6 +38,8 @@ export type MessageCatalog = {
       kitchenClosed: string;
       searchUnavailable: string;
       deleteRestriction: string;
+      accountDeletionForbidden: string;
+      roleAssignmentForbidden: string;
       invalidTransition: string;
     };
   };
@@ -152,6 +154,9 @@ export type MessageCatalog = {
     saveProfileFailed: string;
     deleteEmailMismatch: string;
     deleteAccountFailed: string;
+    accountRemoval: string;
+    contactAdminForDeletion: string;
+    superAdminNoSelfDeletion: string;
     yourNamePlaceholder: string;
     repeatNewPassword: string;
   };

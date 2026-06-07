@@ -2,6 +2,7 @@ import {describe, expect, it} from "vitest";
 import {
   canAccessOrganizations,
   canAccessDashboard,
+  canDeleteOwnAccount,
   canManageOrganization,
   isOrganizationPath,
 } from "@/app/_lib/auth-roles";
@@ -40,5 +41,15 @@ describe("organization access", () => {
     expect(isOrganizationPath("/organizations")).toBe(true);
     expect(isOrganizationPath("/organizations/42")).toBe(true);
     expect(isOrganizationPath("/orders")).toBe(false);
+  });
+});
+
+describe("canDeleteOwnAccount", () => {
+  it("allows only org admin", () => {
+    expect(canDeleteOwnAccount(userWithRole("ADMIN"))).toBe(true);
+    expect(canDeleteOwnAccount(userWithRole("SUPER_ADMIN"))).toBe(false);
+    expect(canDeleteOwnAccount(userWithRole("KITCHEN"))).toBe(false);
+    expect(canDeleteOwnAccount(userWithRole("WAITER"))).toBe(false);
+    expect(canDeleteOwnAccount(userWithRole("CASH_REGISTER"))).toBe(false);
   });
 });

@@ -34,6 +34,8 @@ const en: MessageCatalog = {
       kitchenClosed: "The kitchen is closed.",
       searchUnavailable: "Search is temporarily unavailable.",
       deleteRestriction: "Cannot delete this record because it has dependent data.",
+      accountDeletionForbidden: "You are not allowed to delete your own account.",
+      roleAssignmentForbidden: "You cannot assign this role.",
       invalidTransition: "Cannot change status from {from} to {to}",
     },
   },
@@ -151,6 +153,11 @@ const en: MessageCatalog = {
     saveProfileFailed: "Could not save profile.",
     deleteEmailMismatch: "Type your email exactly as shown on your profile to confirm.",
     deleteAccountFailed: "Could not delete account.",
+    accountRemoval: "Account removal",
+    contactAdminForDeletion:
+      "To remove your access, contact your organization administrator.",
+    superAdminNoSelfDeletion:
+      "Platform operator accounts cannot be deleted from settings. Contact internal support.",
     yourNamePlaceholder: "Your name",
     repeatNewPassword: "Repeat new password",
   },
