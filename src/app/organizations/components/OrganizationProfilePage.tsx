@@ -84,6 +84,7 @@ export function OrganizationProfilePage({
       </div>
 
       <OrganizationForm
+        key={`${current.id}-${current.name}-${current.phone}-${current.logo_url ?? ""}`}
         defaultValues={current}
         errors={errors}
         loading={saving}

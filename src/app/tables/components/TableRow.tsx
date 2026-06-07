@@ -1,7 +1,7 @@
 "use client"
 
 import {Table} from "@/app/_types";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Link from "next/link";
 import {DestroyButton, EditButton, InlineInput} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
@@ -19,10 +19,11 @@ export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
   const [name, setName] = useState(table.name)
   const [chairs, setChairs] = useState(String(table.chairs ?? 0))
 
-  useEffect(() => {
+  const beginEdit = () => {
     setName(table.name)
     setChairs(String(table.chairs ?? 0))
-  }, [table.name, table.chairs])
+    setIsEditing(true)
+  }
 
   const save = async () => {
     const trimmedName = name.trim()
@@ -117,7 +118,7 @@ export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
           </Link>
           {!readOnly && (
             <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
-              <EditButton onClick={() => setIsEditing(true)}/>
+              <EditButton onClick={beginEdit}/>
               <DestroyButton onClick={() => onDelete(Number(table.id))}/>
             </div>
           )}

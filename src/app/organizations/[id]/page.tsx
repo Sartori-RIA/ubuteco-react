@@ -20,26 +20,50 @@ function Page() {
   > | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const isOwnOrgAdmin =
+    user != null &&
+    !Number.isNaN(id) &&
+    canManageOrganization(user) &&
+    user.organization?.id === id;
+
   useEffect(() => {
-    if (!user || Number.isNaN(id)) return;
+    if (!user || Number.isNaN(id) || isOwnOrgAdmin) return;
 
-    if (isSuperAdmin(user)) {
-      setLoading(true);
-      void platformOrganizationsService
-        .show(id)
-        .then(setOrganization)
-        .finally(() => setLoading(false));
+    if (!isSuperAdmin(user)) {
+      router.replace("/organizations");
       return;
     }
 
-    if (canManageOrganization(user) && user.organization?.id === id) {
-      setOrganization(user.organization);
-      setLoading(false);
-      return;
-    }
+    let cancelled = false;
+    void platformOrganizationsService
+      .show(id)
+      .then((org) => {
+        if (!cancelled) setOrganization(org);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    router.replace("/organizations");
-  }, [id, router, user]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, isOwnOrgAdmin, router, user]);
+
+  if (!user || Number.isNaN(id)) {
+    return <Loading/>;
+  }
+
+  if (isOwnOrgAdmin && user.organization) {
+    return (
+      <OrganizationProfilePage
+        organization={user.organization}
+        onOrganizationUpdated={setOrganization}
+        updateForm={platformOrganizationsService.updateForm}
+        updateOperational={platformOrganizationsService.update}
+        showRegionalSettings={!isSuperAdmin(user)}
+      />
+    );
+  }
 
   if (loading || !organization) {
     return <Loading/>;
