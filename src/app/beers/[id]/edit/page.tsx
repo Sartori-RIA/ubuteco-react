@@ -2,6 +2,7 @@
 
 import React, {useEffect} from "react";
 import {BeerForm} from "@/app/beers/components";
+import {StockAdjustmentPanel} from "@/app/_components/StockAdjustmentPanel";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -37,12 +38,20 @@ export default function Page() {
   if (beer === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
-    <BeerForm
-      defaultValues={beer}
-      action={handleEditBeer}
-      submitLabel={t("forms.updateBeerSubmit")}
-      errors={errors}
-      loading={loading}
-    />
+    <>
+      <BeerForm
+        defaultValues={beer}
+        action={handleEditBeer}
+        submitLabel={t("forms.updateBeerSubmit")}
+        errors={errors}
+        loading={loading}
+      />
+      <StockAdjustmentPanel
+        productType="beers"
+        productId={Number(id)}
+        quantityStock={beer.quantity_stock ?? 0}
+        onStockChanged={() => dispatch(beerThunks.fetchById(Number(id)))}
+      />
+    </>
   );
 }

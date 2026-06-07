@@ -29,6 +29,17 @@ export type MessageCatalog = {
     price: string;
     stock: string;
   };
+  api: {
+    errors: {
+      generic: string;
+      notStockable: string;
+      adjustmentZero: string;
+      insufficientStock: string;
+      kitchenClosed: string;
+      searchUnavailable: string;
+      deleteRestriction: string;
+    };
+  };
   nav: {
     dashboard: string;
     kitchen: string;
@@ -43,6 +54,7 @@ export type MessageCatalog = {
     orders: string;
     organizations: string;
     tables: string;
+    inventory: string;
     users: string;
     settings: string;
     platformReadOnly: string;
@@ -201,6 +213,26 @@ export type MessageCatalog = {
     editDish: string;
     noIngredientsListed: string;
     foodFallback: string;
+  };
+  inventory: {
+    lowStock: string;
+    adjustTitle: string;
+    adjustment: string;
+    adjustmentHint: string;
+    reason: string;
+    reasonPlaceholder: string;
+    apply: string;
+    currentStock: string;
+    adjustFailed: string;
+    pageTitle: string;
+    pageSubtitle: string;
+    empty: string;
+    columnProduct: string;
+    columnType: string;
+    columnStock: string;
+    editProduct: string;
+    loadFailed: string;
+    viewLowStock: string;
   };
   forms: {
     newBeer: string;

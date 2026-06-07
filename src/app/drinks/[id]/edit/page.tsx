@@ -8,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {DrinkForm} from "@/app/drinks/components";
+import {StockAdjustmentPanel} from "@/app/_components/StockAdjustmentPanel";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
@@ -36,12 +37,20 @@ export default function Page() {
   if (drink === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
-    <DrinkForm
-      defaultValues={drink}
-      action={handleEditDrink}
-      submitLabel={t("forms.updateDrinkSubmit")}
-      errors={errors}
-      loading={loading}
-    />
+    <>
+      <DrinkForm
+        defaultValues={drink}
+        action={handleEditDrink}
+        submitLabel={t("forms.updateDrinkSubmit")}
+        errors={errors}
+        loading={loading}
+      />
+      <StockAdjustmentPanel
+        productType="drinks"
+        productId={Number(id)}
+        quantityStock={drink.quantity_stock ?? 0}
+        onStockChanged={() => dispatch(drinkThunks.fetchById(Number(id)))}
+      />
+    </>
   );
 }

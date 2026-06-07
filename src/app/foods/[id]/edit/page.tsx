@@ -2,6 +2,7 @@
 
 import React, {useEffect} from "react";
 import {FoodForm} from "@/app/foods/components";
+import {StockAdjustmentPanel} from "@/app/_components/StockAdjustmentPanel";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useSelector} from "react-redux";
@@ -36,12 +37,20 @@ export default function Page() {
   if (food === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
-    <FoodForm
-      defaultValues={food}
-      action={handleEditFood}
-      submitLabel={t("forms.updateFoodSubmit")}
-      errors={errors}
-      loading={loading}
-    />
+    <>
+      <FoodForm
+        defaultValues={food}
+        action={handleEditFood}
+        submitLabel={t("forms.updateFoodSubmit")}
+        errors={errors}
+        loading={loading}
+      />
+      <StockAdjustmentPanel
+        productType="foods"
+        productId={Number(id)}
+        quantityStock={food.quantity_stock ?? 0}
+        onStockChanged={() => dispatch(foodsThunks.fetchById(Number(id)))}
+      />
+    </>
   );
 }
