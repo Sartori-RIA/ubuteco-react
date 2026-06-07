@@ -4,7 +4,7 @@ Companion plans for uButeco React (`ubuteco-react`) — **the only active fronte
 
 **AI assistants:** read [AGENTS.md](../../AGENTS.md) first, then [docs/context/](../context/). New plans: [TEMPLATE.md](./TEMPLATE.md) (full rules in API repo).
 
-**Workflow:** updating plans or backlog entries → commit on **`main`** (no PR). Code for a plan → `feature/<slug>` branch.
+**Workflow:** updating plans or backlog entries → commit on **`main`** (no PR). Code for a plan → `feature/<slug>` branch. **Before PR:** update plan status on the branch; **small commits** — see [workflow-plans-and-git.md](../workflow-plans-and-git.md).
 
 Backend work: [`ubuteco_api/docs/plans`](../../../ubuteco_api/docs/plans/README.md).
 

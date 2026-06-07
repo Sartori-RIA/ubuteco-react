@@ -27,6 +27,14 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 - **Plan & backlog docs** (`docs/plans/`, `docs/backlog/`, status checkboxes, new plan files): commit **directly on `main`** — no feature branch or PR required.
 - **Other docs-only** (context, ADRs, dev-setup): also fine on `main`, or `docs/<topic>` if you prefer a short-lived branch.
 
+## Plans, commits & PRs
+
+**Read [docs/workflow-plans-and-git.md](docs/workflow-plans-and-git.md)** before opening a PR.
+
+- **Small commits** — one logical change each (`feat`, `fix`, `test`, `docs`, `refactor`).
+- **Update the plan first** — checkboxes, `Status:` header, and `docs/plans/README.md` on the **same branch/PR** as the code (preferred).
+- **One plan → one PR** when possible; complete the plan in that PR.
+
 ## Do not (unless explicitly asked)
 
 - Commit secrets (`.env`).
