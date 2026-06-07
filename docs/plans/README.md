@@ -42,6 +42,15 @@ When a plan gets an issue, add `**GitHub:** owner/repo#NN` to the plan header (s
 | 14 | [Marketing landing page](./14-landing-page.md) | not started | P2 | — |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | P2 | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
+## Recent merges (Jun 2026)
+
+| Plan | PR | Notes |
+|------|-----|-------|
+| [11 Inventory UI](./11-inventory-ui.md) | [#26](https://github.com/Sartori-RIA/ubuteco-react/pull/26) | Stock display, adjust panel, `/inventory`, i18n follow-ups |
+| [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
+
+**In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [07 Users admin UI](./07-users-ui.md) (MSW tests). **Next:** [08 Settings — account deletion](./08-settings-account-deletion.md), [10 Document titles](./10-document-titles.md).
+
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
 ## Also see

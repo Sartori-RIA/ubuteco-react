@@ -34,7 +34,7 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 ## Phase 3 — Settings UI
 
 - [x] Page or section under `/settings` (admin only):
-  - Locale select (`pt-BR`, `en`, …)
+  - Locale select (`pt-BR`, `en`, `es`, `fr`, `en-CA`, `fr-CA`, …)
   - Currency select (ISO list, curated)
   - Timezone select
 - [x] PATCH organization via `organizationsService`
@@ -65,3 +65,13 @@ Settings UI for org locale/currency/timezone; format money and dates consistentl
 - [x] Admin can change locale/currency/timezone (UI ready; requires API migration)
 - [x] Money and dates on orders reflect org settings
 - [x] No hardcoded `BRL`/`R$` in new code
+
+---
+
+## Also shipped (post–PR #27)
+
+- [x] Locales: `es`, `fr`, `fr-CA`, `en-CA` (+ existing `pt-BR`, `en`)
+- [x] Currencies: CLP, MXN, COP, ARS, CAD (+ BRL, USD, EUR)
+- [x] Timezones: all Brazil offsets, Canada, `Europe/Paris`, `Europe/Madrid`
+- [x] Order/kitchen status select: API-valid transitions only; localized transition errors
+- [x] `localizeFormErrors` in `FormErrors` app-wide
