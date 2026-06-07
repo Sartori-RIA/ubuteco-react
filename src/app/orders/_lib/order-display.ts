@@ -17,8 +17,20 @@ export function displayOrderAmount(
   );
 }
 
-export function orderItemProductName(item: OrderItem): string {
-  return item.item?.name ?? `${item.item_type ?? "Item"} #${item.item_id ?? "?"}`;
+export function orderItemProductName(item: OrderItem, locale: string = DEFAULT_LOCALE): string {
+  if (item.item?.name) return item.item.name;
+
+  const typeLabel = item.item_type
+    ? formatOrderItemType(item.item_type, locale)
+    : translate(locale, "orders.unknownProduct");
+
+  return `${typeLabel} #${item.item_id ?? "?"}`;
+}
+
+export function formatOrderItemType(itemType: string, locale: string = DEFAULT_LOCALE): string {
+  const key = `orders.itemType.${itemType}` as TranslationKey;
+  const label = translate(locale, key);
+  return label === key ? itemType : label;
 }
 
 export function orderItemUnitPrice(item: OrderItem): string {

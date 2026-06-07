@@ -7,6 +7,7 @@ import {Select} from "@/app/_components/Selects";
 import {OrderItemStatusBadge} from "@/app/orders/components/OrderItemStatusBadge";
 import {
   formatOrderItemStatus,
+  formatOrderItemType,
   orderItemLineTotal,
   orderItemProductName,
   orderItemUnitPrice,
@@ -116,8 +117,10 @@ export function OrderItemsTable({
             const pending = pendingItemIds.includes(Number(item.id));
             return (
               <tr key={item.id} className={pending ? "opacity-60" : undefined}>
-                <td className="px-4 py-3 font-medium text-foreground">{orderItemProductName(item)}</td>
-                <td className="px-4 py-3 text-muted">{item.item_type}</td>
+                <td className="px-4 py-3 font-medium text-foreground">{orderItemProductName(item, locale)}</td>
+                <td className="px-4 py-3 text-muted">
+                  {item.item_type ? formatOrderItemType(item.item_type, locale) : "—"}
+                </td>
                 <td className="px-4 py-3">
                   {readOnly || !onStatusChange ? (
                     <OrderItemStatusBadge status={item.status}/>
