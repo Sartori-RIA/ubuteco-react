@@ -1,6 +1,6 @@
 # Plan: Settings — account deletion policy
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react (primary)  
 **Backend:** [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md)  
 **Priority:** P1  
@@ -20,9 +20,9 @@ Org admins may delete their own account from settings; staff removal remains an 
 
 ## Current state
 
-- `src/app/settings/page.tsx` — “Danger zone” with delete account **visible to everyone** (lines 268–309).
-- `usersService.destroy(sessionUser.id)` on confirm.
-- API: `can_manage_self` allows `:destroy` on own user for any role.
+- `canDeleteOwnAccount()` in `auth-roles.ts` — true only for org `ADMIN`.
+- Danger zone hidden for kitchen, waiter, cash, super admin; info card with contact message.
+- API enforces same policy with `account_deletion_forbidden`.
 
 ---
 
@@ -41,37 +41,37 @@ Staff who need removal → org **ADMIN** uses Users UI delete.
 
 ## Phase 1 — Frontend
 
-- [ ] Add `canDeleteOwnAccount(user)` in `auth-roles.ts`:
+- [x] Add `canDeleteOwnAccount(user)` in `auth-roles.ts`:
   ```ts
   return getRoleName(user) === "ADMIN";
   ```
-- [ ] Wrap “Danger zone” card: render only when `canDeleteOwnAccount(sessionUser)`
-- [ ] For non-admins (including `SUPER_ADMIN`): optional info text — “Contact your administrator to remove your account.” / super admin: internal support channel
+- [x] Wrap “Danger zone” card: render only when `canDeleteOwnAccount(sessionUser)`
+- [x] For non-admins (including `SUPER_ADMIN`): info text — contact administrator / internal support
 
 ---
 
 ## Phase 2 — Backend (required)
 
-- [ ] Implement [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) Phase 1 — `403` on self-delete unless org `ADMIN`
-- [ ] `SUPER_ADMIN` self-delete always forbidden
-- [ ] Do not rely on UI alone
+- [x] Implement [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) Phase 1 — `403` on self-delete unless org `ADMIN`
+- [x] `SUPER_ADMIN` self-delete always forbidden
+- [x] Do not rely on UI alone
 
 ---
 
 ## Phase 3 — Tests
 
-- [ ] Unit: `canDeleteOwnAccount` — true only for `ADMIN`
-- [ ] Settings: kitchen and super admin do not see danger zone
-- [ ] API request spec: kitchen self-delete → 403; super admin self-delete → 403
+- [x] Unit: `canDeleteOwnAccount` — true only for `ADMIN`
+- [ ] Settings: kitchen and super admin do not see danger zone (component test — optional)
+- [x] API request spec: kitchen self-delete → 403; super admin self-delete → 403
 
 ---
 
 ## Definition of done
 
-- [ ] Only org `ADMIN` sees delete account on settings
-- [ ] `SUPER_ADMIN` cannot delete own account (UI + API)
-- [ ] Kitchen/waiter/cash cannot self-delete
-- [ ] Org admin self-delete flow unchanged
+- [x] Only org `ADMIN` sees delete account on settings
+- [x] `SUPER_ADMIN` cannot delete own account (UI + API)
+- [x] Kitchen/waiter/cash cannot self-delete
+- [x] Org admin self-delete flow unchanged
 
 ---
 

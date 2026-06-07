@@ -28,7 +28,7 @@ When a plan gets an issue, add `**GitHub:** owner/repo#NN` to the plan header (s
 | # | Plan | Status | Priority | Backend doc |
 |---|------|--------|----------|-------------|
 | 1 | [Multi-tenant](./01-multi-tenant.md) | in progress | P0 | [API](../../../ubuteco_api/docs/plans/01-multi-tenant.md) |
-| 8 | [Settings — account deletion](./08-settings-account-deletion.md) | not started | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
+| 8 | [Settings — account deletion](./08-settings-account-deletion.md) | completed | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 6 | [Organizations UI](./06-organizations-ui.md) | completed | P1 | Organizations API + [02](../../../ubuteco_api/docs/plans/02-locale-and-currency.md) |
 | 7 | [Users admin UI](./07-users-ui.md) | in progress | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 5 | [Testing](./05-testing.md) | completed | P1 | [08-api-contract-ci](../../../ubuteco_api/docs/plans/08-api-contract-and-ci.md) |
@@ -49,7 +49,7 @@ When a plan gets an issue, add `**GitHub:** owner/repo#NN` to the plan header (s
 | [11 Inventory UI](./11-inventory-ui.md) | [#26](https://github.com/Sartori-RIA/ubuteco-react/pull/26) | Stock display, adjust panel, `/inventory`, i18n follow-ups |
 | [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
 
-**In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [07 Users admin UI](./07-users-ui.md) (MSW tests). **Next:** [08 Settings — account deletion](./08-settings-account-deletion.md), [10 Document titles](./10-document-titles.md).
+**In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [07 Users admin UI](./07-users-ui.md) (MSW tests). **Next:** [10 Document titles](./10-document-titles.md), [09 Frontend performance](./09-frontend-performance.md).
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
