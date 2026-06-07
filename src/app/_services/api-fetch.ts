@@ -2,6 +2,9 @@ import {redirect} from "next/navigation";
 import {PaginatedResponse} from "@/app/_types";
 import {clearAuthToken, clearAuthUser, getAuthToken} from "@/app/_lib/auth-storage";
 import {normalizeErrors} from "@/app/_lib/normalize-errors";
+import {extractApiErrorItems, type ApiErrorItem} from "@/app/_lib/api-errors";
+
+export type {ApiErrorItem};
 
 function handleUnauthorized() {
   clearAuthToken();
@@ -24,10 +27,12 @@ function handleForbidden() {
 export class ApiError extends Error {
   status: number;
   data: string[];
+  items: ApiErrorItem[];
 
   constructor(status: number, data: unknown) {
     super("API Error");
     this.status = status;
+    this.items = extractApiErrorItems(data);
     this.data = normalizeErrors(data);
   }
 }
