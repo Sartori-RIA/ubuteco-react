@@ -2,7 +2,7 @@
 
 Companion plans for uButeco React (`ubuteco-react`) — **the only active frontend**. Angular `ubuteco_spa` is abandoned; no SPA migration plans.
 
-**AI assistants:** read [AGENTS.md](../../AGENTS.md) first, then [docs/context/](../context/). New plans: [TEMPLATE.md](./TEMPLATE.md) (full rules in API repo).
+**AI assistants:** read [AGENTS.md](../../AGENTS.md) first (includes [workflow-plans-and-git.md](../workflow-plans-and-git.md) — canonical for all agents), then [docs/context/](../context/). New plans: [TEMPLATE.md](./TEMPLATE.md) (full rules in API repo).
 
 **Workflow:** updating plans or backlog entries → commit on **`main`** (no PR). Code for a plan → `feature/<slug>` branch. **Before PR:** update plan status on the branch; **small commits** — see [workflow-plans-and-git.md](../workflow-plans-and-git.md).
 

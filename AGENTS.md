@@ -17,9 +17,10 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 ## Before you code
 
 1. Read [docs/plans/README.md](docs/plans/README.md) — pick **one plan**, check status and companion API plan.
-2. Small bugs / UX polish: [docs/backlog/README.md](docs/backlog/README.md) — promote to a plan if scope grows.
-3. Read [docs/context/frontend-map.md](docs/context/frontend-map.md) for folder conventions.
-4. Read [docs/dev-setup.md](docs/dev-setup.md) for ports and env vars.
+2. Read [docs/workflow-plans-and-git.md](docs/workflow-plans-and-git.md) — small commits, update plan before PR (**canonical** for all agents; not only Cursor).
+3. Small bugs / UX polish: [docs/backlog/README.md](docs/backlog/README.md) — promote to a plan if scope grows.
+4. Read [docs/context/frontend-map.md](docs/context/frontend-map.md) for folder conventions.
+5. Read [docs/dev-setup.md](docs/dev-setup.md) for ports and env vars.
 
 ## Branching
 
@@ -57,6 +58,7 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 | Area | Path |
 |------|------|
 | Plans | `docs/plans/` |
+| Workflow (plans, commits, PRs) | `docs/workflow-plans-and-git.md` |
 | Backlog | `docs/backlog/` |
 | Context | `docs/context/` |
 | Pages | `src/app/**/page.tsx` |
