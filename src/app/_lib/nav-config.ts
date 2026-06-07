@@ -1,6 +1,7 @@
 import type {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 import {
   faBeer,
+  faBoxesStacked,
   faBuilding,
   faCartShopping,
   faChair,
@@ -17,6 +18,7 @@ import type {TranslationKey} from "@/app/_lib/i18n";
 import {User} from "@/app/_types";
 import {
   canAccessDashboard,
+  canAccessInventory,
   canAccessKitchen,
   canAccessOrganizations,
   canManageUsers,
@@ -33,6 +35,7 @@ export type NavItem = {
   adminOnly?: boolean;
   organizationAccess?: boolean;
   dashboardAccess?: boolean;
+  inventoryAccess?: boolean;
 };
 
 export type NavGroup = {
@@ -48,6 +51,7 @@ export const NAV_GROUPS: NavGroup[] = [
       {labelKey: "nav.orders", icon: faCartShopping, link: "/orders"},
       {labelKey: "nav.kitchen", icon: faUtensils, link: "/kitchen", kitchen: true},
       {labelKey: "nav.tables", icon: faChair, link: "/tables"},
+      {labelKey: "nav.inventory", icon: faBoxesStacked, link: "/inventory", inventoryAccess: true},
     ],
   },
   {
@@ -78,6 +82,7 @@ function isItemVisible(item: NavItem, user: User | null | undefined): boolean {
   if (item.adminOnly && !canManageUsers(user)) return false;
   if (item.organizationAccess && !canAccessOrganizations(user)) return false;
   if (item.dashboardAccess && !canAccessDashboard(user) && !isSuperAdmin(user)) return false;
+  if (item.inventoryAccess && !canAccessInventory(user)) return false;
   if (item.kitchen && !canAccessKitchen(user)) return false;
   return true;
 }
