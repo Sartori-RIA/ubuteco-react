@@ -237,6 +237,13 @@ const en: MessageCatalog = {
     loadFailed: "Could not load inventory data.",
     viewLowStock: "View low stock",
   },
+  tablesPage: {
+    addNew: "Add a new table",
+    nameLabel: "Table name",
+    namePlaceholder: "Table name",
+    chairsLabel: "Chairs",
+    newOrder: "New order",
+  },
   forms: {
     newBeer: "New Beer",
     updateBeer: "Update Beer",
@@ -344,6 +351,7 @@ const en: MessageCatalog = {
       Dish: "Dish",
       Wine: "Wine",
     },
+    unknownProduct: "Product",
     addItem: {
       title: "Add item",
       product: "Product",

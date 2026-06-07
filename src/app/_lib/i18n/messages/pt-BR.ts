@@ -238,6 +238,13 @@ const ptBR: MessageCatalog = {
     loadFailed: "Não foi possível carregar os dados de estoque.",
     viewLowStock: "Ver estoque baixo",
   },
+  tablesPage: {
+    addNew: "Adicionar nova mesa",
+    nameLabel: "Nome da mesa",
+    namePlaceholder: "Nome da mesa",
+    chairsLabel: "Cadeiras",
+    newOrder: "Novo pedido",
+  },
   forms: {
     newBeer: "Nova cerveja",
     updateBeer: "Editar cerveja",
@@ -345,6 +352,7 @@ const ptBR: MessageCatalog = {
       Dish: "Prato",
       Wine: "Vinho",
     },
+    unknownProduct: "Produto",
     addItem: {
       title: "Adicionar item",
       product: "Produto",

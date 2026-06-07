@@ -234,6 +234,13 @@ export type MessageCatalog = {
     loadFailed: string;
     viewLowStock: string;
   };
+  tablesPage: {
+    addNew: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    chairsLabel: string;
+    newOrder: string;
+  };
   forms: {
     newBeer: string;
     updateBeer: string;
@@ -341,6 +348,7 @@ export type MessageCatalog = {
       Dish: string;
       Wine: string;
     };
+    unknownProduct: string;
     addItem: {
       title: string;
       product: string;
