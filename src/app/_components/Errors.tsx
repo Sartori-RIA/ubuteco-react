@@ -1,8 +1,14 @@
+"use client";
+
 import React from "react";
-import {normalizeErrors} from "@/app/_lib/normalize-errors";
+import {localizeFormErrors} from "@/app/_lib/localize-form-errors";
+import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export function FormErrors({errors}: { errors: unknown }) {
-  const messages = normalizeErrors(errors);
+  const {locale} = useOrganizationSettings();
+  const t = useTranslations();
+  const messages = localizeFormErrors(errors, locale, t);
 
   if (messages.length === 0) {
     return null;

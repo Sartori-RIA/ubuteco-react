@@ -1,5 +1,6 @@
 import {DEFAULT_LOCALE} from "@/app/_lib/organization-settings";
 import en from "@/app/_lib/i18n/messages/en";
+import es from "@/app/_lib/i18n/messages/es";
 import ptBR from "@/app/_lib/i18n/messages/pt-BR";
 import type {MessageCatalog, TranslationKey} from "@/app/_lib/i18n/messages/types";
 
@@ -7,6 +8,9 @@ export type {MessageCatalog, TranslationKey} from "@/app/_lib/i18n/messages/type
 
 const catalogs: Record<string, MessageCatalog> = {
   en,
+  "en-CA": en,
+  es,
+  "fr-CA": en,
   "pt-BR": ptBR,
 };
 

@@ -38,6 +38,7 @@ export type MessageCatalog = {
       kitchenClosed: string;
       searchUnavailable: string;
       deleteRestriction: string;
+      invalidTransition: string;
     };
   };
   nav: {
