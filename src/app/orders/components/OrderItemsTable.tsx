@@ -12,6 +12,10 @@ import {
   orderItemProductName,
   orderItemUnitPrice,
 } from "@/app/orders/_lib/order-display";
+import {
+  isDishOrderItem,
+  selectableOrderItemStatuses,
+} from "@/app/orders/_lib/order-item-transitions";
 import {useDebounce} from "@/app/_hooks/useDebounce";
 import {shouldPersistDebouncedQuantity} from "@/app/orders/_lib/quantity-input";
 import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
@@ -19,14 +23,10 @@ import {useTranslations} from "@/app/_hooks/useTranslations";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
-const ITEM_STATUSES: OrderItemStatus[] = [
-  "awaiting",
-  "cooking",
-  "ready",
-  "with_the_client",
-  "canceled",
-  "empty_stock",
-];
+function statusOptionsForItem(item: OrderItem): OrderItemStatus[] {
+  const current = item.status ?? "awaiting";
+  return selectableOrderItemStatuses(current, isDishOrderItem(item.item_type));
+}
 
 type Props = {
   items: OrderItem[];
@@ -130,7 +130,7 @@ export function OrderItemsTable({
                       value={item.status}
                       onChange={(value) => onStatusChange(Number(item.id), value as OrderItemStatus)}
                     >
-                      {ITEM_STATUSES.map((status) => (
+                      {statusOptionsForItem(item).map((status) => (
                         <option key={status} value={status}>
                           {formatOrderItemStatus(status, locale)}
                         </option>

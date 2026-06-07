@@ -34,6 +34,7 @@ const en: MessageCatalog = {
       kitchenClosed: "The kitchen is closed.",
       searchUnavailable: "Search is temporarily unavailable.",
       deleteRestriction: "Cannot delete this record because it has dependent data.",
+      invalidTransition: "Cannot change status from {from} to {to}",
     },
   },
   nav: {
