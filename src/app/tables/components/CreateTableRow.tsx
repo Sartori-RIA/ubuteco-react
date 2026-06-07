@@ -2,12 +2,14 @@
 
 import {useState} from "react";
 import {Input, Label} from "@/app/_components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
   onCreate: (name: string, chairs: number) => Promise<void>
 }
 
 export function CreateTableRow({onCreate}: Props) {
+  const t = useTranslations();
   const [name, setName] = useState("")
   const [chairs, setChairs] = useState("")
 
@@ -23,10 +25,10 @@ export function CreateTableRow({onCreate}: Props) {
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_120px]">
-      <Label label="Add a new table">
+      <Label label={t("tablesPage.addNew")}>
         <Input
           value={name}
-          placeholder="Table name"
+          placeholder={t("tablesPage.namePlaceholder")}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmit()
@@ -34,7 +36,7 @@ export function CreateTableRow({onCreate}: Props) {
           }}
         />
       </Label>
-      <Label label="Chairs">
+      <Label label={t("tablesPage.chairsLabel")}>
         <Input
           type="number"
           min={0}

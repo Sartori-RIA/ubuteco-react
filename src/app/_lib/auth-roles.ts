@@ -57,6 +57,23 @@ export function canManageOrganization(user: User | null | undefined): boolean {
   return isAdmin(user);
 }
 
+/** Manual stock adjustment (receive / remove inventory). */
+export function canAdjustStock(user: User | null | undefined): boolean {
+  const role = getRoleName(user);
+  return role === "ADMIN" || role === "CASH_REGISTER";
+}
+
+/** Low-stock inventory view (`/inventory`). */
+export function canAccessInventory(user: User | null | undefined): boolean {
+  return canAdjustStock(user);
+}
+
+const INVENTORY_PATH = /^\/inventory(\/|$)/;
+
+export function isInventoryPath(pathname: string): boolean {
+  return INVENTORY_PATH.test(pathname);
+}
+
 /** Organization admin UI (own org for ADMIN, cross-org list for SUPER_ADMIN). */
 export function canAccessOrganizations(user: User | null | undefined): boolean {
   return isSuperAdmin(user) || canManageOrganization(user);

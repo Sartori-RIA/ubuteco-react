@@ -3,6 +3,7 @@
 import {Drink} from "@/app/_types";
 import {truncateWords} from "@/app/_lib";
 import {ProductCard, ProductList} from "@/app/_components/Product";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
@@ -50,6 +51,7 @@ function Page() {
           onDelete={() => handleDelete(Number(product.id))}
         >
           <>
+            <StockDisplay quantity={product.quantity_stock}/>
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

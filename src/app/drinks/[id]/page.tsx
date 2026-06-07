@@ -2,6 +2,7 @@
 
 import {useParams} from "next/navigation";
 import {Card, Loading, ProductDetailImage} from "@/app/_components";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -30,6 +31,7 @@ export default function Page() {
     <Card title={drink.name}>
       <div className="grid xs:grid-cols-1 grid-cols-2 gap-2">
         <p>
+          <StockDisplay quantity={drink.quantity_stock}/> <br/>
           {drink.description}
         </p>
         <ProductDetailImage src={drink.image_url} alt={drink.name}/>

@@ -8,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {winesThunks} from "@/app/_store/features/wines/winesThunks";
 import {WineForm} from "@/app/wines/components";
+import {StockAdjustmentPanel} from "@/app/_components/StockAdjustmentPanel";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 
 export default function Page() {
@@ -36,12 +37,20 @@ export default function Page() {
   if (wine === undefined) return <h1>{t("common.notFound")}</h1>
 
   return (
-    <WineForm
-      defaultValues={wine}
-      action={handleEditWine}
-      submitLabel={t("forms.updateWineSubmit")}
-      errors={errors}
-      loading={loading}
-    />
+    <>
+      <WineForm
+        defaultValues={wine}
+        action={handleEditWine}
+        submitLabel={t("forms.updateWineSubmit")}
+        errors={errors}
+        loading={loading}
+      />
+      <StockAdjustmentPanel
+        productType="wines"
+        productId={Number(id)}
+        quantityStock={wine.quantity_stock ?? 0}
+        onStockChanged={() => dispatch(winesThunks.fetchById(Number(id)))}
+      />
+    </>
   );
 }

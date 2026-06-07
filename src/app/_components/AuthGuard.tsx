@@ -6,11 +6,13 @@ import {getAuthToken} from "@/app/_lib/auth-storage";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {
   canAccessDashboard,
+  canAccessInventory,
   canAccessOrganizations,
   canManageUsers,
   hasOrganization,
   isAdminOnlyPath,
   isDashboardPath,
+  isInventoryPath,
   isKitchenAllowedPath,
   isKitchenStaff,
   isOperationalMutationPath,
@@ -60,6 +62,11 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     }
 
     if (user && isAdminOnlyPath(pathname) && !canManageUsers(user)) {
+      router.replace("/");
+      return;
+    }
+
+    if (user && isInventoryPath(pathname) && !canAccessInventory(user)) {
       router.replace("/");
       return;
     }

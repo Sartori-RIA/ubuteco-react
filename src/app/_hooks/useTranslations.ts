@@ -25,6 +25,7 @@ const SEGMENT_TITLE_KEYS: Record<string, TranslationKey> = {
   kitchen: "nav.kitchen",
   organizations: "nav.organizations",
   tables: "nav.tables",
+  inventory: "nav.inventory",
   users: "nav.users",
   settings: "nav.settings",
   login: "auth.signIn",

@@ -3,6 +3,7 @@
 import {Food} from "@/app/_types";
 import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {ProductCard, ProductList} from "@/app/_components/Product";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import {useEffect} from "react";
 import {Loading} from "@/app/_components";
 import {useRouter} from "next/navigation";
@@ -52,7 +53,7 @@ function Page() {
         >
           <>
             <strong>{t("common.price")}</strong>: {displayPrice(food)}<br/>
-            <strong>{t("common.stock")}</strong>: {food.quantity_stock ?? 0}<br/>
+            <StockDisplay quantity={food.quantity_stock}/><br/>
             <strong>{t("catalog.validUntil")}</strong>: {formatDate(food.valid_until)}
           </>
         </ProductCard>

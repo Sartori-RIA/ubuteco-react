@@ -2,7 +2,7 @@
 
 import {useAppSelector} from "@/app/_store/hooks";
 import {getAuthUser} from "@/app/_lib/auth-storage";
-import {canMutateOperationalData, isSuperAdmin} from "@/app/_lib/auth-roles";
+import {canAccessInventory, canMutateOperationalData, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {useClientReady} from "@/app/_hooks/useClientReady";
 
 export function useAuthCapabilities() {
@@ -14,5 +14,6 @@ export function useAuthCapabilities() {
     user,
     isSuperAdmin: isSuperAdmin(user),
     canMutateOperationalData: canMutateOperationalData(user),
+    canAccessInventory: canAccessInventory(user),
   };
 }

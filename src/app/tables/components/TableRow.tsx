@@ -4,6 +4,7 @@ import {Table} from "@/app/_types";
 import {useEffect, useState} from "react";
 import Link from "next/link";
 import {DestroyButton, EditButton, InlineInput} from "@/app/_components";
+import {useTranslations} from "@/app/_hooks/useTranslations";
 
 type Props = {
   table: Table
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
+  const t = useTranslations();
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(table.name)
   const [chairs, setChairs] = useState(String(table.chairs ?? 0))
@@ -99,7 +101,7 @@ export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <span className="min-w-0 flex-1 truncate text-sm font-medium">{table.name}</span>
             <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">
-              {table.chairs} {table.chairs === 1 ? "chair" : "chairs"}
+              {t("common.seats", {count: table.chairs ?? 0})}
             </span>
           </div>
         )}
@@ -111,7 +113,7 @@ export function TableRow({table, onUpdate, onDelete, readOnly = false}: Props) {
             href={`/orders/new?table_id=${table.id}`}
             className="text-xs font-medium text-blue-600 hover:text-blue-700 whitespace-nowrap"
           >
-            New order
+            {t("tablesPage.newOrder")}
           </Link>
           {!readOnly && (
             <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">

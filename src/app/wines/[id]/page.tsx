@@ -2,6 +2,7 @@
 
 import {useParams} from "next/navigation";
 import {Card, Loading, ProductDetailImage} from "@/app/_components";
+import {StockDisplay} from "@/app/_components/StockDisplay";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/_store";
@@ -35,7 +36,8 @@ export default function Page() {
           <strong>{t("catalog.vintageWine")}</strong>: {wine.vintage_wine} <br/>
           <strong>{t("catalog.visual")}</strong>: {wine.visual} <br/>
           <strong>{t("common.maker")}</strong>: {wine.maker?.name} <br/>
-          <strong>{t("common.abv")}</strong>: {wine.abv}
+          <strong>{t("common.abv")}</strong>: {wine.abv} <br/>
+          <StockDisplay quantity={wine.quantity_stock}/> <br/>
           {wine.description}
         </p>
         <ProductDetailImage src={wine.image_url} alt={wine.name}/>
