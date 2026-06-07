@@ -34,6 +34,8 @@ const es: MessageCatalog = {
       kitchenClosed: "La cocina está cerrada.",
       searchUnavailable: "La búsqueda no está disponible temporalmente.",
       deleteRestriction: "No se puede eliminar este registro porque tiene datos dependientes.",
+      accountDeletionForbidden: "No tienes permiso para eliminar tu propia cuenta.",
+      roleAssignmentForbidden: "No puedes asignar este rol.",
       invalidTransition: "No se puede cambiar de {from} a {to}",
     },
   },
@@ -152,6 +154,11 @@ const es: MessageCatalog = {
     saveProfileFailed: "No se pudo guardar el perfil.",
     deleteEmailMismatch: "Digite seu e-mail exatamente como aparece no perfil para confirmar.",
     deleteAccountFailed: "No se pudo eliminar la cuenta.",
+    accountRemoval: "Eliminación de cuenta",
+    contactAdminForDeletion:
+      "Para quitar tu acceso, contacta al administrador de la organización.",
+    superAdminNoSelfDeletion:
+      "Las cuentas de operador de la plataforma no se pueden eliminar desde ajustes. Contacta al soporte interno.",
     yourNamePlaceholder: "Seu nome",
     repeatNewPassword: "Repita a nova senha",
   },

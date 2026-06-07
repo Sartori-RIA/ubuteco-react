@@ -52,6 +52,11 @@ export function canManageUsers(user: User | null | undefined): boolean {
   return isAdmin(user);
 }
 
+/** Self-service account deletion on `/settings` (org admin only). */
+export function canDeleteOwnAccount(user: User | null | undefined): boolean {
+  return isAdmin(user);
+}
+
 /** Org profile and operational settings for the authenticated tenant. */
 export function canManageOrganization(user: User | null | undefined): boolean {
   return isAdmin(user);

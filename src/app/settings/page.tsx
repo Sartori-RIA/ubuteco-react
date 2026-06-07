@@ -6,7 +6,9 @@ import {useRouter} from "next/navigation";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {Buttons, Card, FormErrors, Input, Label, Loading} from "@/app/_components";
+import {canDeleteOwnAccount, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {formatRoleLabel} from "@/app/_lib/role-labels";
+import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
 import {formatMemberSince, userInitials} from "@/app/_lib/user-display";
 import {setAuthUser} from "@/app/_lib/auth-storage";
 import {usersService} from "@/app/_services/users.service";
@@ -126,7 +128,7 @@ export default function SettingsPage() {
       router.replace("/login");
     } catch (error) {
       if (error instanceof ApiError) {
-        setErrors(error.data);
+        setErrors(resolveApiErrorMessages({errors: error.items}, t));
       } else {
         setErrors([t("settings.deleteAccountFailed")]);
       }
@@ -272,46 +274,56 @@ export default function SettingsPage() {
         </Buttons>
       </Card>
 
-      <Card title={t("settings.dangerZone")} className="border-red-100 hover:translate-y-0">
-        <p className="mb-4 text-sm text-gray-600">{t("settings.dangerHint")}</p>
-        {!showDeletePanel ? (
-          <Buttons variant="danger" onClick={() => setShowDeletePanel(true)}>
-            {t("settings.deleteAccount")}
-          </Buttons>
-        ) : (
-          <div className="space-y-4 rounded-xl border border-red-200 bg-red-50/50 p-4">
-            <p className="text-sm text-red-900">
-              {t("settings.typeEmailConfirm", {email: profile?.email ?? ""})}
-            </p>
-            <Input
-              name="delete_confirm"
-              value={deleteConfirm}
-              onChange={(e) => setDeleteConfirm(e.target.value)}
-              placeholder={profile?.email ?? "you@example.com"}
-              className="!pl-4"
-            />
-            <div className="flex flex-wrap gap-2">
-              <Buttons
-                variant="danger"
-                loading={deleting}
-                onClick={handleDeleteAccount}
-                disabled={deleteConfirm !== profile?.email}
-              >
-                {t("settings.confirmDeletion")}
-              </Buttons>
-              <Buttons
-                variant="ghost"
-                onClick={() => {
-                  setShowDeletePanel(false);
-                  setDeleteConfirm("");
-                }}
-              >
-                {t("common.cancel")}
-              </Buttons>
+      {canDeleteOwnAccount(sessionUser) ? (
+        <Card title={t("settings.dangerZone")} className="border-red-100 hover:translate-y-0">
+          <p className="mb-4 text-sm text-gray-600">{t("settings.dangerHint")}</p>
+          {!showDeletePanel ? (
+            <Buttons variant="danger" onClick={() => setShowDeletePanel(true)}>
+              {t("settings.deleteAccount")}
+            </Buttons>
+          ) : (
+            <div className="space-y-4 rounded-xl border border-red-200 bg-red-50/50 p-4">
+              <p className="text-sm text-red-900">
+                {t("settings.typeEmailConfirm", {email: profile?.email ?? ""})}
+              </p>
+              <Input
+                name="delete_confirm"
+                value={deleteConfirm}
+                onChange={(e) => setDeleteConfirm(e.target.value)}
+                placeholder={profile?.email ?? "you@example.com"}
+                className="!pl-4"
+              />
+              <div className="flex flex-wrap gap-2">
+                <Buttons
+                  variant="danger"
+                  loading={deleting}
+                  onClick={handleDeleteAccount}
+                  disabled={deleteConfirm !== profile?.email}
+                >
+                  {t("settings.confirmDeletion")}
+                </Buttons>
+                <Buttons
+                  variant="ghost"
+                  onClick={() => {
+                    setShowDeletePanel(false);
+                    setDeleteConfirm("");
+                  }}
+                >
+                  {t("common.cancel")}
+                </Buttons>
+              </div>
             </div>
-          </div>
-        )}
-      </Card>
+          )}
+        </Card>
+      ) : (
+        <Card title={t("settings.accountRemoval")} className="hover:translate-y-0">
+          <p className="text-sm text-gray-600">
+            {isSuperAdmin(sessionUser)
+              ? t("settings.superAdminNoSelfDeletion")
+              : t("settings.contactAdminForDeletion")}
+          </p>
+        </Card>
+      )}
     </div>
   );
 }

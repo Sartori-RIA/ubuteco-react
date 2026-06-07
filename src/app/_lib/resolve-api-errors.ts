@@ -8,6 +8,8 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   kitchen_closed: "api.errors.kitchenClosed",
   search_unavailable: "api.errors.searchUnavailable",
   delete_restriction: "api.errors.deleteRestriction",
+  account_deletion_forbidden: "api.errors.accountDeletionForbidden",
+  role_assignment_forbidden: "api.errors.roleAssignmentForbidden",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */
