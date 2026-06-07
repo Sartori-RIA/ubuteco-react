@@ -1,7 +1,8 @@
 # Plan: Inventory UI
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
+**Branch:** `feature/inventory-ui`  
 **Backend:** [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md)  
 **Priority:** P2  
 **Estimated effort:** 0.5–1 sprint (after API Phase 2)
@@ -16,29 +17,29 @@ Surface **stock levels** in catalog UI and allow admins to adjust quantity witho
 
 ## Phase 1 — Display
 
-- [ ] Show `quantity_stock` on beer/wine/drink/food list and detail pages
-- [ ] Badge “Low stock” when below threshold (when API provides threshold or client default)
+- [x] Show `quantity_stock` on beer/wine/drink/food list and detail pages
+- [x] Badge “Low stock” when below threshold (when API provides threshold or client default)
 
 ---
 
 ## Phase 2 — Adjust stock (admin)
 
-- [ ] On product edit page: stock adjustment field (+/-) or modal “Receive stock”
-- [ ] Calls inventory API from [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md)
+- [x] On product edit page: stock adjustment field (+/-) or modal “Receive stock”
+- [x] Calls inventory API from [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md)
 
 ---
 
 ## Phase 3 — Low stock view (optional)
 
-- [ ] `/inventory` or filter on catalog “Low stock items”
-- [ ] Link from org dashboard when built
+- [x] `/inventory` or filter on catalog “Low stock items”
+- [x] Link from org dashboard when built
 
 ---
 
 ## Definition of done
 
-- [ ] Stock visible on stockable products
-- [ ] Admin can increment/decrement stock from UI
+- [x] Stock visible on stockable products
+- [x] Admin can increment/decrement stock from UI
 
 ---
 
