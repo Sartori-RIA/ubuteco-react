@@ -35,6 +35,7 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 - **Small commits** — one logical change each (`feat`, `fix`, `test`, `docs`, `refactor`).
 - **Update the plan first** — checkboxes, `Status:` header, and `docs/plans/README.md` on the **same branch/PR** as the code (preferred).
 - **One plan → one PR** when possible; complete the plan in that PR.
+- **Quality gates before PR** — `npm run lint`, `npm test`, `npm run test:coverage`, `npm run build`; see workflow doc §4.
 
 ## Do not (unless explicitly asked)
 

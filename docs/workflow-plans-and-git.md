@@ -47,12 +47,25 @@ On the feature branch (same PR as code):
 
 Exception: plan/backlog **text-only** edits with no implementation can go straight to **`main`** (no PR), per [AGENTS.md](../AGENTS.md).
 
-## 4. Open PR
+## 4. Quality gates **before** opening the PR
+
+Run locally on the feature branch — **must pass** before `git push` / `gh pr create`. Matches [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+
+| Check | Command |
+|-------|---------|
+| **ESLint** | `npm run lint` |
+| **Tests (Vitest)** | `npm test` |
+| **Tests + code coverage** | `npm run test:coverage` |
+| **TypeScript + production build** | `NEXT_PUBLIC_API_URL=http://localhost:3000 npm run build` |
+
+Run **`npm test`** locally on every change that touches TS/TSX; run the full row above before push/PR. Optional while developing: `npm run test:watch`.
+
+## 5. Open PR
 
 - One plan per PR when possible; finish the plan in that PR.
 - Body: summary bullets, link to plan file, test plan checklist.
 - Cross-repo: link companion API PR when the UI depends on new endpoints.
 
-## 5. After merge
+## 6. After merge
 
 - README status should already be `completed` from step 3.
