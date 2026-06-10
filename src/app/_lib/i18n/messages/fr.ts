@@ -24,6 +24,9 @@ const fr: MessageCatalog = {
     price: "Prix",
     stock: "Stock",
   },
+  pageTitles: {
+    editName: "Modifier {name}",
+  },
   api: {
     errors: {
       ...en.api.errors,

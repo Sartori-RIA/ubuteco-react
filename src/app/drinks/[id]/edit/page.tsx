@@ -10,6 +10,8 @@ import {drinkThunks} from "@/app/_store/features/drinks/drinksThunks";
 import {DrinkForm} from "@/app/drinks/components";
 import {StockAdjustmentPanel} from "@/app/_components/StockAdjustmentPanel";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatEditTitle} from "@/app/_lib/page-titles";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -18,6 +20,8 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.drinks);
   const router = useRouter();
   const t = useTranslations();
+
+  useEntityDocumentTitle(drink?.name ? formatEditTitle(drink.name, t) : undefined);
 
   useEffect(() => {
     if (id) {

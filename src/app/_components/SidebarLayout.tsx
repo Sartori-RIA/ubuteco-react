@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {isAuthPublicPath} from "@/app/_lib/auth-routes";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
+import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
 import {userInitials} from "@/app/_lib/user-display";
 import {Buttons} from ".";
@@ -24,6 +25,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const {isSuperAdmin, user: capabilitiesUser} = useAuthCapabilities();
   const t = useTranslations();
   const pageTitle = usePageTitle();
+  useDocumentTitle(pageTitle);
   const navGroups = getVisibleNavGroups(capabilitiesUser);
 
   if (isAuthPublicPath(pathname)) {

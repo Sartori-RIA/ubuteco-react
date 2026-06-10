@@ -10,6 +10,8 @@ import {RootState} from "@/app/_store";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatEditTitle} from "@/app/_lib/page-titles";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -18,6 +20,8 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.foods);
   const router = useRouter();
   const t = useTranslations();
+
+  useEntityDocumentTitle(food?.name ? formatEditTitle(food.name, t) : undefined);
 
   useEffect(() => {
     if (id) {
