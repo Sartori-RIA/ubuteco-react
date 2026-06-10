@@ -41,7 +41,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 13 | [App shell & navigation](./13-app-shell-navigation.md) | completed | P1 | — |
 | 11 | [Inventory UI](./11-inventory-ui.md) | completed | P2 | [09-inventory-stock](../../../ubuteco_api/docs/plans/09-inventory-stock.md) |
 | 12 | [Appearance — dark mode](./12-appearance-dark-mode.md) | completed | P2 | — |
-| 10 | [Browser document titles](./10-document-titles.md) | not started | P2 | — |
+| 10 | [Browser document titles](./10-document-titles.md) | completed | P2 | — |
 | 9 | [Frontend performance](./09-frontend-performance.md) | not started | P2 | — |
 | 14 | [Marketing landing page](./14-landing-page.md) | in progress | P2 | — |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
@@ -53,10 +53,11 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | [08 Settings — account deletion](./08-settings-account-deletion.md) | [#28](https://github.com/Sartori-RIA/ubuteco-react/pull/28) | Danger zone only for org admin; staff/super-admin guidance |
 | [11 Inventory UI](./11-inventory-ui.md) | [#26](https://github.com/Sartori-RIA/ubuteco-react/pull/26) | Stock display, adjust panel, `/inventory`, i18n follow-ups |
 | [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
+| [10 Browser document titles](./10-document-titles.md) | [#31](https://github.com/Sartori-RIA/ubuteco-react/pull/31) | `useDocumentTitle`, `page-titles`, entity titles on detail/edit routes |
 
 **In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [14 Marketing landing page](./14-landing-page.md).
 
-**Next up:** [10 Document titles](./10-document-titles.md), [09 Frontend performance](./09-frontend-performance.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
+**Next up:** [09 Frontend performance](./09-frontend-performance.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

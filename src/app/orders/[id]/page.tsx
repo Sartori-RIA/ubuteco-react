@@ -16,6 +16,7 @@ import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useConfirm} from "@/app/_hooks/useConfirm";
 import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {useToast} from "@/app/_components/Toast/ToastProvider";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
@@ -50,6 +51,10 @@ export default function OrderPage() {
   const isOpen = activeOrder?.status === "open";
   const isClosed = activeOrder?.status === "closed";
   const readOnly = !canMutateOperationalData || !isOpen;
+
+  useEntityDocumentTitle(
+    activeOrder ? t("orders.orderNumber", {id: String(activeOrder.id)}) : undefined
+  );
 
   const loadOrder = useCallback(() => {
     if (!orderId) return;

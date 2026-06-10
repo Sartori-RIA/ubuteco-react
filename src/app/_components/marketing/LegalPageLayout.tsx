@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import {useEffect} from "react";
 import {MarketingFooter} from "@/app/_components/marketing/MarketingFooter";
 import {MarketingHeader} from "@/app/_components/marketing/MarketingHeader";
-import {useOrganizationSettings} from "@/app/_hooks/useOrganizationSettings";
+import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import type {LegalDocument} from "@/app/_lib/legal/types";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 
@@ -14,10 +13,7 @@ type Props = {
 
 export function LegalPageLayout({content}: Props) {
   const t = useTranslations();
-
-  useEffect(() => {
-    document.title = `${content.title} | uButeco`;
-  }, [content.title]);
+  useDocumentTitle(content.title);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">

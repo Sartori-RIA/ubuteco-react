@@ -1,6 +1,6 @@
 # Plan: Browser document titles
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Priority:** P2  
 **Estimated effort:** small (0.25–0.5 sprint)
@@ -19,13 +19,11 @@ Titles must stay in sync with navigation, including dynamic detail/edit pages on
 
 | Area | Behavior |
 |------|----------|
-| Root `layout.tsx` | `"use client"` — default `metadata` is **commented out** |
-| ~37/40 `page.tsx` | `"use client"` — cannot export static `metadata` |
-| 3 server pages only | `tables`, `beer-styles`, `wine-styles` export `title: "uButeco \| …"` |
-| `page-titles.ts` | Maps pathname → label for **in-app topbar** (`SidebarLayout` h2) only |
-| Browser tab | No `document.title` updates → Next/default shows **URL-like titles** on most routes |
-
-In-app heading and browser title are **decoupled** today; fixing the topbar alone is not enough.
+| Root `layout.tsx` | `metadata.title` default + template |
+| ~37/40 `page.tsx` | `"use client"` — `useDocumentTitle` / `useEntityDocumentTitle` |
+| `page-titles.ts` | Pathname → label; `formatDocumentTitle` for browser tab |
+| `SidebarLayout` | Syncs tab title on navigation for shell routes |
+| Browser tab | `uButeco \| …` on static, auth, and entity routes |
 
 ---
 
@@ -41,11 +39,11 @@ In-app heading and browser title are **decoupled** today; fixing the topbar alon
 
 ## Phase 1 — Shared title helper
 
-- [ ] Extend `src/app/_lib/page-titles.ts`:
+- [x] Extend `src/app/_lib/page-titles.ts`:
   - `formatDocumentTitle(label: string): string` → `uButeco | ${label}`
-  - `getPageTitle(pathname)` — keep for topbar; add `getDocumentTitle(pathname)` for static segments
+  - `getPageTitle(pathname)` — keep for topbar; `getDocumentTitle(pathname)` for static segments
   - Map sub-routes: `/orders/new` → `New order`, `/beers/new` → `New beer`, `…/edit` → `Edit beer`, etc.
-- [ ] Unit tests for pathname → title mapping (including dynamic segment patterns)
+- [x] Unit tests for pathname → title mapping (including dynamic segment patterns)
 
 ---
 
@@ -53,12 +51,10 @@ In-app heading and browser title are **decoupled** today; fixing the topbar alon
 
 Because most routes are client components, set `document.title` on navigation.
 
-- [ ] Add `useDocumentTitle(title: string)` hook (`useEffect` → `document.title`, restore optional on unmount)
-- [ ] Call from `SidebarLayout` with `formatDocumentTitle(getPageTitle(pathname))` for all authenticated shell routes
-- [ ] Auth pages (`login`, `signup`, `forgot-password`, `reset-password`, `forbidden`): call hook with static labels (no sidebar)
-- [ ] Verify tab title updates on client navigation without full reload
-
-**Alternative (preferred long-term):** split root layout — server `layout.tsx` with `metadata.title.template = "%s | uButeco"` + client `Providers.tsx` for Redux/auth. Keeps default for any future server pages. Can combine with Phase 2 for client-only routes.
+- [x] Add `useDocumentTitle(title: string)` hook (`useEffect` → `document.title`)
+- [x] Call from `SidebarLayout` with `usePageTitle()` for all authenticated shell routes
+- [x] Auth pages (`login`, `signup`, `forgot-password`, `reset-password`, `forbidden`): title via `SidebarLayout` pathname map
+- [x] Verify tab title updates on client navigation without full reload
 
 ---
 
@@ -72,45 +68,39 @@ After data fetch on detail/edit pages, override generic title:
 | `/beers/[id]`, `/wines/…`, etc. | Product/maker/dish **name** |
 | `…/[id]/edit` | `Edit {name}` |
 
-- [ ] Small helper or per-page `useDocumentTitle(formatDocumentTitle(name))` once Redux/query has entity
-- [ ] Loading state: keep static segment title until name resolves (avoid flicker `undefined`)
+- [x] `useEntityDocumentTitle` + per-page hook once Redux has entity
+- [x] Loading state: keep static segment title until name resolves (avoid flicker `undefined`)
 
 ---
 
 ## Phase 4 — Consistency & cleanup
 
-- [ ] Remove duplicate `export const metadata` from `tables`, `beer-styles`, `wine-styles` **or** migrate them to shared layout metadata (avoid two sources)
-- [ ] Uncomment / implement root default:
-  ```ts
-  export const metadata: Metadata = {
-    title: { default: "uButeco", template: "uButeco | %s" },
-  };
-  ```
-  (only after server/client layout split)
-- [ ] Align topbar h2 with document title where both show the same static label (optional: topbar shows short label without prefix)
+- [x] Server pages (`tables`, `beer-styles`, `wine-styles`) use client title sync — no duplicate `metadata` per page
+- [x] Root default metadata in `layout.tsx`
+- [x] Topbar h2 unchanged (`usePageTitle()`)
 
 ---
 
 ## Phase 5 — Tests
 
-- [ ] Unit: `getDocumentTitle`, `formatDocumentTitle`, edit/new sub-routes
+- [x] Unit: `getDocumentTitle`, `formatDocumentTitle`, edit/new sub-routes
 - [ ] Optional E2E (Playwright): navigate to `/orders`, assert `page.title()` matches `/uButeco \| Orders/`
 
 ---
 
 ## Definition of done
 
-- [ ] No route shows raw URL path in the browser tab
-- [ ] Static list/settings pages show correct `uButeco | …` title
-- [ ] Detail pages show entity name (or sensible id fallback) after load
-- [ ] Single mapping module; no one-off `metadata` strings scattered per page
-- [ ] Auth and kitchen-only flows covered
+- [x] No route shows raw URL path in the browser tab
+- [x] Static list/settings pages show correct `uButeco | …` title
+- [x] Detail pages show entity name (or sensible id fallback) after load
+- [x] Single mapping module; no one-off `metadata` strings scattered per page
+- [x] Auth and kitchen-only flows covered
 
 ---
 
 ## References
 
-- `src/app/layout.tsx` — client root, metadata commented
-- `src/app/_lib/page-titles.ts` — segment map (reuse)
-- `src/app/_components/SidebarLayout.tsx` — topbar `getPageTitle(pathname)`
-- `src/app/tables/page.tsx` — only page with working metadata today
+- `src/app/layout.tsx` — root metadata
+- `src/app/_lib/page-titles.ts` — segment map
+- `src/app/_hooks/useDocumentTitle.ts` — client sync
+- `src/app/_components/SidebarLayout.tsx` — shell routes

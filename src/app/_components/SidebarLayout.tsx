@@ -7,6 +7,7 @@ import {faBars, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-ic
 import {isMarketingShellPath} from "@/app/_lib/auth-routes";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
+import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
 import {useClientReady} from "@/app/_hooks/useClientReady";
 import {userInitials} from "@/app/_lib/user-display";
@@ -26,6 +27,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const {isSuperAdmin, user: capabilitiesUser} = useAuthCapabilities();
   const t = useTranslations();
   const pageTitle = usePageTitle();
+  useDocumentTitle(pageTitle);
   const navGroups = getVisibleNavGroups(capabilitiesUser);
   const authStatus = useAppSelector((state) => state.auth.status);
   const ready = useClientReady();

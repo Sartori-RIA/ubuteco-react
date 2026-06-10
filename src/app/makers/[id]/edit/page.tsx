@@ -9,6 +9,8 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {MakerForm} from "@/app/makers/components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatEditTitle} from "@/app/_lib/page-titles";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -17,6 +19,8 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.makers);
   const router = useRouter();
   const t = useTranslations();
+
+  useEntityDocumentTitle(maker?.name ? formatEditTitle(maker.name, t) : undefined);
 
   useEffect(() => {
     if (id) {

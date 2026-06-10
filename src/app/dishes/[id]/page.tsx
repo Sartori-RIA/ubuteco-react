@@ -11,6 +11,7 @@ import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -21,6 +22,8 @@ export default function Page() {
 
   const dish = useSelector((state: RootState) => state.dishes.dishes.find((item) => item.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.dishes);
+
+  useEntityDocumentTitle(dish?.name);
 
   useEffect(() => {
     if (id) {

@@ -8,7 +8,7 @@ import {Providers} from "@/app/providers";
 export const metadata: Metadata = {
   title: {
     default: "uButeco — Gestão para bares e restaurantes",
-    template: "%s | uButeco",
+    template: "uButeco | %s",
   },
   description:
     "SaaS multi-tenant para bares e restaurantes: pedidos, fila da cozinha em tempo real, cardápio e configurações regionais.",

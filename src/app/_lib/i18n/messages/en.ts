@@ -25,6 +25,9 @@ const en: MessageCatalog = {
     price: "Price",
     stock: "Stock",
   },
+  pageTitles: {
+    editName: "Edit {name}",
+  },
   api: {
     errors: {
       generic: "Something went wrong. Please try again.",
