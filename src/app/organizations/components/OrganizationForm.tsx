@@ -1,6 +1,6 @@
 "use client";
 
-import {FormEvent, useEffect, useState} from "react";
+import {FormEvent, useState} from "react";
 import {Buttons, Card, FormErrors, Input, Label} from "@/app/_components";
 import {Organization} from "@/app/_types";
 import {useTranslations} from "@/app/_hooks/useTranslations";
@@ -26,12 +26,6 @@ export function OrganizationForm({
   const [name, setName] = useState(defaultValues.name ?? "");
   const [phone, setPhone] = useState(defaultValues.phone ?? "");
   const [preview, setPreview] = useState<string | null>(defaultValues.logo_url ?? null);
-
-  useEffect(() => {
-    setName(defaultValues.name ?? "");
-    setPhone(defaultValues.phone ?? "");
-    setPreview(defaultValues.logo_url ?? null);
-  }, [defaultValues.id, defaultValues.name, defaultValues.phone, defaultValues.logo_url]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
