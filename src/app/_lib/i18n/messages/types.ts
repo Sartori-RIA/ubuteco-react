@@ -511,6 +511,48 @@ export type MessageCatalog = {
       closed: string;
     };
   };
+  marketing: {
+    meta: {
+      title: string;
+      description: string;
+    };
+    header: {
+      signIn: string;
+      startFree: string;
+    };
+    hero: {
+      title: string;
+      subtitle: string;
+      ctaPrimary: string;
+      ctaSecondary: string;
+    };
+    problem: {
+      title: string;
+      body: string;
+    };
+    features: {
+      title: string;
+      operations: {title: string; body: string};
+      catalog: {title: string; body: string};
+      kitchen: {title: string; body: string};
+      settings: {title: string; body: string};
+    };
+    proof: {
+      title: string;
+      body: string;
+    };
+    cta: {
+      title: string;
+      subtitle: string;
+      button: string;
+    };
+    footer: {
+      signIn: string;
+      signUp: string;
+      contact: string;
+      tagline: string;
+    };
+  };
 };
 
 type JoinKeys<P extends string, K extends string> = P extends "" ? K : `${P}.${K}`;

@@ -539,6 +539,60 @@ const es: MessageCatalog = {
       closed: "Cozinha fechada — novos itens não são processados.",
     },
   },
+  marketing: {
+    meta: {
+      title: "uButeco — Gestión para bares y restaurantes",
+      description:
+        "SaaS multi-tenant para bares y restaurantes: pedidos, cocina en tiempo real, catálogo y ajustes regionales.",
+    },
+    header: {signIn: "Iniciar sesión", startFree: "Empezar gratis"},
+    hero: {
+      title: "Gestiona tu bar o restaurante sin caos en hojas de cálculo",
+      subtitle:
+        "Pedidos, cocina, catálogo y roles del equipo — una plataforma para operaciones de hospitality.",
+      ctaPrimary: "Crear cuenta gratis",
+      ctaSecondary: "Ver cómo funciona",
+    },
+    problem: {
+      title: "Salón, cocina y gestión en la misma página",
+      body:
+        "Deja de perder tickets y pedidos en WhatsApp. uButeco mantiene servicio, cocina y catálogo sincronizados en tiempo real.",
+    },
+    features: {
+      title: "Todo lo que tu equipo usa a diario",
+      operations: {
+        title: "Operaciones",
+        body: "Pedidos abiertos, mesas, descuentos y acceso por rol.",
+      },
+      catalog: {
+        title: "Menú y catálogo",
+        body: "Cervezas, vinos, bebidas, platos y stock — búsqueda por establecimiento.",
+      },
+      kitchen: {
+        title: "Cocina en vivo",
+        body: "Cola WebSocket: platos nuevos al instante, estados en flujo.",
+      },
+      settings: {
+        title: "Ajustes regionales",
+        body: "Locale, moneda y zona horaria por organización.",
+      },
+    },
+    proof: {
+      title: "Hecho para bares y restaurantes",
+      body: "Stack open-source y multi-tenant, diseñado para servicio real.",
+    },
+    cta: {
+      title: "¿Listo para simplificar el servicio?",
+      subtitle: "Crea tu organización e invita al equipo en minutos.",
+      button: "Empezar — es gratis",
+    },
+    footer: {
+      signIn: "Iniciar sesión",
+      signUp: "Crear cuenta",
+      contact: "Contacto",
+      tagline: "uButeco — operaciones de hospitality, simplificadas.",
+    },
+  },
 };
 
 export default es;

@@ -3,7 +3,7 @@
 import {ReactNode, useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {getAuthToken} from "@/app/_lib/auth-storage";
-import {isAuthPublicPath} from "@/app/_lib/auth-routes";
+import {isMarketingShellPath} from "@/app/_lib/auth-routes";
 import {
   canAccessDashboard,
   canAccessInventory,
@@ -37,11 +37,13 @@ export default function AuthGuard({children}: {children: ReactNode}) {
   const authStatus = useAppSelector((state) => state.auth.status);
   const {canMutateOperationalData, user} = useAuthCapabilities();
 
-  useEffect(() => {
-    if (!ready || isAuthPublicPath(pathname)) return;
+  const token = getAuthToken();
+  const isAuthenticated = Boolean(token) || authStatus === "authenticated";
 
-    const token = getAuthToken();
-    if (!token && authStatus !== "authenticated") {
+  useEffect(() => {
+    if (!ready || isMarketingShellPath(pathname, isAuthenticated)) return;
+
+    if (!isAuthenticated) {
       router.replace("/login");
       return;
     }
@@ -79,9 +81,9 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     if (user && isDashboardPath(pathname) && !canAccessDashboard(user) && !isSuperAdmin(user)) {
       router.replace("/orders");
     }
-  }, [ready, pathname, router, authStatus, canMutateOperationalData, user]);
+  }, [ready, pathname, router, isAuthenticated, canMutateOperationalData, user]);
 
-  if (isAuthPublicPath(pathname)) {
+  if (isMarketingShellPath(pathname, isAuthenticated)) {
     return <>{children}</>;
   }
 
@@ -89,7 +91,7 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     return <Loading/>;
   }
 
-  if (!getAuthToken() && authStatus !== "authenticated") {
+  if (!isAuthenticated) {
     return null;
   }
 

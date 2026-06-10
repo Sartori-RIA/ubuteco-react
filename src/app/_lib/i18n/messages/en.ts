@@ -537,6 +537,63 @@ const en: MessageCatalog = {
       closed: "Kitchen is closed — new items are not processed.",
     },
   },
+  marketing: {
+    meta: {
+      title: "uButeco — Restaurant & bar management",
+      description:
+        "Multi-tenant SaaS for bars and restaurants: orders, live kitchen queue, catalog, and regional settings.",
+    },
+    header: {
+      signIn: "Sign in",
+      startFree: "Start free",
+    },
+    hero: {
+      title: "Run your bar or restaurant without spreadsheet chaos",
+      subtitle:
+        "Orders, kitchen queue, menu catalog, and staff roles — one platform built for multi-location hospitality teams.",
+      ctaPrimary: "Create free account",
+      ctaSecondary: "See how it works",
+    },
+    problem: {
+      title: "Floor, kitchen, and back office on the same page",
+      body:
+        "Stop juggling paper tickets, WhatsApp orders, and disconnected spreadsheets. uButeco keeps service, kitchen, and catalog in sync — with real-time updates when a dish hits the line.",
+    },
+    features: {
+      title: "Everything your team needs day to day",
+      operations: {
+        title: "Operations",
+        body: "Open orders, tables, discounts, and role-based access for waiters, kitchen, and admins.",
+      },
+      catalog: {
+        title: "Menu & catalog",
+        body: "Beers, wines, drinks, dishes, and stock-aware products — searchable and org-scoped.",
+      },
+      kitchen: {
+        title: "Live kitchen",
+        body: "WebSocket kitchen queue: new dishes appear instantly, statuses flow awaiting → cooking → ready.",
+      },
+      settings: {
+        title: "Regional settings",
+        body: "Locale, currency, and timezone per organization — ready for Brazil, Canada, and LATAM.",
+      },
+    },
+    proof: {
+      title: "Built for bars & restaurants",
+      body: "Open-source stack, multi-tenant by design, and shaped by real service workflows — not generic retail software.",
+    },
+    cta: {
+      title: "Ready to simplify service?",
+      subtitle: "Create your organization and invite your team in minutes.",
+      button: "Get started — it's free",
+    },
+    footer: {
+      signIn: "Sign in",
+      signUp: "Create account",
+      contact: "Contact",
+      tagline: "uButeco — hospitality operations, simplified.",
+    },
+  },
 };
 
 export default en;
