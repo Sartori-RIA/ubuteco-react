@@ -29,6 +29,9 @@ export type MessageCatalog = {
     price: string;
     stock: string;
   };
+  pageTitles: {
+    editName: string;
+  };
   api: {
     errors: {
       generic: string;

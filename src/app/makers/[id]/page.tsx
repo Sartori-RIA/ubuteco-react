@@ -8,6 +8,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -16,6 +17,8 @@ export default function Page() {
 
   const maker = useSelector((state: RootState) => state.makers.makers.find((m) => m.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.makers);
+
+  useEntityDocumentTitle(maker?.name);
 
   useEffect(() => {
     if (id) {

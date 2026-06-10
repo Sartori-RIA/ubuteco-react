@@ -10,6 +10,8 @@ import {dishesThunks} from "@/app/_store/features/dishes/dishesThunks";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {DishForm} from "@/app/dishes/components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatEditTitle} from "@/app/_lib/page-titles";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -19,6 +21,8 @@ export default function Page() {
   const {loading, errors} = useSelector((state: RootState) => state.dishes);
   const router = useRouter();
   const t = useTranslations();
+
+  useEntityDocumentTitle(dish?.name ? formatEditTitle(dish.name, t) : undefined);
 
   useEffect(() => {
     dispatch(foodsThunks.fetchOptions())

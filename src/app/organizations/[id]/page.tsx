@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import {useParams, useRouter} from "next/navigation";
 import {Loading} from "@/app/_components";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {canManageOrganization, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {platformOrganizationsService} from "@/app/_services/platform-organizations.service";
 import {OrganizationProfilePage} from "@/app/organizations/components";
@@ -19,6 +20,8 @@ function Page() {
     ReturnType<typeof platformOrganizationsService.show>
   > | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEntityDocumentTitle(organization?.name);
 
   useEffect(() => {
     if (!user || Number.isNaN(id)) return;

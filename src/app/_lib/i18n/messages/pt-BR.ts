@@ -25,6 +25,9 @@ const ptBR: MessageCatalog = {
     price: "Preço",
     stock: "Estoque",
   },
+  pageTitles: {
+    editName: "Editar {name}",
+  },
   api: {
     errors: {
       generic: "Algo deu errado. Tente novamente.",

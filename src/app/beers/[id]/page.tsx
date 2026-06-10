@@ -9,6 +9,7 @@ import {RootState} from "@/app/_store";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -17,6 +18,8 @@ export default function Page() {
 
   const beer = useSelector((state: RootState) => state.beers.beers.find((beer) => beer.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.beers);
+
+  useEntityDocumentTitle(beer?.name);
 
   useEffect(() => {
     if (id) {

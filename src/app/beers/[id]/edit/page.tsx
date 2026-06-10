@@ -10,6 +10,8 @@ import {RootState} from "@/app/_store";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatEditTitle} from "@/app/_lib/page-titles";
 
 export default function Page() {
   const router = useRouter();
@@ -19,6 +21,8 @@ export default function Page() {
   const dispatch = useAppDispatch()
   const beer = useSelector((state: RootState) => state.beers.beers.find((beer) => beer.id === Number(id)));
   const {loading, errors} = useSelector((state: RootState) => state.beers);
+
+  useEntityDocumentTitle(beer?.name ? formatEditTitle(beer.name, t) : undefined);
 
   useEffect(() => {
     if (id) {

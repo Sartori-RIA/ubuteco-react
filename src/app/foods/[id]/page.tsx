@@ -10,6 +10,7 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {foodsThunks} from "@/app/_store/features/foods/foodsThunks";
 import {useMoneyFormat} from "@/app/_hooks/useMoneyFormat";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -19,6 +20,8 @@ export default function Page() {
 
   const food = useSelector((state: RootState) => state.foods.foods.find((item) => item.id === Number(id)));
   const {loading} = useSelector((state: RootState) => state.foods);
+
+  useEntityDocumentTitle(food?.name);
 
   useEffect(() => {
     if (id) {

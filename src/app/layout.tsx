@@ -1,8 +1,16 @@
+import type {Metadata} from "next";
 import {Roboto, Roboto_Mono} from "next/font/google";
 import "./globals.css";
 
 import {AppearanceScript} from "@/app/_components/AppearanceScript";
 import {Providers} from "@/app/providers";
+
+export const metadata: Metadata = {
+  title: {
+    default: "uButeco",
+    template: "uButeco | %s",
+  },
+};
 
 const robotoSans = Roboto({
   variable: "--font-roboto-sans",
