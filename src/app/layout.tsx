@@ -7,8 +7,17 @@ import {Providers} from "@/app/providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "uButeco",
+    default: "uButeco — Gestão para bares e restaurantes",
     template: "uButeco | %s",
+  },
+  description:
+    "SaaS multi-tenant para bares e restaurantes: pedidos, fila da cozinha em tempo real, cardápio e configurações regionais.",
+  openGraph: {
+    title: "uButeco — Gestão para bares e restaurantes",
+    description:
+      "Pedidos, cozinha ao vivo, cardápio e equipe — uma plataforma feita para hospitality.",
+    locale: "pt_BR",
+    type: "website",
   },
 };
 
@@ -28,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}>
         <AppearanceScript/>
         <Providers>{children}</Providers>

@@ -542,6 +542,70 @@ const ptBR: MessageCatalog = {
       closed: "Cozinha fechada — novos itens não são processados.",
     },
   },
+  marketing: {
+    meta: {
+      title: "uButeco — Gestão para bares e restaurantes",
+      description:
+        "SaaS multi-tenant para bares e restaurantes: pedidos, fila da cozinha em tempo real, cardápio e configurações regionais.",
+    },
+    header: {
+      signIn: "Entrar",
+      startFree: "Começar grátis",
+    },
+    hero: {
+      title: "Gerencie seu bar ou restaurante sem planilha caótica",
+      subtitle:
+        "Pedidos, fila da cozinha, cardápio e papéis da equipe — uma plataforma feita para operações de hospitality multi-unidade.",
+      ctaPrimary: "Criar conta grátis",
+      ctaSecondary: "Ver como funciona",
+    },
+    problem: {
+      title: "Salão, cozinha e gestão na mesma página",
+      body:
+        "Chega de anotar pedido no WhatsApp e perder ticket de cozinha. O uButeco mantém atendimento, cozinha e catálogo sincronizados — com atualização em tempo real quando um prato entra na fila.",
+    },
+    features: {
+      title: "Tudo que sua equipe usa no dia a dia",
+      operations: {
+        title: "Operação",
+        body: "Pedidos abertos, mesas, descontos e acesso por papel — garçom, cozinha e admin.",
+      },
+      catalog: {
+        title: "Cardápio e catálogo",
+        body: "Cervejas, vinhos, drinks, pratos e produtos com estoque — busca e escopo por estabelecimento.",
+      },
+      kitchen: {
+        title: "Cozinha ao vivo",
+        body: "Fila via WebSocket: pratos novos aparecem na hora, status segue aguardando → preparo → pronto.",
+      },
+      settings: {
+        title: "Configurações regionais",
+        body: "Locale, moeda e fuso por organização — pronto para Brasil, Canadá e LATAM.",
+      },
+    },
+    proof: {
+      title: "Feito para bares e restaurantes",
+      body: "Stack open-source, multi-tenant de propósito, moldado por fluxos reais de serviço — não software genérico de varejo.",
+    },
+    cta: {
+      title: "Pronto para simplificar o serviço?",
+      subtitle: "Crie sua organização e convide a equipe em minutos.",
+      button: "Começar — é grátis",
+    },
+    footer: {
+      signIn: "Entrar",
+      signUp: "Criar conta",
+      terms: "Termos de Uso",
+      privacy: "Política de Privacidade",
+      tagline: "uButeco — operação de hospitality, simplificada.",
+    },
+  },
+  legal: {
+    backToHome: "Voltar ao início",
+    lastUpdated: "Última atualização",
+    signUpNoticePrefix: "Ao criar uma conta, você concorda com os",
+    signUpNoticeAnd: "e a",
+  },
 };
 
 export default ptBR;

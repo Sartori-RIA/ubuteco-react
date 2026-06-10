@@ -179,6 +179,67 @@ const fr: MessageCatalog = {
       openOrders: "Commandes ouvertes",
     },
   },
+  marketing: {
+    meta: {
+      title: "uButeco — Gestion pour bars et restaurants",
+      description:
+        "SaaS multi-tenant pour bars et restaurants : commandes, cuisine en direct, catalogue et réglages régionaux.",
+    },
+    header: {signIn: "Se connecter", startFree: "Commencer gratuitement"},
+    hero: {
+      title: "Gérez votre bar ou restaurant sans chaos",
+      subtitle:
+        "Commandes, file cuisine, catalogue et rôles — une plateforme pour l'hospitality multi-sites.",
+      ctaPrimary: "Créer un compte gratuit",
+      ctaSecondary: "Voir comment ça marche",
+    },
+    problem: {
+      title: "Salle, cuisine et gestion sur la même page",
+      body:
+        "Fini les tickets perdus et les commandes WhatsApp. uButeco synchronise service, cuisine et catalogue en temps réel.",
+    },
+    features: {
+      title: "Tout ce dont votre équipe a besoin",
+      operations: {
+        title: "Opérations",
+        body: "Commandes ouvertes, tables, remises et accès par rôle.",
+      },
+      catalog: {
+        title: "Menu et catalogue",
+        body: "Bières, vins, boissons, plats et stock — recherche par établissement.",
+      },
+      kitchen: {
+        title: "Cuisine en direct",
+        body: "File WebSocket : nouveaux plats instantanément, statuts en flux.",
+      },
+      settings: {
+        title: "Réglages régionaux",
+        body: "Locale, devise et fuseau par organisation.",
+      },
+    },
+    proof: {
+      title: "Conçu pour bars et restaurants",
+      body: "Stack open-source et multi-tenant, pensé pour le service réel.",
+    },
+    cta: {
+      title: "Prêt à simplifier le service ?",
+      subtitle: "Créez votre organisation et invitez l'équipe en minutes.",
+      button: "Commencer — c'est gratuit",
+    },
+    footer: {
+      signIn: "Se connecter",
+      signUp: "Créer un compte",
+      terms: "Conditions d'utilisation",
+      privacy: "Politique de confidentialité",
+      tagline: "uButeco — opérations hospitality, simplifiées.",
+    },
+  },
+  legal: {
+    backToHome: "Retour à l'accueil",
+    lastUpdated: "Dernière mise à jour",
+    signUpNoticePrefix: "En créant un compte, vous acceptez les",
+    signUpNoticeAnd: "et la",
+  },
 };
 
 export default fr;
