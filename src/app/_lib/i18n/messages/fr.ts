@@ -226,9 +226,16 @@ const fr: MessageCatalog = {
     footer: {
       signIn: "Se connecter",
       signUp: "Créer un compte",
-      contact: "Contact",
+      terms: "Conditions d'utilisation",
+      privacy: "Politique de confidentialité",
       tagline: "uButeco — opérations hospitality, simplifiées.",
     },
+  },
+  legal: {
+    backToHome: "Retour à l'accueil",
+    lastUpdated: "Dernière mise à jour",
+    signUpNoticePrefix: "En créant un compte, vous acceptez les",
+    signUpNoticeAnd: "et la",
   },
 };
 

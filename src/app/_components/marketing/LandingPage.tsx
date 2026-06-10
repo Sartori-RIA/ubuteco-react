@@ -142,13 +142,11 @@ export function LandingPage() {
           <div className="rounded-2xl bg-blue-600 px-6 py-12 text-center text-white sm:px-10 sm:py-14">
             <h2 className="text-2xl font-bold sm:text-3xl">{t("marketing.cta.title")}</h2>
             <p className="mx-auto mt-3 max-w-xl text-blue-100">{t("marketing.cta.subtitle")}</p>
-            <Link href="/signup" className="mt-8 inline-block">
-              <Buttons
-                size="lg"
-                className="rounded-xl bg-white text-blue-700 hover:bg-blue-50 dark:bg-white dark:text-blue-800"
-              >
-                {t("marketing.cta.button")}
-              </Buttons>
+            <Link
+              href="/signup"
+              className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-white px-6 text-base font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50"
+            >
+              {t("marketing.cta.button")}
             </Link>
           </div>
         </section>

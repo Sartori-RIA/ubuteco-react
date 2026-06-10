@@ -17,7 +17,12 @@ export function MarketingFooter() {
           <Link href="/signup" className="text-foreground hover:text-blue-600 dark:hover:text-blue-400">
             {t("marketing.footer.signUp")}
           </Link>
-          <span className="cursor-default text-muted">{t("marketing.footer.contact")}</span>
+          <Link href="/terms" className="text-foreground hover:text-blue-600 dark:hover:text-blue-400">
+            {t("marketing.footer.terms")}
+          </Link>
+          <Link href="/privacy" className="text-foreground hover:text-blue-600 dark:hover:text-blue-400">
+            {t("marketing.footer.privacy")}
+          </Link>
         </nav>
       </div>
     </footer>

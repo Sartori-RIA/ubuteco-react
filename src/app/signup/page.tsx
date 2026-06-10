@@ -1,6 +1,7 @@
 "use client";
 
 import {FormEvent, useState} from "react";
+import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
 import {Buttons, Input} from "@/app/_components";
@@ -111,6 +112,18 @@ export default function SignUpPage() {
         <Buttons type="submit" className="w-full rounded-xl" disabled={status === "loading"}>
           {status === "loading" ? t("auth.creatingAccount") : t("auth.createAccount")}
         </Buttons>
+
+        <p className="text-center text-xs leading-relaxed text-muted">
+          {t("legal.signUpNoticePrefix")}{" "}
+          <Link href="/terms" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+            {t("marketing.footer.terms")}
+          </Link>{" "}
+          {t("legal.signUpNoticeAnd")}{" "}
+          <Link href="/privacy" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+            {t("marketing.footer.privacy")}
+          </Link>
+          .
+        </p>
       </form>
     </AuthShell>
   );

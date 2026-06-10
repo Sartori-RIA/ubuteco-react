@@ -592,9 +592,16 @@ const ptBR: MessageCatalog = {
     footer: {
       signIn: "Entrar",
       signUp: "Criar conta",
-      contact: "Contato",
+      terms: "Termos de Uso",
+      privacy: "Política de Privacidade",
       tagline: "uButeco — operação de hospitality, simplificada.",
     },
+  },
+  legal: {
+    backToHome: "Voltar ao início",
+    lastUpdated: "Última atualização",
+    signUpNoticePrefix: "Ao criar uma conta, você concorda com os",
+    signUpNoticeAnd: "e a",
   },
 };
 

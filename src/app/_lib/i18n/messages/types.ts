@@ -549,9 +549,16 @@ export type MessageCatalog = {
     footer: {
       signIn: string;
       signUp: string;
-      contact: string;
+      terms: string;
+      privacy: string;
       tagline: string;
     };
+  };
+  legal: {
+    backToHome: string;
+    lastUpdated: string;
+    signUpNoticePrefix: string;
+    signUpNoticeAnd: string;
   };
 };
 

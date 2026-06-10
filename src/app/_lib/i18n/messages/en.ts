@@ -590,9 +590,16 @@ const en: MessageCatalog = {
     footer: {
       signIn: "Sign in",
       signUp: "Create account",
-      contact: "Contact",
+      terms: "Terms of Use",
+      privacy: "Privacy Policy",
       tagline: "uButeco — hospitality operations, simplified.",
     },
+  },
+  legal: {
+    backToHome: "Back to home",
+    lastUpdated: "Last updated",
+    signUpNoticePrefix: "By creating an account, you agree to our",
+    signUpNoticeAnd: "and",
   },
 };
 
