@@ -1,12 +1,24 @@
 "use client";
 
-import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
 import {
-  AppearanceMode,
-  applyAppearance,
-  readStoredAppearance,
-  storeAppearance,
-} from "@/app/_lib/appearance";
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
+import {AppearanceMode, applyAppearance} from "@/app/_lib/appearance";
+import {
+  getAppearanceServerSnapshot,
+  getAppearanceSnapshot,
+  getSystemColorSchemeServerSnapshot,
+  getSystemColorSchemeSnapshot,
+  setAppearanceMode,
+  subscribeAppearance,
+  subscribeSystemColorScheme,
+} from "@/app/_lib/appearance-store";
 
 type AppearanceContextValue = {
   mode: AppearanceMode;
@@ -17,43 +29,27 @@ type AppearanceContextValue = {
 const AppearanceContext = createContext<AppearanceContextValue | null>(null);
 
 export function AppearanceProvider({children}: {children: ReactNode}) {
-  const [mode, setModeState] = useState<AppearanceMode>("system");
-  const [isDark, setIsDark] = useState(false);
-  const [ready, setReady] = useState(false);
+  const mode = useSyncExternalStore(
+    subscribeAppearance,
+    getAppearanceSnapshot,
+    getAppearanceServerSnapshot
+  );
+  const systemPrefersDark = useSyncExternalStore(
+    subscribeSystemColorScheme,
+    getSystemColorSchemeSnapshot,
+    getSystemColorSchemeServerSnapshot
+  );
+  const isDark = mode === "dark" || (mode === "system" && systemPrefersDark);
 
   useEffect(() => {
-    const stored = readStoredAppearance();
-    setModeState(stored);
-    applyAppearance(stored);
-    setIsDark(document.documentElement.classList.contains("dark"));
-    setReady(true);
+    applyAppearance(mode);
+  }, [mode, systemPrefersDark]);
+
+  const setMode = useCallback((next: AppearanceMode) => {
+    setAppearanceMode(next);
   }, []);
 
-  useEffect(() => {
-    if (!ready) return;
-
-    applyAppearance(mode);
-    setIsDark(document.documentElement.classList.contains("dark"));
-
-    if (mode !== "system") return;
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const syncSystem = () => {
-      applyAppearance("system");
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    media.addEventListener("change", syncSystem);
-    return () => media.removeEventListener("change", syncSystem);
-  }, [mode, ready]);
-
-  const setMode = (next: AppearanceMode) => {
-    setModeState(next);
-    storeAppearance(next);
-    setIsDark(document.documentElement.classList.contains("dark"));
-  };
-
-  const value = useMemo(() => ({mode, setMode, isDark}), [mode, isDark]);
+  const value = useMemo(() => ({mode, setMode, isDark}), [mode, setMode, isDark]);
 
   return <AppearanceContext.Provider value={value}>{children}</AppearanceContext.Provider>;
 }
