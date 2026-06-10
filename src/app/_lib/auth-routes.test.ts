@@ -8,10 +8,15 @@ describe("auth-routes", () => {
   });
 
   it("skips app shell for auth routes and logged-out home", () => {
-    expect(isMarketingShellPath("/login", false)).toBe(true);
-    expect(isMarketingShellPath("/login", true)).toBe(true);
-    expect(isMarketingShellPath("/", false)).toBe(true);
-    expect(isMarketingShellPath("/", true)).toBe(false);
-    expect(isMarketingShellPath("/orders", false)).toBe(false);
+    expect(isMarketingShellPath("/login", {ready: true, authenticated: false})).toBe(true);
+    expect(isMarketingShellPath("/login", {ready: true, authenticated: true})).toBe(true);
+    expect(isMarketingShellPath("/", {ready: true, authenticated: false})).toBe(true);
+    expect(isMarketingShellPath("/", {ready: true, authenticated: true})).toBe(false);
+    expect(isMarketingShellPath("/orders", {ready: true, authenticated: false})).toBe(false);
+  });
+
+  it("treats home as marketing shell until client is ready", () => {
+    expect(isMarketingShellPath("/", {ready: false, authenticated: false})).toBe(true);
+    expect(isMarketingShellPath("/", {ready: false, authenticated: true})).toBe(true);
   });
 });

@@ -37,11 +37,12 @@ export default function AuthGuard({children}: {children: ReactNode}) {
   const authStatus = useAppSelector((state) => state.auth.status);
   const {canMutateOperationalData, user} = useAuthCapabilities();
 
-  const token = getAuthToken();
-  const isAuthenticated = Boolean(token) || authStatus === "authenticated";
+  const isAuthenticated =
+    ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
+  const marketingShell = isMarketingShellPath(pathname, {ready, authenticated: isAuthenticated});
 
   useEffect(() => {
-    if (!ready || isMarketingShellPath(pathname, isAuthenticated)) return;
+    if (!ready || marketingShell) return;
 
     if (!isAuthenticated) {
       router.replace("/login");
@@ -81,9 +82,9 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     if (user && isDashboardPath(pathname) && !canAccessDashboard(user) && !isSuperAdmin(user)) {
       router.replace("/orders");
     }
-  }, [ready, pathname, router, isAuthenticated, canMutateOperationalData, user]);
+  }, [ready, pathname, router, marketingShell, isAuthenticated, canMutateOperationalData, user]);
 
-  if (isMarketingShellPath(pathname, isAuthenticated)) {
+  if (marketingShell) {
     return <>{children}</>;
   }
 

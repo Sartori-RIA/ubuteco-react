@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import {Loading} from "@/app/_components";
 import {LandingPage} from "@/app/_components/marketing/LandingPage";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
@@ -11,11 +10,12 @@ import OrganizationDashboard from "@/app/dashboard/OrganizationDashboard";
 import {SuperAdminHome} from "@/app/dashboard/components/SuperAdminHome";
 import {useAppSelector} from "@/app/_store/hooks";
 
-function HomePage() {
+export default function HomePage() {
   const ready = useClientReady();
   const authStatus = useAppSelector((state) => state.auth.status);
   const {user} = useAuthCapabilities();
-  const isAuthenticated = Boolean(getAuthToken()) || authStatus === "authenticated";
+  const isAuthenticated =
+    ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
 
   if (!ready) {
     return <Loading/>;
@@ -39,5 +39,3 @@ function HomePage() {
 
   return <Loading/>;
 }
-
-export default dynamic(() => Promise.resolve(HomePage), {ssr: false});

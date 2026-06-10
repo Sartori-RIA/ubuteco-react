@@ -8,6 +8,7 @@ import {isMarketingShellPath} from "@/app/_lib/auth-routes";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
 import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
+import {useClientReady} from "@/app/_hooks/useClientReady";
 import {userInitials} from "@/app/_lib/user-display";
 import {Buttons} from ".";
 import Link from "next/link";
@@ -27,9 +28,11 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const pageTitle = usePageTitle();
   const navGroups = getVisibleNavGroups(capabilitiesUser);
   const authStatus = useAppSelector((state) => state.auth.status);
-  const isAuthenticated = Boolean(getAuthToken()) || authStatus === "authenticated";
+  const ready = useClientReady();
+  const isAuthenticated =
+    ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
 
-  if (isMarketingShellPath(pathname, isAuthenticated)) {
+  if (isMarketingShellPath(pathname, {ready, authenticated: isAuthenticated})) {
     return <>{children}</>;
   }
 
