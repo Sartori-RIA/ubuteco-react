@@ -1,5 +1,6 @@
 "use client";
 
+import {memo, useMemo} from "react";
 import {KitchenTicket} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
 import {KitchenTicketCard} from "@/app/kitchen/components/KitchenTicketCard";
@@ -15,7 +16,7 @@ type Props = {
   onStatusChange: (id: number, status: OrderItemStatus) => void;
 };
 
-export function KitchenBoard({
+export const KitchenBoard = memo(function KitchenBoard({
   tickets,
   savingId,
   showOrderLink = true,
@@ -23,11 +24,18 @@ export function KitchenBoard({
   onStatusChange,
 }: Props) {
   const t = useTranslations();
+  const columns = useMemo(
+    () =>
+      KITCHEN_COLUMNS.map((column) => ({
+        column,
+        columnTickets: tickets.filter((ticket) => column.statuses.includes(ticket.status)),
+      })),
+    [tickets]
+  );
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {KITCHEN_COLUMNS.map((column) => {
-        const columnTickets = tickets.filter((tkt) => column.statuses.includes(tkt.status));
+      {columns.map(({column, columnTickets}) => {
         const titleKey = `kitchen.columns.${column.id}` as TranslationKey;
 
         return (
@@ -62,4 +70,4 @@ export function KitchenBoard({
       })}
     </div>
   );
-}
+});

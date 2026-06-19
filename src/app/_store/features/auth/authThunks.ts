@@ -11,6 +11,7 @@ import {
   validateResetCode as apiValidateResetCode,
 } from "@/app/_services/auth.service";
 import {RootState} from "@/app/_store";
+import {isCurrentUserFetchFresh} from "./auth-fetch-cache";
 
 export const signIn = createAsyncThunk(
   "auth/signIn",
@@ -101,6 +102,14 @@ export const fetchCurrentUser = createAsyncThunk(
       }
       return rejectWithValue("Could not load user profile");
     }
+  },
+  {
+    condition: (_, {getState}) => {
+      const auth = (getState() as RootState).auth;
+      if (auth.currentUserFetchPending) return false;
+      if (auth.user && isCurrentUserFetchFresh(auth.currentUserFetchedAt)) return false;
+      return true;
+    },
   }
 );
 

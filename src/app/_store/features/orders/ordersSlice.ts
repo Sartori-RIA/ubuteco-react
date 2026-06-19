@@ -1,6 +1,7 @@
 import {ApiMetaData, Order, OrderItem, OrderStatus, PaginatedResponse} from "@/app/_types";
 import {createSlice} from "@reduxjs/toolkit";
 import {findMatchingOrderLine} from "@/app/orders/_lib/order-items";
+import {buildOrdersListCacheKey} from "./orders-list-cache";
 import {ordersThunks} from "./ordersThunks";
 
 interface OrdersState {
@@ -19,6 +20,8 @@ interface OrdersState {
   statusFilter: OrderStatus | "";
   page: number;
   meta: ApiMetaData;
+  listFetchedAt: number | null;
+  listCacheKey: string | null;
 }
 
 const initialState: OrdersState = {
@@ -42,6 +45,8 @@ const initialState: OrdersState = {
     pages: 1,
     previous: null,
   },
+  listFetchedAt: null,
+  listCacheKey: null,
 };
 
 const ordersSlice = createSlice({
@@ -78,6 +83,10 @@ const ordersSlice = createSlice({
         state.meta = meta;
         state.page = meta.page;
         state.orders = append ? [...state.orders, ...data] : data;
+        if (!append && meta.page === 1) {
+          state.listFetchedAt = Date.now();
+          state.listCacheKey = buildOrdersListCacheKey(action.meta.arg ?? {});
+        }
       },
       rejected: (state, action) => {
         state.loading = false;
