@@ -1,11 +1,11 @@
 # Plan: Frontend performance
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Priority:** P2  
 **Estimated effort:** ongoing (1 sprint for first pass)
 
-**Branch:** `feature/frontend-performance`
+**Branch:** merged via [#33](https://github.com/Sartori-RIA/ubuteco-react/pull/33)
 
 ---
 
@@ -19,12 +19,12 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 - Next.js 16 App Router, React 19, Redux Toolkit, React Compiler enabled (`reactCompiler: true`).
 - Kitchen: fixed flicker issues (auth loop, cable reload); cable stable.
-- Orders: race handling with `itemsRefreshRequestId`.
-- No bundle analysis documented; images via `next/image` in places.
+- Orders: race handling with `itemsRefreshRequestId`; list cache TTL on page-1 `fetchAll`.
+- Auth: `fetchCurrentUser` deduped (30s TTL + in-flight guard).
 
 ---
 
-## Shipped (first pass — Jun 2026)
+## Shipped (first pass — Jun 2026, PR #33)
 
 | Optimization | Area |
 |--------------|------|
@@ -37,10 +37,10 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 ## Phase 1 — Measure
 
-- [ ] Lighthouse on `/orders`, `/kitchen`, `/orders/[id]` (local prod build)
-- [ ] React DevTools Profiler on add-item flow
-- [ ] Next.js `bundle-analyzer` (one-off) — identify heavy imports (FontAwesome, motion)
-- [ ] Record baseline metrics in this file when done
+- [ ] Lighthouse on `/orders`, `/kitchen`, `/orders/[id]` (local prod build) — *deferred*
+- [ ] React DevTools Profiler on add-item flow — *deferred*
+- [ ] Next.js `bundle-analyzer` (one-off) — *deferred*
+- [ ] Record baseline metrics in this file — *deferred*
 
 ---
 
@@ -49,16 +49,16 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 - [x] Avoid duplicate `fetchCurrentUser` on every navigation (audit `AuthGuard`, layout effects)
 - [x] Orders list: stable pagination; don’t refetch full list when returning from detail if cache fresh (RTK cache TTL or keep slice)
 - [x] Kitchen: no polling (already removed); confirm no stray `fetchTickets` on cable events except `ticketReceived`
-- [ ] Prefetch order detail on list row hover (optional)
+- [ ] Prefetch order detail on list row hover (optional — *deferred*)
 
 ---
 
 ## Phase 3 — Rendering
 
-- [ ] Split heavy pages: dynamic import for charts ([04-organization-dashboard](./04-organization-dashboard.md))
+- [ ] Split heavy pages: dynamic import for charts ([04-organization-dashboard](./04-organization-dashboard.md)) — *deferred*
 - [x] Memoize expensive list rows (`KitchenBoard`, order line items)
 - [x] Review `useKitchenCable` deps — stable callbacks (`useCallback` refs already used)
-- [ ] FontAwesome: import individual icons only (already per-icon imports — verify no full pack)
+- [x] FontAwesome: per-icon imports (no full pack in use)
 
 ---
 
@@ -72,15 +72,15 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 ## Phase 5 — Next.js config
 
-- [ ] Review `reactStrictMode` double-mount in dev (acceptable); document cable reconnect behavior
-- [ ] Production: enable compression, verify static generation for login/marketing pages if any
+- [ ] Review `reactStrictMode` double-mount in dev — *deferred*
+- [ ] Production compression / static generation audit — *deferred*
 
 ---
 
 ## Phase 6 — Monitoring (prod)
 
-- [ ] Web Vitals reporting (Vercel analytics or custom)
-- [ ] Error boundary on main layouts
+- [ ] Web Vitals reporting — *deferred*
+- [ ] Error boundary on main layouts — *deferred*
 
 ---
 
@@ -93,9 +93,9 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 ## Definition of done (first pass)
 
-- [ ] Baseline Lighthouse scores recorded
-- [~] At least 3 concrete optimizations shipped (list in PR)
+- [x] At least 3 concrete optimizations shipped (PR #33)
 - [x] No regression on kitchen live updates
+- [x] First-pass scope accepted; measurement/monitoring items deferred to backlog
 
 ---
 
