@@ -78,6 +78,10 @@ export const NAV_GROUPS: NavGroup[] = [
 ];
 
 function isItemVisible(item: NavItem, user: User | null | undefined): boolean {
+  if (isSuperAdmin(user)) {
+    const blockedLinks = new Set(["/orders", "/kitchen", "/tables", "/inventory"]);
+    if (blockedLinks.has(item.link)) return false;
+  }
   if (item.superAdminOnly && !isSuperAdmin(user)) return false;
   if (item.adminOnly && !canManageUsers(user)) return false;
   if (item.organizationAccess && !canAccessOrganizations(user)) return false;

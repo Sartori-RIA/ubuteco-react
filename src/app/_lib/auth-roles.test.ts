@@ -2,11 +2,15 @@ import {describe, expect, it} from "vitest";
 import {
   canAccessOrganizations,
   canAccessDashboard,
+  canAccessOrgOperationalRoutes,
+  canAccessPlatformRoutes,
   canDeleteOwnAccount,
   canManageOrganization,
   canManageUsers,
   isAdminOnlyPath,
+  isOrgOperationalPath,
   isOrganizationPath,
+  isPlatformPath,
 } from "@/app/_lib/auth-roles";
 import {User} from "@/app/_types";
 
@@ -70,5 +74,33 @@ describe("users admin access", () => {
     expect(isAdminOnlyPath("/users/new")).toBe(true);
     expect(isAdminOnlyPath("/users/42/edit")).toBe(true);
     expect(isAdminOnlyPath("/orders")).toBe(false);
+  });
+});
+
+describe("platform and org operational routes", () => {
+  it("matches platform paths", () => {
+    expect(isPlatformPath("/platform")).toBe(true);
+    expect(isPlatformPath("/platform/organizations")).toBe(true);
+    expect(isPlatformPath("/organizations")).toBe(false);
+  });
+
+  it("matches org operational paths", () => {
+    expect(isOrgOperationalPath("/orders")).toBe(true);
+    expect(isOrgOperationalPath("/orders/42")).toBe(true);
+    expect(isOrgOperationalPath("/kitchen")).toBe(true);
+    expect(isOrgOperationalPath("/tables")).toBe(true);
+    expect(isOrgOperationalPath("/inventory")).toBe(true);
+    expect(isOrgOperationalPath("/beers")).toBe(false);
+  });
+
+  it("restricts platform routes to super admin", () => {
+    expect(canAccessPlatformRoutes(userWithRole("SUPER_ADMIN"))).toBe(true);
+    expect(canAccessPlatformRoutes(userWithRole("ADMIN"))).toBe(false);
+  });
+
+  it("blocks super admin from org operational routes", () => {
+    expect(canAccessOrgOperationalRoutes(userWithRole("SUPER_ADMIN"))).toBe(false);
+    expect(canAccessOrgOperationalRoutes(userWithRole("ADMIN"))).toBe(true);
+    expect(canAccessOrgOperationalRoutes(userWithRole("WAITER"))).toBe(true);
   });
 });
