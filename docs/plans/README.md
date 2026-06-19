@@ -51,6 +51,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 | Plan | PR | Notes |
 |------|-----|-------|
+| [01 Multi-tenant](./01-multi-tenant.md) | [#35](https://github.com/Sartori-RIA/ubuteco-react/pull/35) | Platform routes, super-admin guards, tenant isolation tests |
 | [09 Frontend performance](./09-frontend-performance.md) | [#33](https://github.com/Sartori-RIA/ubuteco-react/pull/33) | Auth fetch dedup, orders list cache, kitchen memo |
 | [08 Settings — account deletion](./08-settings-account-deletion.md) | [#28](https://github.com/Sartori-RIA/ubuteco-react/pull/28) | Danger zone only for org admin; staff/super-admin guidance |
 | [11 Inventory UI](./11-inventory-ui.md) | [#26](https://github.com/Sartori-RIA/ubuteco-react/pull/26) | Stock display, adjust panel, `/inventory`, i18n follow-ups |
