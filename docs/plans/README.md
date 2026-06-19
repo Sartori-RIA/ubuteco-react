@@ -31,7 +31,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 | # | Plan | Status | Priority | Backend doc |
 |---|------|--------|----------|-------------|
-| 1 | [Multi-tenant](./01-multi-tenant.md) | in progress | P0 | [API](../../../ubuteco_api/docs/plans/01-multi-tenant.md) |
+| 1 | [Multi-tenant](./01-multi-tenant.md) | completed | P0 | [API](../../../ubuteco_api/docs/plans/01-multi-tenant.md) |
 | 7 | [Users admin UI](./07-users-ui.md) | completed | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 8 | [Settings — account deletion](./08-settings-account-deletion.md) | completed | P1 | [10-users-admin-api](../../../ubuteco_api/docs/plans/10-users-admin-api.md) |
 | 6 | [Organizations UI](./06-organizations-ui.md) | completed | P1 | Organizations API + [02](../../../ubuteco_api/docs/plans/02-locale-and-currency.md) |
@@ -57,7 +57,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
 | [10 Browser document titles](./10-document-titles.md) | [#31](https://github.com/Sartori-RIA/ubuteco-react/pull/31) | `useDocumentTitle`, `page-titles`, entity titles on detail/edit routes |
 
-**In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [14 Marketing landing page](./14-landing-page.md) (PR [#34](https://github.com/Sartori-RIA/ubuteco-react/pull/34)).
+**In progress:** [14 Marketing landing page](./14-landing-page.md) (PR [#34](https://github.com/Sartori-RIA/ubuteco-react/pull/34)).
 
 **Next up:** [15 Product expiry alerts](./15-product-expiry-alerts.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 

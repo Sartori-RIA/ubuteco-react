@@ -20,9 +20,12 @@ Real-time kitchen: `useKitchenCable` → AnyCable WebSocket (`CABLE_URL`).
 
 ## Multi-tenant UX
 
+- **Tenant source of truth:** JWT user org from API (`auth.user.organization`) — never send `organization_id` on org-scoped creates/updates
 - `requiresOrganization()` + `hasOrganization()` in `AuthGuard` → redirect `/forbidden`
+- Super admin: platform console at `/platform` and `/platform/organizations`; blocked from `/orders`, `/kitchen`, `/tables`, `/inventory`
 - Super admin: read-only catalog mutations blocked via `canMutateOperationalData()` and route guards
 - Kitchen-only users: restricted to `/kitchen` and `/settings`
+- Kitchen cable: subscribes to `KitchenChannel` only — server scopes stream by session org
 
 ## Appearance
 

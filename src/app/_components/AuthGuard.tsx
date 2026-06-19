@@ -8,6 +8,8 @@ import {
   canAccessDashboard,
   canAccessInventory,
   canAccessOrganizations,
+  canAccessOrgOperationalRoutes,
+  canAccessPlatformRoutes,
   canManageUsers,
   hasOrganization,
   isAdminOnlyPath,
@@ -17,6 +19,8 @@ import {
   isKitchenStaff,
   isOperationalMutationPath,
   isOrganizationPath,
+  isOrgOperationalPath,
+  isPlatformPath,
   isSuperAdmin,
   requiresOrganization,
 } from "@/app/_lib/auth-roles";
@@ -51,6 +55,16 @@ export default function AuthGuard({children}: {children: ReactNode}) {
 
     if (user && requiresOrganization(user) && !hasOrganization(user)) {
       router.replace("/forbidden");
+      return;
+    }
+
+    if (user && isPlatformPath(pathname) && !canAccessPlatformRoutes(user)) {
+      router.replace("/");
+      return;
+    }
+
+    if (user && isOrgOperationalPath(pathname) && !canAccessOrgOperationalRoutes(user)) {
+      router.replace("/platform");
       return;
     }
 
