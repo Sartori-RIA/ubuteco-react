@@ -20,6 +20,8 @@ jobs:
       - run: npm run build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3000
+      - name: Check plan status drift
+        run: bin/plans_drift_check
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v5

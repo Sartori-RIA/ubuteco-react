@@ -38,5 +38,21 @@ Real-time kitchen: `useKitchenCable` → AnyCable WebSocket (`CABLE_URL`).
 ## Related docs
 
 - [frontend-map.md](./frontend-map.md)
+- [auth-and-roles.md](./auth-and-roles.md)
+- [catalog-and-inventory-ui.md](./catalog-and-inventory-ui.md)
+- [i18n-and-formatting.md](./i18n-and-formatting.md)
+- [testing.md](./testing.md)
+- [common-ai-pitfalls.md](./common-ai-pitfalls.md)
 - [dev-setup.md](../dev-setup.md)
 - API architecture: [ubuteco_api/docs/context/architecture.md](../../../ubuteco_api/docs/context/architecture.md)
+
+## Companion API context (by feature)
+
+| UI area | API context doc |
+|---------|-----------------|
+| Inventory / stock | [inventory-stock.md](../../../ubuteco_api/docs/context/inventory-stock.md) |
+| Orders / kitchen | [orders-lifecycle.md](../../../ubuteco_api/docs/context/orders-lifecycle.md) |
+| Users / platform | [users-and-platform.md](../../../ubuteco_api/docs/context/users-and-platform.md) |
+| Dashboard | [dashboard.md](../../../ubuteco_api/docs/context/dashboard.md) |
+| Search (if exposed) | [search-and-opensearch.md](../../../ubuteco_api/docs/context/search-and-opensearch.md) |
+| Locale / money (API) | [i18n-and-money.md](../../../ubuteco_api/docs/context/i18n-and-money.md) |

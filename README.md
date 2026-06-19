@@ -88,10 +88,11 @@ npm run lint     # eslint
 | Doc | Purpose |
 |-----|---------|
 | [AGENTS.md](AGENTS.md) | Instructions for AI assistants |
+| [CLAUDE.md](CLAUDE.md) | Claude Code entry (→ AGENTS.md) |
 | [docs/plans/README.md](docs/plans/README.md) | Feature plans + status tracker |
 | [docs/backlog/](docs/backlog/) | Small bugs and UX fixes |
 | [docs/dev-setup.md](docs/dev-setup.md) | Local development |
-| [docs/context/](docs/context/) | Architecture deep-dive |
+| [docs/context/](docs/context/) | Architecture, auth, i18n, testing, pitfalls |
 
 ## Improvement plans
 

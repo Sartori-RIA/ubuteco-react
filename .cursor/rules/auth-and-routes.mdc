@@ -1,0 +1,21 @@
+---
+description: Auth guards, role helpers, and route restrictions (UX only — API enforces security)
+globs: src/app/_lib/auth-roles.ts,src/app/_lib/auth-routes.ts,src/app/_components/AuthGuard.tsx,src/app/_hooks/useAuthCapabilities.ts,src/app/_lib/nav-config.ts
+alwaysApply: false
+---
+
+# Auth & routes (ubuteco-react)
+
+UX guards only — see [auth-and-roles.md](../../docs/context/auth-and-roles.md) and API [roles-and-access.md](../../../ubuteco_api/docs/context/roles-and-access.md).
+
+## Rules
+
+- Add or change route restrictions in `auth-roles.ts` + `AuthGuard.tsx` + nav config together.
+- Update `auth-roles.test.ts` for new helpers.
+- Never send `organization_id` in API bodies — tenant from JWT.
+- Super admin: read catalog, no operational mutations (`canMutateOperationalData`).
+- Kitchen staff: only `/kitchen` and `/settings`.
+
+## Pitfalls
+
+See [common-ai-pitfalls.md](../../docs/context/common-ai-pitfalls.md).

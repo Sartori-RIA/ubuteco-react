@@ -28,6 +28,7 @@ Plan-only edits with **no code** may go direct to **`main`** per AGENTS.md.
 | Tests (Vitest) | `npm test` |
 | Tests + code coverage | `npm run test:coverage` |
 | TypeScript + build | `NEXT_PUBLIC_API_URL=http://localhost:3000 npm run build` |
+| Plan status drift (if plan docs changed) | `bin/plans_drift_check` |
 
 Run `npm test` locally on TS/TSX changes; run all checks before push/PR.
 

@@ -1,0 +1,21 @@
+---
+description: API clients — apiFetch, services, structured errors
+globs: src/app/_services/**/*.ts,src/app/_lib/api-errors.ts,src/app/_lib/normalize-errors.ts,src/app/_lib/resolve-api-errors.ts
+alwaysApply: false
+---
+
+# API services (ubuteco-react)
+
+All HTTP to Rails goes through `apiFetch` — see [frontend-map.md](../../docs/context/frontend-map.md).
+
+## Rules
+
+- Use `apiFetch` / domain services — no raw `fetch` to API.
+- Base URL: `NEXT_PUBLIC_API_URL` (include in build CI).
+- Errors: structured `{ errors: [{ code, field?, message }] }` — use `resolveApiErrorMessages`.
+- Check companion API plan + OpenAPI before new endpoints.
+- Cross-stack changes: link API PR; add MSW handler + test.
+
+## Backend reference
+
+[ubuteco_api/docs/context/api-conventions.md](../../../ubuteco_api/docs/context/api-conventions.md)

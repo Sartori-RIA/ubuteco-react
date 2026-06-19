@@ -57,6 +57,7 @@ Run locally on the feature branch — **must pass** before `git push` / `gh pr c
 | **Tests (Vitest)** | `npm test` |
 | **Tests + code coverage** | `npm run test:coverage` |
 | **TypeScript + production build** | `NEXT_PUBLIC_API_URL=http://localhost:3000 npm run build` |
+| **Plan status drift** (if plan docs changed) | `bin/plans_drift_check` |
 
 Run **`npm test`** locally on every change that touches TS/TSX; run the full row above before push/PR. Optional while developing: `npm run test:watch`.
 

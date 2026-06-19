@@ -1,0 +1,18 @@
+---
+description: i18n messages, money/date formatting
+globs: src/app/_lib/i18n/**,src/app/_lib/format*.ts,src/app/_hooks/useMoneyFormat.ts,src/app/_hooks/useOrganizationSettings.ts
+alwaysApply: false
+---
+
+# i18n & formatting (ubuteco-react)
+
+See [i18n-and-formatting.md](../../docs/context/i18n-and-formatting.md).
+
+## Rules
+
+- User-visible strings via `t()` — update `en`, `pt-BR`, `es` (and `fr` when touching FR surfaces).
+- Money: `useMoneyFormat()` / `formatMoney` — no hardcoded currency.
+- Date-only fields (`valid_until`): `_lib/format-date.ts` — avoid TZ shift.
+- API error display: `localize-form-errors` + `code` from API.
+
+Org locale/currency/timezone: API is source of truth ([ADR 002](../../../ubuteco_api/docs/decisions/002-org-locale-not-user-locale.md)).

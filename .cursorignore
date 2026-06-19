@@ -1,0 +1,5 @@
+# Reduce noise for AI indexing (Cursor)
+.next/
+node_modules/
+coverage/
+.git/

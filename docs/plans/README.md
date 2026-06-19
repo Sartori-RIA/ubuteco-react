@@ -66,7 +66,10 @@ Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plan
 
 | Doc | Purpose |
 |-----|---------|
-| [context/](../context/) | Frontend architecture and folder map |
+| [context/](../context/) | Architecture, auth, catalog, i18n, testing, pitfalls |
+| [context/common-ai-pitfalls.md](../context/common-ai-pitfalls.md) | Frequent agent mistakes |
+| [context/testing.md](../context/testing.md) | Vitest, MSW, coverage |
 | [dev-setup.md](../dev-setup.md) | Env vars, ports, dev commands |
 | [API plans](../../../ubuteco_api/docs/plans/README.md) | Backend companions |
+| [API context](../../../ubuteco_api/docs/context/) | Backend domain reference |
 | [backlog/](../backlog/README.md) | Bugs & small UX fixes (promote to plan when large) |
