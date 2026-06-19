@@ -526,8 +526,22 @@ export type MessageCatalog = {
     hero: {
       title: string;
       subtitle: string;
+      badge: string;
+      imageAlt: string;
       ctaPrimary: string;
       ctaSecondary: string;
+      mock: {
+        live: string;
+        ticketName: string;
+        ticketMeta: string;
+        ticketCooking: string;
+        ticketCookingMeta: string;
+      };
+    };
+    showcase: {
+      dining: string;
+      kitchen: string;
+      bar: string;
     };
     problem: {
       title: string;
@@ -543,6 +557,11 @@ export type MessageCatalog = {
     proof: {
       title: string;
       body: string;
+      stats: {
+        realtime: {value: string; label: string};
+        multitenant: {value: string; label: string};
+        opensource: {value: string; label: string};
+      };
     };
     cta: {
       title: string;

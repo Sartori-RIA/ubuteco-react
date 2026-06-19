@@ -554,8 +554,22 @@ const en: MessageCatalog = {
       title: "Run your bar or restaurant without spreadsheet chaos",
       subtitle:
         "Orders, kitchen queue, menu catalog, and staff roles — one platform built for multi-location hospitality teams.",
+      badge: "Built for bars & restaurants",
+      imageAlt: "Warm restaurant interior with dining tables and ambient lighting",
       ctaPrimary: "Create free account",
       ctaSecondary: "See how it works",
+      mock: {
+        live: "Live",
+        ticketName: "House burger",
+        ticketMeta: "Table 4 · ×2",
+        ticketCooking: "Risotto",
+        ticketCookingMeta: "Table 7 · ×1",
+      },
+    },
+    showcase: {
+      dining: "Dining room in motion",
+      kitchen: "Kitchen at service pace",
+      bar: "Bar and beverage menu",
     },
     problem: {
       title: "Floor, kitchen, and back office on the same page",
@@ -584,6 +598,11 @@ const en: MessageCatalog = {
     proof: {
       title: "Built for bars & restaurants",
       body: "Open-source stack, multi-tenant by design, and shaped by real service workflows — not generic retail software.",
+      stats: {
+        realtime: {value: "Real-time", label: "Kitchen queue over WebSocket"},
+        multitenant: {value: "Multi-tenant", label: "One account, many locations"},
+        opensource: {value: "Open source", label: "Rails + Next.js, open stack"},
+      },
     },
     cta: {
       title: "Ready to simplify service?",

@@ -4,6 +4,7 @@ import {FormEvent, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
+import {BRAND_CTA} from "@/app/_components/marketing/brand-styles";
 import {Buttons, Input} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
@@ -109,7 +110,7 @@ export default function SignUpPage() {
           </p>
         )}
 
-        <Buttons type="submit" className="w-full rounded-xl" disabled={status === "loading"}>
+        <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={status === "loading"}>
           {status === "loading" ? t("auth.creatingAccount") : t("auth.createAccount")}
         </Buttons>
 

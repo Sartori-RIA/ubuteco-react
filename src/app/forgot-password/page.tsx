@@ -3,6 +3,7 @@
 import {FormEvent, useState} from "react";
 import {useRouter} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
+import {BRAND_CTA} from "@/app/_components/marketing/brand-styles";
 import {Buttons, Input} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -59,7 +60,7 @@ export default function ForgotPasswordPage() {
           <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
         )}
 
-        <Buttons type="submit" className="w-full rounded-xl" disabled={loading}>
+        <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={loading}>
           {loading ? t("auth.sending") : t("auth.sendCode")}
         </Buttons>
       </form>

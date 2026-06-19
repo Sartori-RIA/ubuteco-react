@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import {AMBIENT_PAGE} from "@/app/_components/marketing/brand-styles";
 import {MarketingFooter} from "@/app/_components/marketing/MarketingFooter";
 import {MarketingHeader} from "@/app/_components/marketing/MarketingHeader";
 import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
@@ -16,7 +17,7 @@ export function LegalPageLayout({content}: Props) {
   useDocumentTitle(content.title);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className={`flex min-h-screen flex-col text-foreground ${AMBIENT_PAGE}`}>
       <MarketingHeader/>
 
       <main className="flex-1">

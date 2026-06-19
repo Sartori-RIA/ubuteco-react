@@ -3,8 +3,8 @@
 import {FormEvent, Suspense, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
-import {Buttons, Input} from "@/app/_components";
-import {Loading} from "@/app/_components";
+import {AMBIENT_PAGE, BRAND_CTA} from "@/app/_components/marketing/brand-styles";
+import {Buttons, Input, Loading} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch} from "@/app/_store/hooks";
 import {resetPassword, validateResetCode} from "@/app/_store/features/auth/authThunks";
@@ -90,7 +90,7 @@ function ResetPasswordForm() {
           <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
         )}
 
-        <Buttons type="submit" className="w-full rounded-xl" disabled={loading}>
+        <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={loading}>
           {loading ? t("auth.updating") : t("auth.updatePassword")}
         </Buttons>
       </form>
@@ -100,7 +100,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loading/></div>}>
+    <Suspense fallback={<div className={`flex min-h-screen items-center justify-center ${AMBIENT_PAGE}`}><Loading/></div>}>
       <ResetPasswordForm/>
     </Suspense>
   );
