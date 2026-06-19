@@ -9,6 +9,9 @@ import {
 } from "@/app/_services/orders.service";
 import {RootState} from "@/app/_store";
 import {findMatchingOrderLine} from "@/app/orders/_lib/order-items";
+import {
+  isOrdersListCacheFresh,
+} from "./orders-list-cache";
 
 const crud = createCrudThunks<Order>("orders", {paginated: true});
 
@@ -18,6 +21,8 @@ export type FetchOrdersParams = {
   status?: OrderStatus | "";
   append?: boolean;
 };
+
+export {buildOrdersListCacheKey} from "./orders-list-cache";
 
 const fetchAll = createAsyncThunk(
   "orders/fetchAll",
@@ -37,6 +42,17 @@ const fetchAll = createAsyncThunk(
       }
       return rejectWithValue(["Could not load orders"]);
     }
+  },
+  {
+    condition: (params = {}, {getState}) => {
+      const {append = false, page = 1} = params;
+      if (append || page > 1) return true;
+
+      const orders = (getState() as RootState).orders;
+      if (orders.orders.length === 0) return true;
+
+      return !isOrdersListCacheFresh(orders.listCacheKey, orders.listFetchedAt, params);
+    },
   }
 );
 

@@ -12,7 +12,6 @@ import {canAccessKitchen, isKitchenStaff} from "@/app/_lib/auth-roles";
 import {isOrganizationKitchenOpen} from "@/app/_lib/organization-operational";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {RootState} from "@/app/_store";
-import {fetchCurrentUser} from "@/app/_store/features/auth/authThunks";
 import {kitchenThunks} from "@/app/_store/features/kitchen/kitchenThunks";
 import {ActionCableKitchenMessage} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
@@ -61,23 +60,10 @@ function KitchenPage() {
       return;
     }
 
-    let cancelled = false;
-    void dispatch(fetchCurrentUser())
-      .unwrap()
-      .then((freshUser) => {
-        if (cancelled) return;
-        if (isOrganizationKitchenOpen(freshUser.organization)) {
-          loadQueue();
-        }
-      })
-      .catch(() => {
-        /* auth hydrator may have cached user */
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [user?.id, canUseKitchen, dispatch, loadQueue, router]);
+    if (isKitchenOpen) {
+      loadQueue();
+    }
+  }, [user?.id, canUseKitchen, isKitchenOpen, loadQueue, router]);
 
   const handleStatusChange = useCallback(
     async (id: number, status: OrderItemStatus) => {

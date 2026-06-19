@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import {memo} from "react";
 import {KitchenTicket} from "@/app/_types/kitchen-dish";
 import {OrderItemStatus} from "@/app/_types/order";
 import {Select} from "@/app/_components/Selects";
@@ -17,7 +18,7 @@ type Props = {
   onStatusChange: (id: number, status: OrderItemStatus) => void;
 };
 
-export function KitchenTicketCard({
+export const KitchenTicketCard = memo(function KitchenTicketCard({
   ticket,
   saving = false,
   showOrderLink = true,
@@ -77,4 +78,4 @@ export function KitchenTicketCard({
       </div>
     </article>
   );
-}
+});

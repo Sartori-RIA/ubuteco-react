@@ -1,9 +1,11 @@
 # Plan: Frontend performance
 
-**Status:** not started  
+**Status:** in progress  
 **Project:** ubuteco-react  
 **Priority:** P2  
 **Estimated effort:** ongoing (1 sprint for first pass)
+
+**Branch:** `feature/frontend-performance`
 
 ---
 
@@ -22,6 +24,17 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 ---
 
+## Shipped (first pass — Jun 2026)
+
+| Optimization | Area |
+|--------------|------|
+| `fetchCurrentUser` TTL (30s) + in-flight dedup | Auth / navigation |
+| Kitchen page no longer refetches user (relies on `AuthHydrator`) | Kitchen |
+| Orders list cache TTL (60s) on page-1 `fetchAll` | Orders list |
+| `memo` + column grouping `useMemo` on kitchen board/cards | Kitchen rendering |
+
+---
+
 ## Phase 1 — Measure
 
 - [ ] Lighthouse on `/orders`, `/kitchen`, `/orders/[id]` (local prod build)
@@ -33,9 +46,9 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 
 ## Phase 2 — Data fetching
 
-- [ ] Avoid duplicate `fetchCurrentUser` on every navigation (audit `AuthGuard`, layout effects)
-- [ ] Orders list: stable pagination; don’t refetch full list when returning from detail if cache fresh (RTK cache TTL or keep slice)
-- [ ] Kitchen: no polling (already removed); confirm no stray `fetchTickets` on cable events except `ticketReceived`
+- [x] Avoid duplicate `fetchCurrentUser` on every navigation (audit `AuthGuard`, layout effects)
+- [x] Orders list: stable pagination; don’t refetch full list when returning from detail if cache fresh (RTK cache TTL or keep slice)
+- [x] Kitchen: no polling (already removed); confirm no stray `fetchTickets` on cable events except `ticketReceived`
 - [ ] Prefetch order detail on list row hover (optional)
 
 ---
@@ -43,17 +56,17 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 ## Phase 3 — Rendering
 
 - [ ] Split heavy pages: dynamic import for charts ([04-organization-dashboard](./04-organization-dashboard.md))
-- [ ] Memoize expensive list rows (`KitchenBoard`, order line items)
-- [ ] Review `useKitchenCable` deps — stable callbacks (`useCallback` refs already used)
+- [x] Memoize expensive list rows (`KitchenBoard`, order line items)
+- [x] Review `useKitchenCable` deps — stable callbacks (`useCallback` refs already used)
 - [ ] FontAwesome: import individual icons only (already per-icon imports — verify no full pack)
 
 ---
 
 ## Phase 4 — Network & assets
 
-- [ ] Image sizes: `sizes` prop on `ProductImage`; CDN/API host in `next.config` remotePatterns
-- [ ] API: request parallelization where sequential (`Promise.all` on order show — already on add item)
-- [ ] Debounce search inputs on list pages (users, beers, …)
+- [x] Image sizes: `sizes` prop on `ProductImage`; CDN/API host in `next.config` remotePatterns
+- [x] API: request parallelization where sequential (`Promise.all` on order show — already on add item)
+- [x] Debounce search inputs on list pages (users, beers, …)
 
 ---
 
@@ -81,8 +94,8 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 ## Definition of done (first pass)
 
 - [ ] Baseline Lighthouse scores recorded
-- [ ] At least 3 concrete optimizations shipped (list in PR)
-- [ ] No regression on kitchen live updates
+- [~] At least 3 concrete optimizations shipped (list in PR)
+- [x] No regression on kitchen live updates
 
 ---
 
@@ -91,3 +104,5 @@ Faster perceived load, fewer unnecessary re-renders and network calls, especiall
 - `next.config.ts`
 - `src/app/kitchen/page.tsx`, `src/app/orders/[id]/page.tsx`
 - `src/app/_hooks/useKitchenCable.ts`
+- `src/app/_store/features/auth/auth-fetch-cache.ts`
+- `src/app/_store/features/orders/orders-list-cache.ts`

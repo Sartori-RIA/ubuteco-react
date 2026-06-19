@@ -12,12 +12,16 @@ interface AuthState {
   user: User | null;
   status: "idle" | "loading" | "authenticated" | "error";
   error: string | null;
+  currentUserFetchPending: boolean;
+  currentUserFetchedAt: number | null;
 }
 
 const initialState: AuthState = {
   user: null,
   status: "idle",
   error: null,
+  currentUserFetchPending: false,
+  currentUserFetchedAt: null,
 };
 
 const authSlice = createSlice({
@@ -31,6 +35,8 @@ const authSlice = createSlice({
       state.user = null;
       state.status = "idle";
       state.error = null;
+      state.currentUserFetchPending = false;
+      state.currentUserFetchedAt = null;
     },
     setAuthenticatedUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
@@ -53,6 +59,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.status = "authenticated";
         state.error = null;
+        state.currentUserFetchedAt = Date.now();
       })
       .addCase(signIn.rejected, (state, action) => {
         state.status = "error";
@@ -67,15 +74,24 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.status = "authenticated";
         state.error = null;
+        state.currentUserFetchedAt = Date.now();
       })
       .addCase(signUp.rejected, (state, action) => {
         state.status = "error";
         state.error = typeof action.payload === "string" ? action.payload : "Could not create account";
       })
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.currentUserFetchPending = true;
+      })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.status = "authenticated";
         state.error = null;
+        state.currentUserFetchedAt = Date.now();
+        state.currentUserFetchPending = false;
+      })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.currentUserFetchPending = false;
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -86,6 +102,8 @@ const authSlice = createSlice({
         state.user = null;
         state.status = "idle";
         state.error = null;
+        state.currentUserFetchPending = false;
+        state.currentUserFetchedAt = null;
       });
   },
 });
