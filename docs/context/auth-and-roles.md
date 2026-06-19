@@ -21,19 +21,25 @@ Client-side route and action guards. **Not a security boundary** — API CanCan 
 | `canAccessKitchen` | KITCHEN, ADMIN, WAITER, CASH_REGISTER |
 | `isKitchenStaff` | KITCHEN — restricted to `/kitchen`, `/settings` |
 | `canMutateOperationalData` | All except SUPER_ADMIN |
-| `canAccessOrganizations` | ADMIN (own org), SUPER_ADMIN (cross-org list) |
+| `canAccessOrganizations` | ADMIN (own org), SUPER_ADMIN (cross-org via `/platform/organizations`) |
+| `canAccessPlatformRoutes` | SUPER_ADMIN (`/platform/*`) |
+| `canAccessOrgOperationalRoutes` | All except SUPER_ADMIN (`/orders`, `/kitchen`, `/tables`, `/inventory`) |
 | `requiresOrganization` + `hasOrganization` | Org-scoped roles without org → `/forbidden` |
 
 ## AuthGuard redirect rules
 
 1. Unauthenticated → `/login`
 2. Org-scoped role without org → `/forbidden`
-3. Super admin on operational create/edit paths → list page for that resource
-4. Kitchen staff off allowed paths → `/kitchen`
-5. Non-admin on `/users` → `/`
-6. Non inventory role on `/inventory` → `/`
-7. Non org-access on `/organizations` → `/`
-8. Non dashboard role on `/` → `/orders` (super admin may view dashboard)
+3. Non–super admin on `/platform/*` → `/`
+4. Super admin on org operational paths (`/orders`, `/kitchen`, `/tables`, `/inventory`) → `/platform`
+5. Super admin on operational create/edit paths → list page for that resource
+6. Kitchen staff off allowed paths → `/kitchen`
+7. Non-admin on `/users` → `/`
+8. Non inventory role on `/inventory` → `/`
+9. Non org-access on `/organizations` → `/`
+10. Non dashboard role on `/` → `/orders` (super admin may view dashboard)
+
+**Tenant isolation:** API enforces org scope via JWT; client 403 → `/forbidden`. MSW coverage in `tenant-isolation.integration.test.ts`.
 
 Public/marketing routes: `isMarketingShellPath()` in `_lib/auth-routes.ts` — skip guard.
 

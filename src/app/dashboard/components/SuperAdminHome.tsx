@@ -16,7 +16,7 @@ export function SuperAdminHome() {
       <Card title={t("dashboard.platform.organizationsTitle")} className="hover:translate-y-0">
         <p className="mb-4 text-sm text-muted">{t("dashboard.platform.organizationsHint")}</p>
         <Link
-          href="/organizations"
+          href="/platform/organizations"
           className="inline-flex rounded-xl border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-muted"
         >
           {t("dashboard.platform.openOrganizations")}

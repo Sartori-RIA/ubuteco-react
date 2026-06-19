@@ -90,6 +90,30 @@ export function isOrganizationPath(pathname: string): boolean {
   return ORGANIZATION_PATH.test(pathname);
 }
 
+const PLATFORM_PATH = /^\/platform(\/|$)/;
+
+/** Super-admin platform console (`/platform`, `/platform/organizations`). */
+export function isPlatformPath(pathname: string): boolean {
+  return PLATFORM_PATH.test(pathname);
+}
+
+/** Org-scoped operational routes super admins must not use without a tenant context. */
+const ORG_OPERATIONAL_PATH =
+  /^\/(orders|kitchen|tables|inventory)(\/|$)/;
+
+export function isOrgOperationalPath(pathname: string): boolean {
+  return ORG_OPERATIONAL_PATH.test(pathname);
+}
+
+/** Super admin browses platform routes and read-only catalog — not live org operations. */
+export function canAccessOrgOperationalRoutes(user: User | null | undefined): boolean {
+  return !isSuperAdmin(user);
+}
+
+export function canAccessPlatformRoutes(user: User | null | undefined): boolean {
+  return isSuperAdmin(user);
+}
+
 /** Paths restricted to org admins (staff user management). */
 const ADMIN_ONLY_PATH = /^\/users(\/|$)/;
 

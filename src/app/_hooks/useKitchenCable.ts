@@ -9,6 +9,17 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {setCableConnected, ticketReceived} from "@/app/_store/features/kitchen/kitchenSlice";
 import {applyKitchenCableMessage} from "@/app/kitchen/_lib/apply-kitchen-cable-message";
 
+/** Server scopes stream by JWT organization — client must not pass tenant id. */
+export const KITCHEN_CABLE_CHANNEL = "KitchenChannel";
+
+export type KitchenCableSubscriptionParams = {
+  channel: typeof KITCHEN_CABLE_CHANNEL;
+};
+
+export function kitchenCableSubscriptionParams(): KitchenCableSubscriptionParams {
+  return {channel: KITCHEN_CABLE_CHANNEL};
+}
+
 function patchSubscriptionNotify(consumer: Consumer) {
   const subscriptions = consumer.subscriptions as {
     notify: (identifier: string, callbackName: string, ...args: unknown[]) => void;
@@ -61,7 +72,7 @@ export function useKitchenCable(enabled: boolean, options: Options = {}) {
       consumer = createConsumer(url);
       patchSubscriptionNotify(consumer);
 
-      subscription = consumer.subscriptions.create({channel: "KitchenChannel"}, {
+      subscription = consumer.subscriptions.create(kitchenCableSubscriptionParams(), {
         connected() {
           console.info("[KitchenCable] subscription connected");
           dispatch(setCableConnected(true));
