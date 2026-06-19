@@ -44,6 +44,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 10 | [Browser document titles](./10-document-titles.md) | completed | P2 | — |
 | 9 | [Frontend performance](./09-frontend-performance.md) | not started | P2 | — |
 | 14 | [Marketing landing page](./14-landing-page.md) | in progress | P2 | — |
+| 15 | [Product expiry alerts](./15-product-expiry-alerts.md) | not started | P2 | [15-product-expiry-alerts](../../../ubuteco_api/docs/plans/15-product-expiry-alerts.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)
@@ -57,7 +58,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 **In progress:** [01 Multi-tenant](./01-multi-tenant.md) (Phases 3–4), [14 Marketing landing page](./14-landing-page.md).
 
-**Next up:** [09 Frontend performance](./09-frontend-performance.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
+**Next up:** [15 Product expiry alerts](./15-product-expiry-alerts.md), [09 Frontend performance](./09-frontend-performance.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
