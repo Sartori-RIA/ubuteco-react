@@ -1,9 +1,9 @@
 # Plan: Marketing landing page (frontend)
 
-**Status:** in progress  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** — (optional: public stats or lead capture API later)  
-**Branch:** `feature/landing-page`  
+**Branch:** `feature/landing-page-visual`  
 **Priority:** P2
 
 ---
@@ -44,6 +44,8 @@ Copy in **pt-BR** (+ en, es, fr in i18n catalog).
 - [x] Hero kitchen-board mock (CSS, no external asset)
 - [x] Dark mode via existing tokens
 - [x] Root `metadata` + OG defaults in `layout.tsx`
+- [x] **Visual refresh (Jun 2026):** warm gradients, Unsplash showcase photos, logo mark, colored feature cards, stats row
+- [x] **Brand consistency:** shared `brand-styles` across landing, auth (`AuthShell`), legal pages, and app shell (`SidebarLayout`)
 
 ---
 
@@ -68,7 +70,7 @@ Copy in **pt-BR** (+ en, es, fr in i18n catalog).
 - [x] Anonymous visitor at `/` sees landing with CTA to `/signup`
 - [x] Authenticated user at `/` sees dashboard
 - [x] Marketing pages work without sidebar; app routes unchanged
-- [ ] Layout verified on mobile (~375px), tablet, and desktop breakpoints (manual QA)
+- [x] Layout verified on mobile (~375px), tablet, and desktop breakpoints (manual QA)
 - [x] Plan linked from [README](./README.md)
 
 ---
@@ -76,5 +78,7 @@ Copy in **pt-BR** (+ en, es, fr in i18n catalog).
 ## References
 
 - `src/app/_components/marketing/LandingPage.tsx`
+- `src/app/_components/marketing/brand-styles.tsx`
+- `src/app/_components/AuthShell.tsx`
 - `src/app/login/page.tsx`, `src/app/signup/page.tsx`
 - Plan [02-locale-and-currency](./02-locale-and-currency.md)

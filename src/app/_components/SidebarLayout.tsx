@@ -1,9 +1,11 @@
 "use client"
 
+import Image from "next/image";
 import React, {ReactNode, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {AMBIENT_APP} from "@/app/_components/marketing/brand-styles";
 import {isMarketingShellPath} from "@/app/_lib/auth-routes";
 import {getAuthToken} from "@/app/_lib/auth-storage";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
@@ -49,7 +51,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
       : "text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800";
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className={`flex h-screen ${AMBIENT_APP}`}>
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -57,13 +59,18 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             animate={{width: 260, opacity: 1}}
             exit={{width: 0, opacity: 0}}
             transition={{duration: 0.25}}
-            className="flex h-full min-h-0 flex-col overflow-hidden border-r border-border bg-surface shadow-xl"
+            className="flex h-full min-h-0 flex-col overflow-hidden border-r border-amber-200/40 bg-surface shadow-xl dark:border-amber-900/30"
           >
-            <div className="shrink-0 border-b border-border p-4">
-              <h1 className="text-lg font-bold tracking-tight text-foreground">{t("common.appName")}</h1>
-              <p className="truncate text-sm text-muted">
-                {user?.name ?? user?.email ?? t("common.adminPanel")}
-              </p>
+            <div className="shrink-0 border-b border-amber-200/40 bg-gradient-to-r from-amber-50/90 via-surface to-blue-50/70 p-4 dark:border-amber-900/30 dark:from-amber-950/40 dark:via-surface dark:to-blue-950/30">
+              <div className="flex items-center gap-2.5">
+                <Image src="/marketing/logo-mark.svg" alt="" width={32} height={32} className="h-8 w-8 shrink-0"/>
+                <div className="min-w-0">
+                  <h1 className="truncate text-lg font-bold tracking-tight text-foreground">{t("common.appName")}</h1>
+                  <p className="truncate text-sm text-muted">
+                    {user?.name ?? user?.email ?? t("common.adminPanel")}
+                  </p>
+                </div>
+              </div>
               {isSuperAdmin && (
                 <p className="mt-1 truncate text-xs font-medium text-amber-700 dark:text-amber-400">
                   {t("nav.platformReadOnly")}
@@ -110,7 +117,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
       </AnimatePresence>
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <header className="flex shrink-0 items-center justify-between border-b border-border bg-surface p-4">
+        <header className="flex shrink-0 items-center justify-between border-b border-amber-200/40 bg-surface/90 p-4 backdrop-blur-sm dark:border-amber-900/30">
           <div className="flex items-center gap-3">
             <Buttons
               variant="outline"
@@ -143,8 +150,16 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
           </Link>
         </header>
 
-        <main className="min-h-0 flex-1 overflow-auto p-6">
-          {children}
+        <main className="relative min-h-0 flex-1 overflow-auto p-6">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-0 h-56 w-56 rounded-full bg-amber-300/10 blur-3xl dark:bg-amber-600/5"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 rounded-full bg-blue-400/10 blur-3xl dark:bg-blue-600/5"
+          />
+          <div className="relative">{children}</div>
         </main>
       </div>
     </div>

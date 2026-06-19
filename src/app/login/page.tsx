@@ -3,6 +3,8 @@
 import {FormEvent, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {AuthShell} from "@/app/_components/AuthShell";
+import {BRAND_CTA} from "@/app/_components/marketing/brand-styles";
 import {Buttons, Input} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
@@ -28,71 +30,67 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6"
-      >
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t("auth.signInTitle")}</h1>
-          <p className="text-sm text-gray-500 mt-1">{t("auth.signInSubtitle")}</p>
-        </div>
-
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              {t("auth.email")}
-            </label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              required
-              autoFocus
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              {t("auth.password")}
-            </label>
-            <Input
-              id="password"
-              type="password"
-              name="password"
-              required
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
-            {error}
+    <AuthShell
+      title={t("auth.signInTitle")}
+      subtitle={t("auth.signInSubtitle")}
+      footer={
+        <div className="space-y-2 text-center text-sm">
+          <p>
+            <Link href="/forgot-password" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+              {t("auth.forgotPassword")}
+            </Link>
           </p>
-        )}
-
-        <Buttons type="submit" className="w-full rounded-xl" disabled={status === "loading"}>
-          {status === "loading" ? t("auth.signingIn") : t("auth.signIn")}
-        </Buttons>
-
-        <div className="flex flex-col gap-2 text-center text-sm">
-          <Link href="/forgot-password" className="text-blue-600 hover:text-blue-700 font-medium">
-            {t("auth.forgotPassword")}
-          </Link>
-          <p className="text-gray-600">
+          <p className="text-muted">
             {t("auth.noAccount")}{" "}
-            <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
               {t("auth.createOne")}
             </Link>
           </p>
         </div>
+      }
+    >
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-foreground">
+            {t("auth.email")}
+          </label>
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            required
+            autoFocus
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="mb-1 block text-sm font-medium text-foreground">
+            {t("auth.password")}
+          </label>
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            required
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        {error && (
+          <p className="rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-300">
+            {error}
+          </p>
+        )}
+
+        <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={status === "loading"}>
+          {status === "loading" ? t("auth.signingIn") : t("auth.signIn")}
+        </Buttons>
       </form>
-    </div>
+    </AuthShell>
   );
 }

@@ -553,8 +553,22 @@ const es: MessageCatalog = {
       title: "Gestiona tu bar o restaurante sin caos en hojas de cálculo",
       subtitle:
         "Pedidos, cocina, catálogo y roles del equipo — una plataforma para operaciones de hospitality.",
+      badge: "Para bares y restaurantes",
+      imageAlt: "Interior cálido de restaurante con mesas e iluminación ambiental",
       ctaPrimary: "Crear cuenta gratis",
       ctaSecondary: "Ver cómo funciona",
+      mock: {
+        live: "En vivo",
+        ticketName: "Hamburguesa de la casa",
+        ticketMeta: "Mesa 4 · ×2",
+        ticketCooking: "Risotto",
+        ticketCookingMeta: "Mesa 7 · ×1",
+      },
+    },
+    showcase: {
+      dining: "Salón en movimiento",
+      kitchen: "Cocina al ritmo del servicio",
+      bar: "Bar y carta de bebidas",
     },
     problem: {
       title: "Salón, cocina y gestión en la misma página",
@@ -583,6 +597,11 @@ const es: MessageCatalog = {
     proof: {
       title: "Hecho para bares y restaurantes",
       body: "Stack open-source y multi-tenant, diseñado para servicio real.",
+      stats: {
+        realtime: {value: "Tiempo real", label: "Cola de cocina vía WebSocket"},
+        multitenant: {value: "Multi-tenant", label: "Una cuenta, varios locales"},
+        opensource: {value: "Open source", label: "Rails + Next.js, stack abierta"},
+      },
     },
     cta: {
       title: "¿Listo para simplificar el servicio?",

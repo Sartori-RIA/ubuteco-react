@@ -556,8 +556,22 @@ const ptBR: MessageCatalog = {
       title: "Gerencie seu bar ou restaurante sem planilha caótica",
       subtitle:
         "Pedidos, fila da cozinha, cardápio e papéis da equipe — uma plataforma feita para operações de hospitality multi-unidade.",
+      badge: "Para bares e restaurantes",
+      imageAlt: "Ambiente acolhedor de restaurante com mesas e iluminação quente",
       ctaPrimary: "Criar conta grátis",
       ctaSecondary: "Ver como funciona",
+      mock: {
+        live: "Ao vivo",
+        ticketName: "Burger da casa",
+        ticketMeta: "Mesa 4 · ×2",
+        ticketCooking: "Risoto",
+        ticketCookingMeta: "Mesa 7 · ×1",
+      },
+    },
+    showcase: {
+      dining: "Salão em movimento",
+      kitchen: "Cozinha no ritmo do serviço",
+      bar: "Bar e carta de bebidas",
     },
     problem: {
       title: "Salão, cozinha e gestão na mesma página",
@@ -586,6 +600,11 @@ const ptBR: MessageCatalog = {
     proof: {
       title: "Feito para bares e restaurantes",
       body: "Stack open-source, multi-tenant de propósito, moldado por fluxos reais de serviço — não software genérico de varejo.",
+      stats: {
+        realtime: {value: "Tempo real", label: "Fila da cozinha via WebSocket"},
+        multitenant: {value: "Multi-tenant", label: "Uma conta, vários estabelecimentos"},
+        opensource: {value: "Open source", label: "Rails + Next.js, stack aberta"},
+      },
     },
     cta: {
       title: "Pronto para simplificar o serviço?",
