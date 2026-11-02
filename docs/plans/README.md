@@ -50,6 +50,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 18 | [AI daily brief card](./18-ai-daily-brief.md) | not started | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
 | 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
 | 21 | [AI product intake](./21-ai-product-intake.md) | not started | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
+| 22 | [Catalog CSV import](./22-catalog-csv-import.md) | not started | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)
@@ -67,6 +68,8 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 **Next up:** [15 Product expiry alerts](./15-product-expiry-alerts.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
 **AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — `useAiEnabled()` hides only UI that calls the model (assistant, restock explanations, label photo, invoice photo/PDF). [18 Daily brief](./18-ai-daily-brief.md), [19 Restock](./19-restock-suggestions.md), and NF-e XML intake stay available with AI off. API plan 20 (semantic search) has no React plan in v1.
+
+**After the AI track, before subscription:** [22 Catalog CSV import](./22-catalog-csv-import.md).
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
