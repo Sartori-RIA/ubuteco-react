@@ -15,6 +15,7 @@ import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {
   DashboardDateRange,
   DashboardKpiCards,
+  ExpirySummaryCard,
   ItemsByTypePanel,
   KitchenPanel,
   RevenueChart,
@@ -54,6 +55,12 @@ function OrganizationDashboard() {
           </Link>
         )}
       </div>
+
+      {canAccessInventory && (
+        <div className="max-w-md">
+          <ExpirySummaryCard/>
+        </div>
+      )}
 
       <DashboardDateRange
         from={from}

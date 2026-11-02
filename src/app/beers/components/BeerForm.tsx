@@ -10,6 +10,7 @@ import {RootState} from "@/app/_store";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {beerStylesThunks} from "@/app/_store/features/beer_styles/beerStylesThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {toDateInputValue} from "@/app/_lib/format-date";
 
 interface BeerFormProps {
   defaultValues?: Partial<Beer>;
@@ -39,6 +40,7 @@ export function BeerForm({
     maker_id: defaultValues?.maker_id,
     price: defaultValues?.price ?? 0,
     quantity_stock: defaultValues?.quantity_stock ?? 0,
+    valid_until: defaultValues?.valid_until ?? "",
   });
 
   useEffect(() => {
@@ -146,6 +148,15 @@ export function BeerForm({
                 name="quantity_stock"
                 value={form.quantity_stock ?? 0}
                 onChange={(e) => setField("quantity_stock", Number(e.target.value))}
+              />
+            </Label>
+
+            <Label label={t("forms.fields.validUntil")}>
+              <Input
+                type="date"
+                name="valid_until"
+                value={toDateInputValue(form.valid_until)}
+                onChange={(e) => setField("valid_until", e.target.value)}
               />
             </Label>
           </div>

@@ -1,5 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {
+  canAccessInventory,
   canAccessOrganizations,
   canAccessDashboard,
   canAccessOrgOperationalRoutes,
@@ -41,6 +42,13 @@ describe("organization access", () => {
   it("allows admin and cash register on dashboard", () => {
     expect(canAccessDashboard(userWithRole("ADMIN"))).toBe(true);
     expect(canAccessDashboard(userWithRole("CASH_REGISTER"))).toBe(true);
+  });
+
+  it("limits inventory to admin and cash register", () => {
+    expect(canAccessInventory(userWithRole("ADMIN"))).toBe(true);
+    expect(canAccessInventory(userWithRole("CASH_REGISTER"))).toBe(true);
+    expect(canAccessInventory(userWithRole("WAITER"))).toBe(false);
+    expect(canAccessInventory(userWithRole("KITCHEN"))).toBe(false);
   });
 
   it("matches organization routes", () => {

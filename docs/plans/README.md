@@ -44,7 +44,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 10 | [Browser document titles](./10-document-titles.md) | completed | P2 | — |
 | 9 | [Frontend performance](./09-frontend-performance.md) | completed | P2 | — |
 | 14 | [Marketing landing page](./14-landing-page.md) | completed | P2 | — |
-| 15 | [Product expiry alerts](./15-product-expiry-alerts.md) | not started | P2 | [15-product-expiry-alerts](../../../ubuteco_api/docs/plans/15-product-expiry-alerts.md) |
+| 15 | [Product expiry alerts](./15-product-expiry-alerts.md) | completed | P2 | [15-product-expiry-alerts](../../../ubuteco_api/docs/plans/15-product-expiry-alerts.md) |
 | 16 | [AI settings toggle](./16-ai-settings.md) | not started | P2 | [16-ai-foundation](../../../ubuteco_api/docs/plans/16-ai-foundation.md) |
 | 19 | [Restock suggestions](./19-restock-suggestions.md) | not started | P2 | [19-restock-suggestions](../../../ubuteco_api/docs/plans/19-restock-suggestions.md) |
 | 18 | [AI daily brief card](./18-ai-daily-brief.md) | not started | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
@@ -64,7 +64,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
 | [10 Browser document titles](./10-document-titles.md) | [#31](https://github.com/Sartori-RIA/ubuteco-react/pull/31) | `useDocumentTitle`, `page-titles`, entity titles on detail/edit routes |
 
-**Next up:** [15 Product expiry alerts](./15-product-expiry-alerts.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
+**Next up:** [19 Restock suggestions](./19-restock-suggestions.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
 **AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — every AI UI hides behind `useAiEnabled()`. [19 Restock](./19-restock-suggestions.md) and [18 Daily brief](./18-ai-daily-brief.md) also work with AI off. API plan 20 (semantic search) has no React plan in v1.
 
