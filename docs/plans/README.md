@@ -69,7 +69,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 **AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — `useAiEnabled()` hides only UI that calls the model (assistant, restock explanations, label photo, invoice photo/PDF). [18 Daily brief](./18-ai-daily-brief.md), [19 Restock](./19-restock-suggestions.md), and NF-e XML intake stay available with AI off. API plan 20 (semantic search) has no React plan in v1.
 
-**After the AI track, before subscription:** [22 Catalog CSV import](./22-catalog-csv-import.md).
+**After the AI track, before subscription:** [22 Catalog CSV import](./22-catalog-csv-import.md). Admin only. The screen follows a Sidekiq import and shows queue, estimate, and failures.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

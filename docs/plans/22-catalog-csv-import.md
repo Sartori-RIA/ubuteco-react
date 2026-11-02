@@ -14,7 +14,7 @@ Scheduled after the AI track and before [03 Subscription plans](./03-subscriptio
 
 ## Goal
 
-An admin uploads a CSV, reads which rows would be created and which would fail, and only then confirms. The screen covers beers, drinks, wines, foods, and dishes.
+An admin uploads a CSV and leaves the page if they want. A status screen shows whether the import is in the queue, running, finished, or failed, and the estimated start time while it is waiting. The result of each line is on that screen. The email is sent by the API. This app does not send it.
 
 ---
 
@@ -22,64 +22,71 @@ An admin uploads a CSV, reads which rows would be created and which would fail, 
 
 | Decision | Choice (v1) |
 |----------|-------------|
-| Who | `isAdmin()` only. Hide the entry point for every other role. Super admin does not see it |
-| Entry | One page, `/catalog/import`, linked from the catalog section of the sidebar for admins |
-| Flow | Choose the type, download the template, choose the file, **Preview**, then **Import** on the same result. Import sends the same file without `dry_run` |
+| Who | `isAdmin()` only. Hide the entry point for every other role, including super admin |
+| Entry | `/catalog/import`, linked from the catalog section of the sidebar for admins |
+| Upload | Choose the type, download the English template, choose the file, submit. The button stays disabled while this organization already has an import queued or running |
+| After submit | Go to the import detail. Do not wait on the upload request for the rows to be created |
+| Status | Poll `GET /api/v1/catalog/imports/:id` every few seconds while `queued` or `running`. Stop when `completed` or `failed` |
+| Queue copy | `queued` shows "Na fila" and, when `estimated_start_at` is present, the local time. When it is null, say there is no estimate yet |
+| Running copy | `processed_rows` / `total_rows` |
+| Result | On `completed`, list failed lines with the cause. Created count is the summary. On `failed`, show `error_message` and any rows already logged |
+| List | The same page shows recent imports for this organization and their status |
 | File check | `.csv`, at most 1 MB, before the request. The API checks again |
-| Result | Table of line, name, status, and errors. A summary: would create N / failed M, then created N / failed M |
-| Second click | After a successful import, the Import button is disabled until a new file is chosen, so a double click does not turn the first success into a duplicate error |
-| Foods and dishes | Short note on the dish type: foods named in the file must already exist. Link to the food type on the same page |
-| Copy | pt-BR, en, es, and fr under `catalogImport.*` |
+| Headers | The template and the help text use the English column names. Do not offer a Portuguese header |
+| Copy | `catalogImport.*` in pt-BR, en, es, and a full block in fr |
 
 ---
 
 ## Out of scope
 
-- Editing a cell in the browser and resubmitting that edit
-- Dragging several files
-- Showing photos
-- Creating makers or styles from this screen. The error text tells the admin to create the maker or pick an existing style first
+- Editing a cell and resubmitting that edit
+- Several files at once
+- Photos
+- Creating makers or styles from this screen. The line error tells the admin what was missing
+- Sending the email from the browser
 
 ---
 
 ## Phase 1 — Service
 
-- [ ] `src/app/_services/catalog-import.service.ts`: `previewImport(file, productType)`, `confirmImport(file, productType)`, `templateUrl(productType)`
+- [ ] `src/app/_services/catalog-import.service.ts`: `createImport(file, productType)`, `listImports()`, `getImport(id)`, `templateUrl(productType)`
 - [ ] Multipart via `apiFetch` (`FormData`, no JSON content type)
-- [ ] Types `ImportResult`, `ImportRow`
-- [ ] MSW: preview with one error, confirm success, 403, 422 `invalid_csv`
+- [ ] Types for status `queued | running | completed | failed`, counts, `estimated_start_at`, and `row_log`
+- [ ] MSW: 202 queued, 409 already running, 403, 422 `invalid_csv`, a show payload that moves from queued to completed with one failed line
 
-**Acceptance:** the service test checks the 1 MB guard and that preview sends `dry_run`.
+**Acceptance:** the service test checks the 1 MB guard and that create does not send a dry-run flag.
 
 ---
 
 ## Phase 2 — Page
 
-- [ ] `src/app/catalog/import/page.tsx`
-- [ ] Type select: beer, drink, wine, food, dish
+- [ ] `src/app/catalog/import/page.tsx` with the form and the recent list
+- [ ] `src/app/catalog/import/[id]/page.tsx` for one import
 - [ ] Template link hits `GET /api/v1/catalog/imports/template?product_type=`
-- [ ] Preview and Import buttons. Import stays disabled until a preview of the current file has finished
-- [ ] Changing the file or the type clears the previous result
-- [ ] Guard: redirect anyone who is not an org admin. Add the path to the super-admin mutation guard if a direct URL would otherwise open the form
+- [ ] Poll only while the status is `queued` or `running`
+- [ ] Guard: redirect anyone who is not an org admin. A direct URL must not open the form for a super admin
+- [ ] 409 explains that an import is already waiting or running and links to it
 
-**Acceptance:** preview does not leave the page looking like a save. Import is unavailable until preview. A 422 shows the file error above the table.
+**Acceptance:** submitting a file lands on the detail page with status queued. A completed payload shows the failed line and its cause. Polling stops after `completed`.
 
 ---
 
 ## Phase 3 — Tests and i18n
 
-- [ ] Page test: preview renders the failed line; Import stays disabled before preview; after preview, confirm calls the import without dry run
+- [ ] Detail test: queued shows the estimate when the API sends one, and the no-estimate sentence when it does not
+- [ ] Completed test renders the line number and the cause
 - [ ] Admin sees the nav link. Cash register and waiter do not
-- [ ] `catalogImport.*` in `types.ts`, `en.ts`, `pt-BR.ts`, `es.ts`, and a full block in `fr.ts`
-- [ ] Title for `/catalog/import` in `page-titles.ts`
+- [ ] `catalogImport.*` in `types.ts`, `en.ts`, `pt-BR.ts`, `es.ts`, and `fr.ts`
+- [ ] Titles for `/catalog/import` and `/catalog/import/:id` in `page-titles.ts`
 
 ---
 
 ## Definition of done
 
-- [ ] An admin can preview and confirm a CSV for all five types
+- [ ] An admin can enqueue a CSV for all five types and watch the status
 - [ ] Other roles do not get the link
-- [ ] Failed rows stay visible after confirm
+- [ ] The screen shows queued, running, completed, and failed, including the start estimate when the API has one
+- [ ] Failed lines stay visible after the job finishes
 - [ ] Lint, tests, and build pass
 
 ---
@@ -88,5 +95,4 @@ An admin uploads a CSV, reads which rows would be created and which would fail, 
 
 - `src/app/_services/api-fetch.ts` (FormData already skips the JSON header)
 - `src/app/_lib/auth-roles.ts` (`isAdmin`, `OPERATIONAL_MUTATION_PATH`)
-- `src/app/inventory/intake/page.tsx` (upload, then review — same shape, different endpoint)
 - API: [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md)
