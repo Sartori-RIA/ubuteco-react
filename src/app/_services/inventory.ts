@@ -62,7 +62,7 @@ export function expiryStatusCounts(items: ExpiringProductItem[]): {expiring: num
   return items.reduce(
     (counts, item) => {
       if (item.status === "expired") counts.expired += 1;
-      else if (item.status === "expiring") counts.expiring += 1;
+      else counts.expiring += 1;
       return counts;
     },
     {expiring: 0, expired: 0},
