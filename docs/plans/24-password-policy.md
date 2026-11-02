@@ -24,9 +24,9 @@ The screens stop offering an 8-character password and stop treating a reset code
 |----------|-------------|
 | Minimum | 12, shown on signup, reset, settings, and the staff user form |
 | Current password | Settings and the staff editor require it when a new password is filled in |
-| Reset | The mail link opens a screen that sets the password once. No field that means "type the 6-digit code to become logged in" if the API moves to a link |
+| Reset | The mail link opens a screen that only sets the password. It does not log the person in. There is no 6-digit code field |
 | Staff create | No generated password on screen. The form says an email was sent so the person can choose a password |
-| Denylist errors | Show `password_too_short`, `password_denied`, and `current_password_invalid` from the API |
+| Denylist errors | Show `password_too_short`, `password_denied`, `password_pwned`, and `current_password_invalid` from the API |
 | Copy | pt-BR, en, es, and a full French block |
 
 ---
@@ -46,7 +46,7 @@ The screens stop offering an 8-character password and stop treating a reset code
 - [ ] Map the new API error codes in `resolve-api-errors`
 - [ ] Remove any copy that says the password was generated and written on the page
 
-**Acceptance:** a 9-character password does not submit. Settings without the current password does not submit when a new password is present. An API `password_denied` is visible.
+**Acceptance:** a 9-character password does not submit. Settings without the current password does not submit when a new password is present. An API `password_pwned` or `password_denied` is visible. The reset screen does not start a session.
 
 ---
 
@@ -59,7 +59,8 @@ The screens stop offering an 8-character password and stop treating a reset code
 
 ## Definition of done
 
-- [ ] The four password forms follow the 12-character rule and the API errors
+- [ ] The four password forms follow the 12-character rule and the API errors, including a breached password
+- [ ] The reset screen sets a password and does not open a session
 - [ ] Changing a password asks for the current one
 - [ ] Lint, tests, and build pass
 
