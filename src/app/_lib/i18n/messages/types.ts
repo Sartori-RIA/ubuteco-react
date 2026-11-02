@@ -63,6 +63,7 @@ export type MessageCatalog = {
     inventory: string;
     users: string;
     settings: string;
+    catalogImport: string;
     platformReadOnly: string;
     groups: {
       operations: string;
@@ -253,6 +254,36 @@ export type MessageCatalog = {
     statusExpiring: string;
     statusExpired: string;
     alertsBadge: string;
+  };
+  catalogImport: {
+    title: string;
+    detailTitle: string;
+    type: string;
+    file: string;
+    submit: string;
+    template: string;
+    headers: string;
+    busy: string;
+    openRunning: string;
+    tooLarge: string;
+    notCsv: string;
+    recent: string;
+    empty: string;
+    queued: string;
+    noEstimate: string;
+    estimate: string;
+    running: string;
+    completed: string;
+    failed: string;
+    createdCount: string;
+    failedLine: string;
+    types: {
+      beer: string;
+      drink: string;
+      wine: string;
+      food: string;
+      dish: string;
+    };
   };
   tablesPage: {
     addNew: string;

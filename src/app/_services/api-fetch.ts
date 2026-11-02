@@ -28,12 +28,14 @@ export class ApiError extends Error {
   status: number;
   data: string[];
   items: ApiErrorItem[];
+  payload: unknown;
 
   constructor(status: number, data: unknown) {
     super("API Error");
     this.status = status;
     this.items = extractApiErrorItems(data);
     this.data = normalizeErrors(data);
+    this.payload = data;
   }
 }
 

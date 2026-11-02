@@ -50,6 +50,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 18 | [AI daily brief card](./18-ai-daily-brief.md) | not started | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
 | 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
 | 21 | [AI product intake](./21-ai-product-intake.md) | not started | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
+| 22 | [Catalog CSV import](./22-catalog-csv-import.md) | completed | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)

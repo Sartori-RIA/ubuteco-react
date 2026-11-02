@@ -26,6 +26,8 @@ describe("getPageTitle", () => {
     expect(getPageTitle("/orders", t)).toBe("Orders");
     expect(getPageTitle("/kitchen", t)).toBe("Kitchen");
     expect(getPageTitle("/login", t)).toBe("Sign in");
+    expect(getPageTitle("/catalog/import", t)).toBe("Catalog import");
+    expect(getPageTitle("/catalog/import/4", t)).toBe("Import status");
   });
 
   it("maps new and edit sub-routes", () => {
