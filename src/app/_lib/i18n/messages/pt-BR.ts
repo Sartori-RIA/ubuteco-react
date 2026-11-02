@@ -250,6 +250,8 @@ const ptBR: MessageCatalog = {
     viewLowStock: "Ver estoque baixo",
     viewExpiry: "Ver validade",
     tabLowStock: "Estoque baixo",
+    statusRunningLow: "Acabando",
+    statusOutOfStock: "Sem estoque",
     tabExpiry: "Validade",
     expirySubtitle: "Cervejas e alimentos que vencem em até {days} dias, e os já vencidos",
     expiryEmpty: "Nenhum produto está vencendo ou vencido.",
