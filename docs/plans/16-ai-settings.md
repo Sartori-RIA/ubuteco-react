@@ -12,7 +12,7 @@
 
 ## Goal
 
-Let an org **ADMIN** turn AI features on or off for their organization, and give every other screen one shared way to know whether AI is available. All AI UI (plans 17, 18, 19, 21) hides itself when this is off.
+Let an org **ADMIN** turn AI features on or off for their organization, and give every other screen one shared way to know whether AI is available. When this is off, hide only UI that calls the model. Screens that still work from code stay visible.
 
 ---
 
@@ -26,6 +26,7 @@ Let an org **ADMIN** turn AI features on or off for their organization, and give
 | Copy | One short paragraph on what is sent to the AI provider (org data needed to answer, no passwords/payment data) + link to `/privacy` |
 | Confirmation | `ConfirmDialog` when turning **on** (data-sharing notice); turning off is immediate |
 | Shared check | `useAiEnabled()` reads `ai_enabled` from the authenticated user's organization in the store — no extra request |
+| When AI is off | Hide model UI only: assistant entry ([17](./17-ai-assistant.md)), restock "Explain" ([19](./19-restock-suggestions.md)), label photo and invoice photo/PDF ([21](./21-ai-product-intake.md)). Keep the daily brief card ([18](./18-ai-daily-brief.md), template text), the restock tab ([19](./19-restock-suggestions.md)), and NF-e XML intake ([21](./21-ai-product-intake.md)). |
 
 ---
 

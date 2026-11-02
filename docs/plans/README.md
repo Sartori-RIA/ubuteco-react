@@ -66,7 +66,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 **Next up:** [15 Product expiry alerts](./15-product-expiry-alerts.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
-**AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — every AI UI hides behind `useAiEnabled()`. [19 Restock](./19-restock-suggestions.md) and [18 Daily brief](./18-ai-daily-brief.md) also work with AI off. API plan 20 (semantic search) has no React plan in v1.
+**AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — `useAiEnabled()` hides only UI that calls the model (assistant, restock explanations, label photo, invoice photo/PDF). [18 Daily brief](./18-ai-daily-brief.md), [19 Restock](./19-restock-suggestions.md), and NF-e XML intake stay available with AI off. API plan 20 (semantic search) has no React plan in v1.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

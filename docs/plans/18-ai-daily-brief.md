@@ -20,7 +20,7 @@ Show the daily brief paragraph at the top of the organization dashboard, so the 
 
 | Decision | Recommendation (v1) |
 |----------|---------------------|
-| Placement | Card above `DashboardKpiCards` in `OrganizationDashboard` |
+| Placement | Card in `OrganizationDashboard` directly under the page title and **above** `DashboardDateRange`. Above the KPIs but under the date control reads as if the brief followed the selected range. |
 | Who | Same as dashboard (`canAccessDashboard()`) |
 | AI off | Still show the card — API returns `source: "template"` text. Card is useful without AI. |
 | Source label | Small badge "AI-generated" only when `source === "ai"` |
