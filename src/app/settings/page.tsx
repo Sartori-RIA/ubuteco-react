@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {Buttons, Card, FormErrors, Input, Label, Loading} from "@/app/_components";
-import {canDeleteOwnAccount, isSuperAdmin} from "@/app/_lib/auth-roles";
+import {canDeleteOwnAccount, isAdmin, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {formatRoleLabel} from "@/app/_lib/role-labels";
 import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
 import {formatMemberSince, userInitials} from "@/app/_lib/user-display";
@@ -20,6 +20,7 @@ import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {User} from "@/app/_types";
 import {AppearanceSettings} from "@/app/settings/components/AppearanceSettings";
+import {AiSettings} from "@/app/settings/components/AiSettings";
 import {LocaleSettings} from "@/app/settings/components/LocaleSettings";
 
 export default function SettingsPage() {
@@ -255,6 +256,12 @@ export default function SettingsPage() {
         <p className="mb-4 text-sm text-muted">{t("settings.regionalHint")}</p>
         <LocaleSettings/>
       </Card>
+
+      {isAdmin(sessionUser) && (
+        <Card title={t("settings.ai.title")} className="hover:translate-y-0">
+          <AiSettings/>
+        </Card>
+      )}
 
       <Card title={t("settings.plan")} className="hover:translate-y-0">
         <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4">

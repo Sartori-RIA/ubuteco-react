@@ -43,6 +43,10 @@ export type MessageCatalog = {
       deleteRestriction: string;
       accountDeletionForbidden: string;
       roleAssignmentForbidden: string;
+      aiDisabled: string;
+      aiRateLimited: string;
+      aiUnavailable: string;
+      aiInvalidOutput: string;
       invalidTransition: string;
     };
   };
@@ -153,6 +157,18 @@ export type MessageCatalog = {
     changeCurrencyTitle: string;
     changeCurrencyMessage: string;
     changeCurrencyConfirm: string;
+    ai: {
+      title: string;
+      hint: string;
+      body: string;
+      privacyLink: string;
+      on: string;
+      off: string;
+      confirmTitle: string;
+      confirmMessage: string;
+      confirm: string;
+      saveFailed: string;
+    };
     loadProfileFailed: string;
     saveProfileFailed: string;
     deleteEmailMismatch: string;
