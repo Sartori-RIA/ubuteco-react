@@ -3,6 +3,7 @@ import {
   canAccessInventory,
   canAccessOrganizations,
   canAccessDashboard,
+  canUseAssistant,
   canAccessOrgOperationalRoutes,
   canAccessPlatformRoutes,
   canDeleteOwnAccount,
@@ -42,6 +43,10 @@ describe("organization access", () => {
   it("allows admin and cash register on dashboard", () => {
     expect(canAccessDashboard(userWithRole("ADMIN"))).toBe(true);
     expect(canAccessDashboard(userWithRole("CASH_REGISTER"))).toBe(true);
+    expect(canUseAssistant(userWithRole("ADMIN"))).toBe(true);
+    expect(canUseAssistant(userWithRole("CASH_REGISTER"))).toBe(true);
+    expect(canUseAssistant(userWithRole("WAITER"))).toBe(false);
+    expect(canUseAssistant(userWithRole("KITCHEN"))).toBe(false);
   });
 
   it("limits inventory to admin and cash register", () => {

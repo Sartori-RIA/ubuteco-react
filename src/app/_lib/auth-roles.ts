@@ -136,6 +136,11 @@ export function canAccessDashboard(user: User | null | undefined): boolean {
   return role != null && DASHBOARD_ROLES.has(role);
 }
 
+/** Chat assistant. The screen also requires the organization AI flag. */
+export function canUseAssistant(user: User | null | undefined): boolean {
+  return canAccessDashboard(user);
+}
+
 export function isDashboardPath(pathname: string): boolean {
   return pathname === "/";
 }

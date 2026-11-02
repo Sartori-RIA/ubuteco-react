@@ -89,6 +89,40 @@ export const handlers = [
       ai_enabled: body.ai_enabled ?? false,
     });
   }),
+  http.get(apiUrl("v1/assistant/conversations"), () => {
+    return HttpResponse.json({data: []});
+  }),
+  http.post(apiUrl("v1/assistant/conversations"), () => {
+    return HttpResponse.json(
+      {id: 1, title: null, updated_at: "2026-11-02T12:00:00Z"},
+      {status: 201},
+    );
+  }),
+  http.get(apiUrl("v1/assistant/conversations/:id"), () => {
+    return HttpResponse.json({
+      id: 1,
+      title: null,
+      updated_at: "2026-11-02T12:00:00Z",
+      messages: [],
+    });
+  }),
+  http.post(apiUrl("v1/assistant/conversations/:id/messages"), async ({request}) => {
+    const body = (await request.json()) as {content?: string};
+    return HttpResponse.json(
+      {
+        message: {
+          id: 2,
+          role: "assistant",
+          text: body.content ?? "",
+          created_at: "2026-11-02T12:00:00Z",
+        },
+      },
+      {status: 201},
+    );
+  }),
+  http.delete(apiUrl("v1/assistant/conversations/:id"), () => {
+    return new HttpResponse(null, {status: 204});
+  }),
   http.get(apiUrl("v1/users"), () => {
     return HttpResponse.json({
       data: [
