@@ -10,10 +10,12 @@ import {
 
 export class AuthError extends Error {
   status: number;
+  payload: unknown;
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, payload?: unknown) {
     super(message);
     this.status = status;
+    this.payload = payload;
   }
 }
 
@@ -25,8 +27,10 @@ function extractBearerToken(authorizationHeader: string | null): string | null {
 
 async function parseAuthFailure(res: Response, fallback: string): Promise<never> {
   let message = fallback;
+  let payload: unknown;
   try {
-    const data = await res.json();
+    payload = await res.json();
+    const data = payload as {user?: unknown; organization_attributes?: unknown; errors?: unknown};
     const messages = normalizeErrors(
       data.user ?? data.organization_attributes ?? data.errors ?? data
     );
@@ -36,7 +40,7 @@ async function parseAuthFailure(res: Response, fallback: string): Promise<never>
   } catch {
     // keep fallback
   }
-  throw new AuthError(res.status, message);
+  throw new AuthError(res.status, message, payload);
 }
 
 async function persistSessionFromResponse(res: Response): Promise<User> {
@@ -95,57 +99,28 @@ export async function requestPasswordReset(email: string): Promise<void> {
     body: JSON.stringify({email}),
   });
 
-  if (!res.ok && res.status !== 404) {
-    await parseAuthFailure(res, "Could not send reset code");
-  }
-}
-
-export async function validateResetCode(code: string): Promise<string> {
-  const res = await fetch(`${getAuthBaseUrl()}/auth/code`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({code}),
-  });
-
   if (!res.ok) {
-    await parseAuthFailure(res, "Invalid or expired code");
+    await parseAuthFailure(res, "Could not send reset link");
   }
-
-  const data = (await res.json()) as {token: string};
-  if (!data.token) {
-    throw new AuthError(res.status, "Reset token was not returned by the API");
-  }
-
-  setAuthToken(data.token);
-  return data.token;
 }
 
-export async function resetPassword(password: string): Promise<User> {
-  const token = typeof window !== "undefined" ? localStorage.getItem("ubuteco_auth_token") : null;
-  if (!token) {
-    throw new AuthError(401, "Reset session expired. Request a new code.");
-  }
-
-  const res = await fetch(`${getAuthBaseUrl()}/auth/reset_passwords`, {
+export async function setPasswordFromLink(token: string, password: string): Promise<void> {
+  const res = await fetch(`${getAuthBaseUrl()}/auth/password`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({reset_params: {password}}),
+    body: JSON.stringify({
+      reset_password_token: token,
+      password,
+      password_confirmation: password,
+    }),
   });
 
   if (!res.ok) {
     await parseAuthFailure(res, "Could not reset password");
   }
-
-  const user = (await res.json()) as User;
-  setAuthUser(user);
-  return user;
 }
 
 export async function signOut(): Promise<void> {

@@ -30,6 +30,8 @@ type InputProps = {
   autoFocus?: boolean;
   min?: number;
   max?: number;
+  minLength?: number;
+  autoComplete?: string;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void

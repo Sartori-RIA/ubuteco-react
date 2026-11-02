@@ -43,6 +43,11 @@ export type MessageCatalog = {
       deleteRestriction: string;
       accountDeletionForbidden: string;
       roleAssignmentForbidden: string;
+      passwordTooShort: string;
+      passwordDenied: string;
+      passwordPwned: string;
+      currentPasswordInvalid: string;
+      resetTokenInvalid: string;
       invalidTransition: string;
     };
   };
@@ -90,6 +95,11 @@ export type MessageCatalog = {
     organizationName: string;
     organizationPhone: string;
     passwordsMismatch: string;
+    passwordTooShort: string;
+    currentPassword: string;
+    currentPasswordRequired: string;
+    passwordUpdated: string;
+    missingResetToken: string;
     haveAccount: string;
     signInLink: string;
     forgotTitle: string;
@@ -137,6 +147,7 @@ export type MessageCatalog = {
     organization: string;
     memberSince: string;
     newPassword: string;
+    currentPassword: string;
     confirmNewPassword: string;
     passwordKeepBlank: string;
     saveChanges: string;
@@ -439,6 +450,7 @@ export type MessageCatalog = {
       email: string;
       role: string;
       password: string;
+      inviteByEmail: string;
       selectRole: string;
       createSubmit: string;
       updateSubmit: string;

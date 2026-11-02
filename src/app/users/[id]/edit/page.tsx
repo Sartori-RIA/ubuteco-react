@@ -34,6 +34,7 @@ export default function Page() {
     name: string;
     email: string;
     password?: string;
+    current_password?: string;
     role_id: number;
   }) {
     try {

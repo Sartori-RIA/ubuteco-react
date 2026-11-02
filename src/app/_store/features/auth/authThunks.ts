@@ -3,12 +3,12 @@ import {SignUpPayload} from "@/app/_types";
 import {getAuthUser} from "@/app/_lib/auth-storage";
 import {usersService} from "@/app/_services/users.service";
 import {
+  AuthError,
   requestPasswordReset as apiRequestPasswordReset,
-  resetPassword as apiResetPassword,
+  setPasswordFromLink,
   signIn as apiSignIn,
   signOut as apiSignOut,
   signUp as apiSignUp,
-  validateResetCode as apiValidateResetCode,
 } from "@/app/_services/auth.service";
 import {RootState} from "@/app/_store";
 import {isCurrentUserFetchFresh} from "./auth-fetch-cache";
@@ -56,31 +56,20 @@ export const requestPasswordReset = createAsyncThunk(
   }
 );
 
-export const validateResetCode = createAsyncThunk(
-  "auth/validateResetCode",
-  async (code: string, {rejectWithValue}) => {
-    try {
-      await apiValidateResetCode(code);
-      return code;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      }
-      return rejectWithValue("Invalid code");
-    }
-  }
-);
-
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
-  async (password: string, {rejectWithValue}) => {
+  async ({token, password}: {token: string; password: string}, {rejectWithValue}) => {
     try {
-      return await apiResetPassword(password);
+      await setPasswordFromLink(token, password);
+      return null;
     } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
+      if (error instanceof AuthError) {
+        return rejectWithValue({message: error.message, payload: error.payload});
       }
-      return rejectWithValue("Could not reset password");
+      if (error instanceof Error) {
+        return rejectWithValue({message: error.message});
+      }
+      return rejectWithValue({message: "Could not reset password"});
     }
   }
 );
