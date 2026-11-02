@@ -269,6 +269,23 @@ export type MessageCatalog = {
     statusExpiring: string;
     statusExpired: string;
     alertsBadge: string;
+    restock: {
+      tab: string;
+      subtitle: string;
+      empty: string;
+      columnAvg: string;
+      columnDays: string;
+      columnSuggested: string;
+      lowConfidence: string;
+      coverDays: string;
+      explain: string;
+      explainFailed: string;
+      copyList: string;
+      copied: string;
+      copyHeader: string;
+      adjust: string;
+      aiBadge: string;
+    };
   };
   tablesPage: {
     addNew: string;

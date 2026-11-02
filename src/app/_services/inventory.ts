@@ -54,6 +54,35 @@ export async function fetchExpiring(): Promise<ExpiringResponse> {
   return apiFetch<ExpiringResponse>("v1/inventory/expiring");
 }
 
+export type RestockConfidence = "ok" | "low";
+
+export type RestockSuggestion = {
+  product_type: StockableProductType;
+  id: number;
+  name: string;
+  quantity_stock: number;
+  avg_daily: number;
+  days_of_cover: number | null;
+  suggested_quantity: number | null;
+  confidence: RestockConfidence;
+  explanation?: string;
+};
+
+export type RestockSuggestionsResponse = {
+  cover_days: number;
+  window_days: number;
+  items: RestockSuggestion[];
+};
+
+export async function fetchRestockSuggestions(
+  coverDays: number,
+  explain = false,
+): Promise<RestockSuggestionsResponse> {
+  const params = new URLSearchParams({cover_days: String(coverDays)});
+  if (explain) params.set("explain", "1");
+  return apiFetch<RestockSuggestionsResponse>(`v1/inventory/restock_suggestions?${params}`);
+}
+
 export function inventoryAlertTotal(lowStockCount: number, expiringCount: number): number {
   return lowStockCount + expiringCount;
 }

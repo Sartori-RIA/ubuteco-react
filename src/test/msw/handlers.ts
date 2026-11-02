@@ -40,6 +40,37 @@ export const handlers = [
       ],
     });
   }),
+  http.get(apiUrl("v1/inventory/restock_suggestions"), ({request}) => {
+    const coverDays = Number(new URL(request.url).searchParams.get("cover_days") ?? 7);
+    const explain = new URL(request.url).searchParams.get("explain") === "1";
+    return HttpResponse.json({
+      cover_days: coverDays,
+      window_days: 28,
+      items: [
+        {
+          product_type: "beers",
+          id: 9,
+          name: "House lager",
+          quantity_stock: 4,
+          avg_daily: 6,
+          days_of_cover: 0.7,
+          suggested_quantity: 38,
+          confidence: "ok",
+          ...(explain ? {explanation: "Sells about 6 a day."} : {}),
+        },
+        {
+          product_type: "foods",
+          id: 3,
+          name: "New bread",
+          quantity_stock: 2,
+          avg_daily: 0,
+          days_of_cover: null,
+          suggested_quantity: null,
+          confidence: "low",
+        },
+      ],
+    });
+  }),
   http.patch(apiUrl("v1/organizations/:id"), async ({request}) => {
     const body = await request.json() as {ai_enabled?: boolean};
     return HttpResponse.json({
