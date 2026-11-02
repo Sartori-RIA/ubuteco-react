@@ -1,6 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {SignUpPayload} from "@/app/_types";
-import {getAuthUser} from "@/app/_lib/auth-storage";
+import {getAuthUser, getSupportSession} from "@/app/_lib/auth-storage";
+import {leaveImpersonation} from "@/app/_services/impersonation.service";
+import {clearSupportSession} from "@/app/_lib/auth-storage";
 import {usersService} from "@/app/_services/users.service";
 import {
   AuthError,
@@ -103,5 +105,14 @@ export const fetchCurrentUser = createAsyncThunk(
 );
 
 export const signOut = createAsyncThunk("auth/signOut", async () => {
+  const session = getSupportSession();
+  if (session) {
+    try {
+      await leaveImpersonation(session.id);
+    } catch {
+      // The local session still has to end with the logout.
+    }
+    clearSupportSession();
+  }
   await apiSignOut();
 });

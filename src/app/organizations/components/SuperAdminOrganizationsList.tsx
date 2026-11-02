@@ -23,6 +23,12 @@ export function SuperAdminOrganizationsList() {
     previous: null,
   });
   const [errors, setErrors] = useState<string[] | undefined>();
+  const [supportNotice] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (sessionStorage.getItem("ubuteco_support_notice") !== "expired") return false;
+    sessionStorage.removeItem("ubuteco_support_notice");
+    return true;
+  });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -75,6 +81,7 @@ export function SuperAdminOrganizationsList() {
         showAdd={false}
       />
 
+      {supportNotice && <p className="text-sm text-amber-800">{t("supportSession.expired")}</p>}
       <FormErrors errors={errors}/>
 
       <Card title={t("organizations.list.cardTitle")} className="hover:translate-y-0">

@@ -15,6 +15,10 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   password_pwned: "api.errors.passwordPwned",
   current_password_invalid: "api.errors.currentPasswordInvalid",
   reset_token_invalid: "api.errors.resetTokenInvalid",
+  impersonation_forbidden: "api.errors.impersonationForbidden",
+  impersonation_target_invalid: "api.errors.impersonationTargetInvalid",
+  impersonation_reason_invalid: "api.errors.impersonationReasonInvalid",
+  impersonation_in_progress: "api.errors.impersonationInProgress",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */

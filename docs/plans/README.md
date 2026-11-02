@@ -51,6 +51,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
 | 21 | [AI product intake](./21-ai-product-intake.md) | not started | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
 | 24 | [Password policy](./24-password-policy.md) | completed | P1 | [24-password-policy](../../../ubuteco_api/docs/plans/24-password-policy.md) |
+| 23 | [Support impersonation](./23-support-impersonation.md) | completed | P2 | [23-support-impersonation](../../../ubuteco_api/docs/plans/23-support-impersonation.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)

@@ -48,6 +48,10 @@ export type MessageCatalog = {
       passwordPwned: string;
       currentPasswordInvalid: string;
       resetTokenInvalid: string;
+      impersonationForbidden: string;
+      impersonationTargetInvalid: string;
+      impersonationReasonInvalid: string;
+      impersonationInProgress: string;
       invalidTransition: string;
     };
   };
@@ -173,6 +177,17 @@ export type MessageCatalog = {
     superAdminNoSelfDeletion: string;
     yourNamePlaceholder: string;
     repeatNewPassword: string;
+  };
+  supportSession: {
+    banner: string;
+    leave: string;
+    enter: string;
+    confirm: string;
+    usersTitle: string;
+    reasonLabel: string;
+    reasonTooShort: string;
+    startFailed: string;
+    expired: string;
   };
   appearance: {
     light: string;

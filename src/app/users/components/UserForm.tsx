@@ -8,6 +8,7 @@ import {useTranslations} from "@/app/_hooks/useTranslations";
 import {filterAssignableRoles} from "@/app/users/_lib/assignable-roles";
 import type {TranslationKey} from "@/app/_lib/i18n";
 import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
+import {getSupportSession} from "@/app/_lib/auth-storage";
 
 type Props = {
   defaultValues?: Partial<User>;
@@ -17,10 +18,10 @@ type Props = {
   mode: "create" | "edit";
   onSubmit: (payload: {
     name: string;
-    email: string;
+    email?: string;
     password?: string;
     current_password?: string;
-    role_id: number;
+    role_id?: number;
   }) => void | Promise<void>;
   onDelete?: () => void | Promise<void>;
   deleteLoading?: boolean;
@@ -41,6 +42,7 @@ export function UserForm({
   deleteLoading = false,
 }: Props) {
   const t = useTranslations();
+  const impersonating = Boolean(getSupportSession());
   const [roles, setRoles] = useState<Role[]>([]);
   const [rolesLoading, setRolesLoading] = useState(true);
   const [name, setName] = useState(defaultValues?.name ?? "");
@@ -83,9 +85,13 @@ export function UserForm({
     }
     const payload = {
       name: name.trim(),
-      email: email.trim(),
-      role_id: Number(roleId),
-      ...(password.trim() ? {password: password.trim(), current_password: currentPassword} : {}),
+      ...(impersonating
+        ? {}
+        : {
+            email: email.trim(),
+            role_id: Number(roleId),
+            ...(password.trim() ? {password: password.trim(), current_password: currentPassword} : {}),
+          }),
     };
     await onSubmit(payload);
   };
@@ -103,6 +109,7 @@ export function UserForm({
             <Input name="name" value={name} onChange={(e) => setName(e.target.value)} required/>
           </Label>
 
+          {!impersonating && (
           <Label label={t("users.form.email")}>
             <Input
               name="email"
@@ -112,8 +119,10 @@ export function UserForm({
               required
             />
           </Label>
+          )}
         </div>
 
+        {!impersonating && (
         <Label label={t("users.form.role")}>
           <Select
             name="role_id"
@@ -129,8 +138,9 @@ export function UserForm({
             ))}
           </Select>
         </Label>
+        )}
 
-        {mode === "create" ? (
+        {!impersonating && (mode === "create" ? (
           <p className="text-sm text-gray-600">{t("users.form.inviteByEmail")}</p>
         ) : (
           <>
@@ -160,13 +170,13 @@ export function UserForm({
                 value={confirmPassword}
                 autoComplete="new-password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </Label>
+            />
+          </Label>
           </>
-        )}
+        ))}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          {mode === "edit" && onDelete ? (
+          {mode === "edit" && onDelete && !impersonating ? (
             <Buttons type="button" variant="danger" onClick={onDelete} loading={deleteLoading}>
               {t("users.form.deleteUser")}
             </Buttons>

@@ -6,6 +6,8 @@ import {ordersService} from "@/app/_services/orders.service";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthToken: () => "org-a-token",
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 describe("tenant isolation (MSW)", () => {

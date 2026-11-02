@@ -1,6 +1,6 @@
 import {redirect} from "next/navigation";
 import {PaginatedResponse} from "@/app/_types";
-import {clearAuthToken, clearAuthUser, getAuthToken} from "@/app/_lib/auth-storage";
+import {clearAuthToken, clearAuthUser, clearSupportSession, getAuthToken, getSupportToken} from "@/app/_lib/auth-storage";
 import {normalizeErrors} from "@/app/_lib/normalize-errors";
 import {extractApiErrorItems, type ApiErrorItem} from "@/app/_lib/api-errors";
 
@@ -45,7 +45,6 @@ export async function apiFetch<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = getAuthToken();
   const isFormData = options.body instanceof FormData;
   let baseUrl = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
   if (baseUrl && !/^https?:\/\//i.test(baseUrl)) {
@@ -58,6 +57,9 @@ export async function apiFetch<T>(
     ...(options.headers as Record<string, string> | undefined),
   };
 
+  const explicitAuthorization = headers.Authorization || headers.authorization;
+  const supportToken = explicitAuthorization ? null : getSupportToken();
+  const token = supportToken ?? (explicitAuthorization ? null : getAuthToken());
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -70,11 +72,25 @@ export async function apiFetch<T>(
   if (!res.ok) {
     switch (res.status) {
       case 401:
+        if (supportToken) {
+          clearSupportSession();
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("ubuteco_support_notice", "expired");
+            window.location.href = "/platform/organizations";
+          }
+          return undefined as T;
+        }
         handleUnauthorized()
         break
-      case 403:
+      case 403: {
+        const data = await res.json().catch(() => ({}));
+        const code = extractApiErrorItems(data)[0]?.code;
+        if (code === "impersonation_forbidden") {
+          throw new ApiError(403, data);
+        }
         handleForbidden()
-        break;
+        return undefined as T;
+      }
       case 404:
       default:
         const data = await res.json()

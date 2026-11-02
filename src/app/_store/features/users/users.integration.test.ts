@@ -5,6 +5,8 @@ import {usersThunks} from "@/app/_store/features/users/usersThunks";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthToken: () => "test-token",
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 describe("users list integration (MSW + store)", () => {
