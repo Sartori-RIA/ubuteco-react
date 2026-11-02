@@ -187,6 +187,13 @@ const fr: MessageCatalog = {
     ...en.dashboard,
     title: "Tableau de bord",
     subtitle: "Performance de l'organisation sur la période sélectionnée.",
+    brief: {
+      title: "Brief du jour",
+      subtitle: "Hier et aujourd'hui jusqu'à maintenant. Indépendant de la période ci-dessous.",
+      aiBadge: "Généré par IA",
+      refresh: "Actualiser",
+      generatedAt: "Généré {time}",
+    },
     kpi: {
       ...en.dashboard.kpi,
       revenue: "Chiffre d'affaires",

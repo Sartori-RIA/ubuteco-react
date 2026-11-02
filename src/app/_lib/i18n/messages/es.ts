@@ -544,6 +544,13 @@ const es: MessageCatalog = {
       avgPrep: "Tempo médio de preparo (período)",
       hint: "O tempo de preparo vai da criação do item até pronto, para pratos concluídos no período selecionado.",
     },
+    brief: {
+      title: "Resumen del día",
+      subtitle: "Ayer y hoy hasta ahora. No sigue el período seleccionado abajo.",
+      aiBadge: "Generado por IA",
+      refresh: "Actualizar",
+      generatedAt: "Generado {time}",
+    },
     platform: {
       title: "Plataforma",
       subtitle: "Ferramentas multi-organização para super admins.",

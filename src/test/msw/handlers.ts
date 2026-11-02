@@ -9,6 +9,13 @@ export function apiUrl(path: string): string {
 }
 
 export const handlers = [
+  http.get(apiUrl("v1/dashboard/brief"), () => {
+    return HttpResponse.json({
+      text: "Ontem R$ 10,00.",
+      source: "template",
+      generated_at: "2026-11-02T12:00:00Z",
+    });
+  }),
   http.get(apiUrl("v1/inventory/low_stock"), () => {
     return HttpResponse.json({
       threshold: 5,

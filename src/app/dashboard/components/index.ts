@@ -1,3 +1,4 @@
+export {DailyBriefCard} from "./DailyBriefCard";
 export {DashboardDateRange} from "./DashboardDateRange";
 export {ExpirySummaryCard} from "./ExpirySummaryCard";
 export {DashboardKpiCards} from "./DashboardKpiCards";
