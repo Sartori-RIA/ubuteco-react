@@ -13,6 +13,7 @@ import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import dynamic from "next/dynamic";
 import {setSearchTerm} from "@/app/_store/features/beers/beersSlice";
+import {formatDate} from "@/app/_lib/format-date";
 
 function Page() {
   const {beers, loading} = useAppSelector((state: RootState) => state.beers);
@@ -55,6 +56,12 @@ function Page() {
             <strong>{t("common.abv")}</strong>: {product.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {product.ibu}
             <br/>
             <StockDisplay quantity={product.quantity_stock}/>
+            {product.valid_until && (
+              <>
+                <br/>
+                <strong>{t("catalog.validUntil")}</strong>: {formatDate(product.valid_until)}
+              </>
+            )}
             <br/>
             <br/>
             {truncateWords(product.description ?? "", 50)}

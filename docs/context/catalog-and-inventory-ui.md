@@ -44,7 +44,7 @@ Roles: `canAdjustStock`, `canAccessInventory` in `auth-roles.ts`.
 | Product | UI today |
 |---------|----------|
 | Food | form + list (`FoodForm`, `formatDate`) |
-| Beer | API field exists — UI parity planned in [15-product-expiry-alerts](../plans/15-product-expiry-alerts.md) |
+| Beer | form + list/detail when `valid_until` is set |
 
 Use `_lib/format-date.ts` for date inputs.
 
@@ -55,7 +55,8 @@ Handle via `resolveApiErrorMessages` — e.g. `insufficient_stock` from order fl
 ## Nav
 
 - Inventory link in sidebar when `canAccessInventory(user)`
-- Future expiry badge — plan 15
+- Badge on that link is the sum of low-stock and expiring counts (`useInventoryAlerts`)
+- `/inventory` tabs: low stock and expiring (`fetchExpiring`)
 
 ## AI pitfalls
 

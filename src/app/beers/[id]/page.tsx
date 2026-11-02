@@ -10,6 +10,7 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {beerThunks} from "@/app/_store/features/beers/beersThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
+import {formatDate} from "@/app/_lib/format-date";
 
 export default function Page() {
   const {id} = useParams<{ id: string }>()
@@ -37,6 +38,11 @@ export default function Page() {
           <strong>{t("common.style")}</strong>: {beer.beer_style?.name} <br/>
           <strong>{t("common.maker")}</strong>: {beer.maker?.name} <br/>
           <StockDisplay quantity={beer.quantity_stock}/> <br/>
+          {beer.valid_until && (
+            <>
+              <strong>{t("catalog.validUntil")}</strong>: {formatDate(beer.valid_until)} <br/>
+            </>
+          )}
           <strong>{t("common.abv")}</strong>: {beer.abv}&nbsp;<strong>{t("common.ibu")}</strong>: {beer.ibu}
           <br/><br/>
           {beer.description}

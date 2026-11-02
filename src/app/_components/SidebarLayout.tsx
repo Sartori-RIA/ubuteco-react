@@ -19,6 +19,7 @@ import {usePathname, useRouter} from "next/navigation";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useInventoryAlerts} from "@/app/_hooks/useInventoryAlerts";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -31,6 +32,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const pageTitle = usePageTitle();
   useDocumentTitle(pageTitle);
   const navGroups = getVisibleNavGroups(capabilitiesUser);
+  const inventoryAlerts = useInventoryAlerts();
   const authStatus = useAppSelector((state) => state.auth.status);
   const ready = useClientReady();
   const isAuthenticated =
@@ -96,6 +98,14 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
                         >
                           <FontAwesomeIcon icon={item.icon} className="w-4 shrink-0 text-[15px]"/>
                           <span className="truncate">{t(item.labelKey)}</span>
+                          {item.link === "/inventory" && inventoryAlerts.total > 0 && (
+                            <span
+                              className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-amber-500 px-1.5 text-xs font-semibold text-amber-950"
+                              aria-label={t("inventory.alertsBadge", {count: inventoryAlerts.total})}
+                            >
+                              {inventoryAlerts.total}
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>

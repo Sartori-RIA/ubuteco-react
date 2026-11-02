@@ -32,3 +32,39 @@ export async function adjustStock<T extends { quantity_stock: number }>(
 export async function fetchLowStock(): Promise<LowStockResponse> {
   return apiFetch<LowStockResponse>("v1/inventory/low_stock");
 }
+
+export type ExpiryProductType = "beers" | "foods";
+export type ExpiryStatus = "expiring" | "expired";
+
+export type ExpiringProductItem = {
+  product_type: ExpiryProductType;
+  id: number;
+  name: string;
+  valid_until: string;
+  days_remaining: number;
+  status: ExpiryStatus;
+};
+
+export type ExpiringResponse = {
+  warning_days: number;
+  items: ExpiringProductItem[];
+};
+
+export async function fetchExpiring(): Promise<ExpiringResponse> {
+  return apiFetch<ExpiringResponse>("v1/inventory/expiring");
+}
+
+export function inventoryAlertTotal(lowStockCount: number, expiringCount: number): number {
+  return lowStockCount + expiringCount;
+}
+
+export function expiryStatusCounts(items: ExpiringProductItem[]): {expiring: number; expired: number} {
+  return items.reduce(
+    (counts, item) => {
+      if (item.status === "expired") counts.expired += 1;
+      else if (item.status === "expiring") counts.expiring += 1;
+      return counts;
+    },
+    {expiring: 0, expired: 0},
+  );
+}
