@@ -653,6 +653,32 @@ export type MessageCatalog = {
       generic: string;
     };
   };
+  intake: {
+    fillFromPhoto: string;
+    photoHint: string;
+    fileTooBig: string;
+    fileType: string;
+    unknownMaker: string;
+    unknownStyle: string;
+    receiveInvoice: string;
+    title: string;
+    uploadXml: string;
+    uploadPhoto: string;
+    review: string;
+    line: string;
+    product: string;
+    quantity: string;
+    include: string;
+    apply: string;
+    applied: string;
+    failed: string;
+    unmatched: string;
+    back: string;
+    search: string;
+    noMatch: string;
+    cost: string;
+    working: string;
+  };
   legal: {
     backToHome: string;
     lastUpdated: string;
