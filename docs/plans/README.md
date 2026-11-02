@@ -51,6 +51,8 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
 | 21 | [AI product intake](./21-ai-product-intake.md) | not started | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
 | 22 | [Catalog CSV import](./22-catalog-csv-import.md) | not started | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
+| 24 | [Password policy](./24-password-policy.md) | not started | P1 | [24-password-policy](../../../ubuteco_api/docs/plans/24-password-policy.md) |
+| 23 | [Support impersonation](./23-support-impersonation.md) | not started | P2 | [23-support-impersonation](../../../ubuteco_api/docs/plans/23-support-impersonation.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)
@@ -69,7 +71,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 **AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — `useAiEnabled()` hides only UI that calls the model (assistant, restock explanations, label photo, invoice photo/PDF). [18 Daily brief](./18-ai-daily-brief.md), [19 Restock](./19-restock-suggestions.md), and NF-e XML intake stay available with AI off. API plan 20 (semantic search) has no React plan in v1.
 
-**After the AI track, before subscription:** [22 Catalog CSV import](./22-catalog-csv-import.md). Admin only. The screen follows a Sidekiq import and shows queue, estimate, and failures.
+**After the AI track, before subscription:** [22 Catalog CSV import](./22-catalog-csv-import.md), then [24 Password policy](./24-password-policy.md) before [23 Support impersonation](./23-support-impersonation.md). The support banner does not show or edit a password.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
