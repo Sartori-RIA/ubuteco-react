@@ -9,6 +9,7 @@ import {Buttons, Card, FormErrors, Input, Label, Loading} from "@/app/_component
 import {canDeleteOwnAccount, isAdmin, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {formatRoleLabel} from "@/app/_lib/role-labels";
 import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
+import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
 import {formatMemberSince, userInitials} from "@/app/_lib/user-display";
 import {setAuthUser} from "@/app/_lib/auth-storage";
 import {usersService} from "@/app/_services/users.service";
@@ -41,6 +42,7 @@ export default function SettingsPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   const loadProfile = useCallback(async () => {
     if (!sessionUser?.id) {
@@ -79,20 +81,35 @@ export default function SettingsPage() {
     event.preventDefault();
     if (!sessionUser?.id) return;
 
-    if (password && password !== passwordConfirmation) {
+    const issue = passwordIssue({
+      password,
+      confirmation: passwordConfirmation,
+      currentPassword,
+      requireCurrent: true,
+    });
+    if (issue === "too_short") {
+      setErrors([t("auth.passwordTooShort", {count: MIN_PASSWORD_LENGTH})]);
+      return;
+    }
+    if (issue === "mismatch") {
       setErrors([t("auth.passwordsMismatch")]);
+      return;
+    }
+    if (issue === "current_required") {
+      setErrors([t("auth.currentPasswordRequired")]);
       return;
     }
 
     setSaving(true);
     setErrors(undefined);
 
-    const payload: {name: string; email: string; password?: string} = {
+    const payload: {name: string; email: string; password?: string; current_password?: string} = {
       name: name.trim(),
       email: email.trim(),
     };
     if (password.trim()) {
       payload.password = password;
+      payload.current_password = currentPassword;
     }
 
     try {
@@ -100,11 +117,12 @@ export default function SettingsPage() {
       setProfile(updated);
       setPassword("");
       setPasswordConfirmation("");
+      setCurrentPassword("");
       dispatch(updateAuthenticatedUser(updated));
       setAuthUser(updated);
     } catch (error) {
       if (error instanceof ApiError) {
-        setErrors(error.data);
+        setErrors(resolveApiErrorMessages({errors: error.items}, t));
       } else {
         setErrors([t("settings.saveProfileFailed")]);
       }
@@ -219,13 +237,25 @@ export default function SettingsPage() {
               className="!pl-4"
             />
           </Label>
+          <Label label={t("settings.currentPassword")}>
+            <Input
+              name="current_password"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              autoComplete="current-password"
+              className="!pl-4"
+            />
+          </Label>
           <Label label={t("settings.newPassword")}>
             <Input
               name="password"
               type="password"
               value={password}
+              minLength={password ? MIN_PASSWORD_LENGTH : undefined}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("settings.passwordKeepBlank")}
+              autoComplete="new-password"
               className="!pl-4"
             />
           </Label>

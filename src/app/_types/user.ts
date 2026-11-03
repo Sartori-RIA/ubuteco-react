@@ -28,12 +28,13 @@ export type ProfileUpdatePayload = {
   name?: string;
   email?: string;
   password?: string;
+  current_password?: string;
 };
 
 export type UserCreatePayload = {
   name: string;
   email: string;
-  password: string;
+  password?: string;
   role_id: number;
 };
 
@@ -41,6 +42,7 @@ export type UserUpdatePayload = {
   name?: string;
   email?: string;
   password?: string;
+  current_password?: string;
   role_id?: number;
 };
 

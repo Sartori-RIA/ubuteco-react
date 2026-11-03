@@ -7,8 +7,9 @@ import {AMBIENT_PAGE, BRAND_CTA} from "@/app/_components/marketing/brand-styles"
 import {Buttons, Input, Loading} from "@/app/_components";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch} from "@/app/_store/hooks";
-import {resetPassword, validateResetCode} from "@/app/_store/features/auth/authThunks";
-import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
+import {resetPassword} from "@/app/_store/features/auth/authThunks";
+import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
+import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -16,84 +17,83 @@ function ResetPasswordForm() {
   const dispatch = useAppDispatch();
   const t = useTranslations();
 
-  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
-  const emailHint = searchParams.get("email");
+  const token = searchParams.get("token") ?? "";
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
+    if (!token) {
+      setError(t("auth.missingResetToken"));
+      return;
+    }
+
+    const issue = passwordIssue({password, confirmation: confirmPassword});
+    if (issue === "too_short") {
+      setError(t("auth.passwordTooShort", {count: MIN_PASSWORD_LENGTH}));
+      return;
+    }
+    if (issue === "mismatch") {
       setError(t("auth.passwordsMismatch"));
       return;
     }
 
     setLoading(true);
-
-    const codeResult = await dispatch(validateResetCode(code.trim()));
-    if (validateResetCode.rejected.match(codeResult)) {
-      setLoading(false);
-      setError(typeof codeResult.payload === "string" ? codeResult.payload : t("auth.invalidCode"));
-      return;
-    }
-
-    const resetResult = await dispatch(resetPassword(password));
+    const result = await dispatch(resetPassword({token, password}));
     setLoading(false);
 
-    if (resetPassword.fulfilled.match(resetResult)) {
-      dispatch(setAuthenticatedUser(resetResult.payload));
-      router.replace("/");
+    if (resetPassword.fulfilled.match(result)) {
+      setSaved(true);
       return;
     }
 
-    setError(typeof resetResult.payload === "string" ? resetResult.payload : t("auth.resetFailed"));
+    const reason = result.payload as {message?: string; payload?: unknown} | undefined;
+    const messages = resolveApiErrorMessages(reason?.payload, t);
+    setError(messages[0] ?? reason?.message ?? t("auth.resetFailed"));
   };
 
   return (
     <AuthShell
       title={t("auth.resetTitle")}
-      subtitle={
-        emailHint
-          ? t("auth.resetSubtitleWithEmail", {email: emailHint})
-          : t("auth.resetSubtitle")
-      }
+      subtitle={saved ? t("auth.passwordUpdated") : t("auth.resetSubtitle")}
       footer={<AuthFooterLink href="/login">{t("auth.backToSignIn")}</AuthFooterLink>}
     >
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
-            {t("auth.resetCode")}
-          </label>
-          <Input id="code" required autoFocus value={code} onChange={(e) => setCode(e.target.value)}/>
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-            {t("auth.newPassword")}
-          </label>
-          <Input id="password" type="password" required value={password}
-                 onChange={(e) => setPassword(e.target.value)}/>
-        </div>
-        <div>
-          <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 mb-1">
-            {t("settings.confirmNewPassword")}
-          </label>
-          <Input id="confirm_password" type="password" required value={confirmPassword}
-                 onChange={(e) => setConfirmPassword(e.target.value)}/>
-        </div>
-
-        {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
-        )}
-
-        <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={loading}>
-          {loading ? t("auth.updating") : t("auth.updatePassword")}
+      {saved ? (
+        <Buttons type="button" className={`w-full rounded-xl ${BRAND_CTA}`} onClick={() => router.push("/login")}>
+          {t("auth.signIn")}
         </Buttons>
-      </form>
+      ) : (
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              {t("auth.newPassword")}
+            </label>
+            <Input id="password" type="password" required minLength={MIN_PASSWORD_LENGTH} value={password}
+                   onChange={(e) => setPassword(e.target.value)}/>
+          </div>
+          <div>
+            <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 mb-1">
+              {t("settings.confirmNewPassword")}
+            </label>
+            <Input id="confirm_password" type="password" required minLength={MIN_PASSWORD_LENGTH} value={confirmPassword}
+                   onChange={(e) => setConfirmPassword(e.target.value)}/>
+          </div>
+
+          {error && (
+            <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
+          )}
+
+          <Buttons type="submit" className={`w-full rounded-xl ${BRAND_CTA}`} disabled={loading}>
+            {loading ? t("auth.updating") : t("auth.updatePassword")}
+          </Buttons>
+        </form>
+      )}
     </AuthShell>
   );
 }

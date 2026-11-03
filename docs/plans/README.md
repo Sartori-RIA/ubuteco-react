@@ -51,6 +51,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 17 | [AI assistant chat](./17-ai-assistant.md) | completed | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
 | 21 | [AI product intake](./21-ai-product-intake.md) | completed | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
 | 22 | [Catalog CSV import](./22-catalog-csv-import.md) | completed | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
+| 24 | [Password policy](./24-password-policy.md) | completed | P1 | [24-password-policy](../../../ubuteco_api/docs/plans/24-password-policy.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)
@@ -70,6 +71,8 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 **AI track (16–21):** [16](./16-ai-settings.md), [19](./19-restock-suggestions.md), [18](./18-ai-daily-brief.md), [17](./17-ai-assistant.md), and [21](./21-ai-product-intake.md) are in place. The brief card stays visible when AI is off. API plan 20 has no React plan in v1.
 
 **Catalog:** [22 Catalog CSV import](./22-catalog-csv-import.md) is in place.
+
+**Auth:** [24 Password policy](./24-password-policy.md) is in place.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 
