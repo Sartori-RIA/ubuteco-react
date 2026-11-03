@@ -114,6 +114,13 @@ export function canAccessPlatformRoutes(user: User | null | undefined): boolean 
   return isSuperAdmin(user);
 }
 
+/** Catalog CSV import. Org admin only, including a direct URL. */
+const CATALOG_IMPORT_PATH = /^\/catalog\/import(\/|$)/;
+
+export function isCatalogImportPath(pathname: string): boolean {
+  return CATALOG_IMPORT_PATH.test(pathname);
+}
+
 /** Paths restricted to org admins (staff user management). */
 const ADMIN_ONLY_PATH = /^\/users(\/|$)/;
 

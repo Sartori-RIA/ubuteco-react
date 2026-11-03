@@ -10,6 +10,7 @@ import {
   canManageOrganization,
   canManageUsers,
   isAdminOnlyPath,
+  isCatalogImportPath,
   isOrgOperationalPath,
   isOrganizationPath,
   isPlatformPath,
@@ -87,6 +88,12 @@ describe("users admin access", () => {
     expect(isAdminOnlyPath("/users/new")).toBe(true);
     expect(isAdminOnlyPath("/users/42/edit")).toBe(true);
     expect(isAdminOnlyPath("/orders")).toBe(false);
+  });
+
+  it("matches the catalog import routes", () => {
+    expect(isCatalogImportPath("/catalog/import")).toBe(true);
+    expect(isCatalogImportPath("/catalog/import/4")).toBe(true);
+    expect(isCatalogImportPath("/beers")).toBe(false);
   });
 });
 

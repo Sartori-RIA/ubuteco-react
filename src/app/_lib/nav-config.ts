@@ -5,6 +5,7 @@ import {
   faBuilding,
   faCartShopping,
   faChair,
+  faFileCsv,
   faGear,
   faGlassMartini,
   faHamburger,
@@ -65,6 +66,7 @@ export const NAV_GROUPS: NavGroup[] = [
       {labelKey: "nav.dishes", icon: faHamburger, link: "/dishes"},
       {labelKey: "nav.foods", icon: faHamburger, link: "/foods"},
       {labelKey: "nav.makers", icon: faIndustry, link: "/makers"},
+      {labelKey: "nav.catalogImport", icon: faFileCsv, link: "/catalog/import", adminOnly: true},
     ],
   },
   {
