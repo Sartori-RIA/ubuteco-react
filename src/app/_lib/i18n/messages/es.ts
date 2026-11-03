@@ -250,6 +250,8 @@ const es: MessageCatalog = {
     viewLowStock: "Ver estoque baixo",
     viewExpiry: "Ver caducidad",
     tabLowStock: "Stock baixo",
+    statusRunningLow: "Por agotarse",
+    statusOutOfStock: "Sin stock",
     tabExpiry: "Caducidad",
     expirySubtitle: "Cervezas y alimentos que caducan en {days} días, y los ya caducados",
     expiryEmpty: "Ningún producto está por caducar o caducado.",

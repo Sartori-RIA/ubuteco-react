@@ -54,6 +54,17 @@ export async function fetchExpiring(): Promise<ExpiringResponse> {
   return apiFetch<ExpiringResponse>("v1/inventory/expiring");
 }
 
+export function lowStockCounts(items: LowStockItem[]): {runningLow: number; outOfStock: number} {
+  return items.reduce(
+    (counts, item) => {
+      if (item.quantity_stock <= 0) counts.outOfStock += 1;
+      else counts.runningLow += 1;
+      return counts;
+    },
+    {runningLow: 0, outOfStock: 0},
+  );
+}
+
 export function inventoryAlertTotal(lowStockCount: number, expiringCount: number): number {
   return lowStockCount + expiringCount;
 }

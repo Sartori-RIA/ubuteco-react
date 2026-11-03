@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import {apiFetch} from "@/app/_services/api-fetch";
-import {expiryStatusCounts, fetchExpiring, inventoryAlertTotal} from "@/app/_services/inventory";
+import {expiryStatusCounts, fetchExpiring, inventoryAlertTotal, lowStockCounts} from "@/app/_services/inventory";
 
 vi.mock("@/app/_services/api-fetch", () => ({
   apiFetch: vi.fn(),
@@ -24,6 +24,17 @@ describe("inventoryAlertTotal", () => {
   it("adds low-stock and expiry counts", () => {
     expect(inventoryAlertTotal(2, 3)).toBe(5);
     expect(inventoryAlertTotal(0, 0)).toBe(0);
+  });
+});
+
+describe("lowStockCounts", () => {
+  it("splits products that are running low from those already at zero", () => {
+    expect(lowStockCounts([
+      {product_type: "beers", id: 1, name: "IPA", quantity_stock: 2, threshold: 5},
+      {product_type: "foods", id: 2, name: "Bread", quantity_stock: 0, threshold: 5},
+      {product_type: "wines", id: 3, name: "Red", quantity_stock: 0, threshold: 5},
+    ])).toEqual({runningLow: 1, outOfStock: 2});
+    expect(lowStockCounts([])).toEqual({runningLow: 0, outOfStock: 0});
   });
 });
 
