@@ -6,6 +6,8 @@ import {usersService} from "@/app/_services/users.service";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthToken: () => "test-token",
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 describe("usersService integration (MSW)", () => {

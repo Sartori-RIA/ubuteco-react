@@ -1,6 +1,6 @@
 import {redirect} from "next/navigation";
 import {PaginatedResponse} from "@/app/_types";
-import {clearAuthToken, clearAuthUser, getAuthToken} from "@/app/_lib/auth-storage";
+import {clearAuthToken, clearAuthUser, clearSupportSession, getAuthToken, getSupportToken} from "@/app/_lib/auth-storage";
 import {normalizeErrors} from "@/app/_lib/normalize-errors";
 import {extractApiErrorItems, type ApiErrorItem} from "@/app/_lib/api-errors";
 
@@ -28,12 +28,14 @@ export class ApiError extends Error {
   status: number;
   data: string[];
   items: ApiErrorItem[];
+  payload: unknown;
 
   constructor(status: number, data: unknown) {
     super("API Error");
     this.status = status;
     this.items = extractApiErrorItems(data);
     this.data = normalizeErrors(data);
+    this.payload = data;
   }
 }
 
@@ -45,7 +47,6 @@ export async function apiFetch<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = getAuthToken();
   const isFormData = options.body instanceof FormData;
   let baseUrl = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
   if (baseUrl && !/^https?:\/\//i.test(baseUrl)) {
@@ -58,6 +59,9 @@ export async function apiFetch<T>(
     ...(options.headers as Record<string, string> | undefined),
   };
 
+  const explicitAuthorization = headers.Authorization || headers.authorization;
+  const supportToken = explicitAuthorization ? null : getSupportToken();
+  const token = supportToken ?? (explicitAuthorization ? null : getAuthToken());
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -70,11 +74,25 @@ export async function apiFetch<T>(
   if (!res.ok) {
     switch (res.status) {
       case 401:
+        if (supportToken) {
+          clearSupportSession();
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("ubuteco_support_notice", "expired");
+            window.location.href = "/platform/organizations";
+          }
+          return undefined as T;
+        }
         handleUnauthorized()
         break
-      case 403:
-        handleForbidden()
-        break;
+      case 403: {
+        const data = await res.json().catch(() => ({}));
+        const blocked = extractApiErrorItems(data).some((item) =>
+          item.code === "impersonation_forbidden" || item.code === "ai_disabled"
+        );
+        if (blocked) throw new ApiError(res.status, data);
+        handleForbidden();
+        return undefined as T;
+      }
       case 404:
       default:
         const data = await res.json()

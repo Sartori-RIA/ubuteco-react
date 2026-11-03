@@ -43,6 +43,19 @@ export type MessageCatalog = {
       deleteRestriction: string;
       accountDeletionForbidden: string;
       roleAssignmentForbidden: string;
+      passwordTooShort: string;
+      passwordDenied: string;
+      passwordPwned: string;
+      currentPasswordInvalid: string;
+      resetTokenInvalid: string;
+      impersonationForbidden: string;
+      impersonationTargetInvalid: string;
+      impersonationReasonInvalid: string;
+      impersonationInProgress: string;
+      aiDisabled: string;
+      aiRateLimited: string;
+      aiUnavailable: string;
+      aiInvalidOutput: string;
       invalidTransition: string;
     };
   };
@@ -63,6 +76,7 @@ export type MessageCatalog = {
     inventory: string;
     users: string;
     settings: string;
+    catalogImport: string;
     platformReadOnly: string;
     groups: {
       operations: string;
@@ -90,6 +104,11 @@ export type MessageCatalog = {
     organizationName: string;
     organizationPhone: string;
     passwordsMismatch: string;
+    passwordTooShort: string;
+    currentPassword: string;
+    currentPasswordRequired: string;
+    passwordUpdated: string;
+    missingResetToken: string;
     haveAccount: string;
     signInLink: string;
     forgotTitle: string;
@@ -137,6 +156,7 @@ export type MessageCatalog = {
     organization: string;
     memberSince: string;
     newPassword: string;
+    currentPassword: string;
     confirmNewPassword: string;
     passwordKeepBlank: string;
     saveChanges: string;
@@ -153,6 +173,18 @@ export type MessageCatalog = {
     changeCurrencyTitle: string;
     changeCurrencyMessage: string;
     changeCurrencyConfirm: string;
+    ai: {
+      title: string;
+      hint: string;
+      body: string;
+      privacyLink: string;
+      on: string;
+      off: string;
+      confirmTitle: string;
+      confirmMessage: string;
+      confirm: string;
+      saveFailed: string;
+    };
     loadProfileFailed: string;
     saveProfileFailed: string;
     deleteEmailMismatch: string;
@@ -162,6 +194,17 @@ export type MessageCatalog = {
     superAdminNoSelfDeletion: string;
     yourNamePlaceholder: string;
     repeatNewPassword: string;
+  };
+  supportSession: {
+    banner: string;
+    leave: string;
+    enter: string;
+    confirm: string;
+    usersTitle: string;
+    reasonLabel: string;
+    reasonTooShort: string;
+    startFailed: string;
+    expired: string;
   };
   appearance: {
     light: string;
@@ -242,6 +285,66 @@ export type MessageCatalog = {
     editProduct: string;
     loadFailed: string;
     viewLowStock: string;
+    viewExpiry: string;
+    tabLowStock: string;
+    statusRunningLow: string;
+    statusOutOfStock: string;
+    tabExpiry: string;
+    expirySubtitle: string;
+    expiryEmpty: string;
+    columnValidUntil: string;
+    columnDays: string;
+    columnStatus: string;
+    statusExpiring: string;
+    statusExpired: string;
+    alertsBadge: string;
+    restock: {
+      tab: string;
+      subtitle: string;
+      empty: string;
+      columnAvg: string;
+      columnDays: string;
+      columnSuggested: string;
+      lowConfidence: string;
+      coverDays: string;
+      explain: string;
+      explainFailed: string;
+      copyList: string;
+      copied: string;
+      copyHeader: string;
+      adjust: string;
+      aiBadge: string;
+    };
+  };
+  catalogImport: {
+    title: string;
+    detailTitle: string;
+    type: string;
+    file: string;
+    submit: string;
+    template: string;
+    headers: string;
+    busy: string;
+    openRunning: string;
+    tooLarge: string;
+    notCsv: string;
+    recent: string;
+    empty: string;
+    queued: string;
+    noEstimate: string;
+    estimate: string;
+    running: string;
+    completed: string;
+    failed: string;
+    createdCount: string;
+    failedLine: string;
+    types: {
+      beer: string;
+      drink: string;
+      wine: string;
+      food: string;
+      dish: string;
+    };
   };
   tablesPage: {
     addNew: string;
@@ -428,6 +531,7 @@ export type MessageCatalog = {
       email: string;
       role: string;
       password: string;
+      inviteByEmail: string;
       selectRole: string;
       createSubmit: string;
       updateSubmit: string;
@@ -471,6 +575,13 @@ export type MessageCatalog = {
       openDishes: string;
       avgPrep: string;
       hint: string;
+    };
+    brief: {
+      title: string;
+      subtitle: string;
+      aiBadge: string;
+      refresh: string;
+      generatedAt: string;
     };
     platform: {
       title: string;
@@ -575,6 +686,58 @@ export type MessageCatalog = {
       privacy: string;
       tagline: string;
     };
+  };
+  assistant: {
+    title: string;
+    open: string;
+    close: string;
+    new: string;
+    untitled: string;
+    empty: string;
+    placeholder: string;
+    send: string;
+    thinking: string;
+    disclaimer: string;
+    delete: string;
+    deleteTitle: string;
+    deleteMessage: string;
+    starters: {
+      yesterday: string;
+      lowStock: string;
+      topSeller: string;
+    };
+    errors: {
+      disabled: string;
+      rateLimited: string;
+      unavailable: string;
+      generic: string;
+    };
+  };
+  intake: {
+    fillFromPhoto: string;
+    photoHint: string;
+    fileTooBig: string;
+    fileType: string;
+    unknownMaker: string;
+    unknownStyle: string;
+    receiveInvoice: string;
+    title: string;
+    uploadXml: string;
+    uploadPhoto: string;
+    review: string;
+    line: string;
+    product: string;
+    quantity: string;
+    include: string;
+    apply: string;
+    applied: string;
+    failed: string;
+    unmatched: string;
+    back: string;
+    search: string;
+    noMatch: string;
+    cost: string;
+    working: string;
   };
   legal: {
     backToHome: string;

@@ -32,9 +32,10 @@ export default function Page() {
 
   async function handleUpdate(payload: {
     name: string;
-    email: string;
+    email?: string;
     password?: string;
-    role_id: number;
+    current_password?: string;
+    role_id?: number;
   }) {
     try {
       await dispatch(usersThunks.update({id: userId, data: payload})).unwrap();

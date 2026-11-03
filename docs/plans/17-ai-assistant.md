@@ -1,6 +1,6 @@
 # Plan: AI assistant chat (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md)  
 **Branch:** `feature/ai-assistant`  
@@ -41,10 +41,10 @@ A chat panel where ADMIN and CASH_REGISTER ask questions about their bar ("what 
 
 ## Phase 1 — Service & state
 
-- [ ] `src/app/_services/assistant.service.ts`: `listConversations`, `getConversation`, `createConversation`, `sendMessage`, `deleteConversation` via `apiFetch`
-- [ ] Types in `src/app/_types/assistant.ts` (`AiConversation`, `AiMessage` with `role: "user" | "assistant"`)
-- [ ] Redux feature `src/app/_store/features/assistant/` (drawer open, active conversation, messages, sending flag) — follow `dashboard` slice + thunks pattern
-- [ ] MSW handlers for all endpoints
+- [x] `src/app/_services/assistant.service.ts`: `listConversations`, `getConversation`, `createConversation`, `sendMessage`, `deleteConversation` via `apiFetch`
+- [x] Types in `src/app/_types/assistant.ts` (`AiConversation`, `AiMessage` with `role: "user" | "assistant"`)
+- [x] Redux feature `src/app/_store/features/assistant/` (drawer open, active conversation, messages, sending flag) — follow `dashboard` slice + thunks pattern
+- [x] MSW handlers for all endpoints
 
 **Acceptance:** thunk tests for send success, `ai_disabled`, `ai_rate_limited`, timeout.
 
@@ -52,12 +52,12 @@ A chat panel where ADMIN and CASH_REGISTER ask questions about their bar ("what 
 
 ## Phase 2 — Drawer UI
 
-- [ ] `src/app/_components/assistant/AssistantDrawer.tsx` (reuse `ModalWrapper` patterns for focus trap / Esc to close)
-- [ ] `ConversationList`, `MessageList`, `MessageInput` (Enter sends, Shift+Enter new line, disabled while sending)
-- [ ] Markdown renderer with sanitisation (e.g. `react-markdown` without `rehype-raw`)
-- [ ] Empty state with starter chips
-- [ ] Footer note: "AI-generated answers may contain mistakes" (i18n)
-- [ ] Dark mode tokens from `globals.css`
+- [x] `src/app/_components/assistant/AssistantDrawer.tsx` (reuse `ModalWrapper` patterns for focus trap / Esc to close)
+- [x] `ConversationList`, `MessageList`, `MessageInput` (Enter sends, Shift+Enter new line, disabled while sending)
+- [x] Markdown renderer with sanitisation (e.g. `react-markdown` without `rehype-raw`)
+- [x] Empty state with starter chips
+- [x] Footer note: "AI-generated answers may contain mistakes" (i18n)
+- [x] Dark mode tokens from `globals.css`
 
 **Acceptance:** keyboard-only usable; screen reader announces new assistant message (`aria-live="polite"`).
 
@@ -65,17 +65,17 @@ A chat panel where ADMIN and CASH_REGISTER ask questions about their bar ("what 
 
 ## Phase 3 — Shell integration & guards
 
-- [ ] Header button in `SidebarLayout` shown only when role allowed and `useAiEnabled()`
-- [ ] Add `canUseAssistant()` to `auth-roles.ts` + tests in `auth-roles.test.ts`
-- [ ] Close drawer and clear assistant state on logout / org switch
+- [x] Header button in `SidebarLayout` shown only when role allowed and `useAiEnabled()`
+- [x] Add `canUseAssistant()` to `auth-roles.ts` + tests in `auth-roles.test.ts`
+- [x] Close drawer and clear assistant state on logout / org switch
 
 ---
 
 ## Phase 4 — Errors & limits
 
-- [ ] Map `ai_disabled`, `ai_rate_limited`, `ai_unavailable` to friendly messages (i18n)
-- [ ] Rate-limited → disable input with retry hint
-- [ ] Failed send keeps the user's text in the input (no lost typing)
+- [x] Map `ai_disabled`, `ai_rate_limited`, `ai_unavailable` to friendly messages (i18n)
+- [x] Rate-limited → disable input with retry hint
+- [x] Failed send keeps the user's text in the input (no lost typing)
 
 ---
 
@@ -88,17 +88,17 @@ A chat panel where ADMIN and CASH_REGISTER ask questions about their bar ("what 
 
 ## Phase 6 — Tests & i18n
 
-- [ ] Component tests: send flow, error states, hidden when AI disabled, hidden for WAITER/KITCHEN
-- [ ] i18n keys `assistant.*` in `pt-BR`, `en`, `es`, `fr`
+- [x] Component tests: send flow, error states, hidden when AI disabled, hidden for WAITER/KITCHEN
+- [x] i18n keys `assistant.*` in `pt-BR`, `en`, `es`, `fr`
 
 ---
 
 ## Definition of done
 
-- [ ] Allowed roles can chat from any authenticated page
-- [ ] Hidden when AI off or role not allowed
-- [ ] No HTML injection from model output (test with a `<script>` answer)
-- [ ] Lint, tests, coverage, build pass
+- [x] Allowed roles can chat from any authenticated page
+- [x] Hidden when AI off or role not allowed
+- [x] No HTML injection from model output (test with a `<script>` answer)
+- [x] Lint, tests, coverage, build pass
 
 ---
 

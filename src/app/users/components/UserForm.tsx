@@ -7,6 +7,8 @@ import {rolesService} from "@/app/_services/roles.service";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {filterAssignableRoles} from "@/app/users/_lib/assignable-roles";
 import type {TranslationKey} from "@/app/_lib/i18n";
+import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
+import {getSupportSession} from "@/app/_lib/auth-storage";
 
 type Props = {
   defaultValues?: Partial<User>;
@@ -16,9 +18,10 @@ type Props = {
   mode: "create" | "edit";
   onSubmit: (payload: {
     name: string;
-    email: string;
+    email?: string;
     password?: string;
-    role_id: number;
+    current_password?: string;
+    role_id?: number;
   }) => void | Promise<void>;
   onDelete?: () => void | Promise<void>;
   deleteLoading?: boolean;
@@ -39,11 +42,15 @@ export function UserForm({
   deleteLoading = false,
 }: Props) {
   const t = useTranslations();
+  const impersonating = Boolean(getSupportSession());
   const [roles, setRoles] = useState<Role[]>([]);
   const [rolesLoading, setRolesLoading] = useState(true);
   const [name, setName] = useState(defaultValues?.name ?? "");
   const [email, setEmail] = useState(defaultValues?.email ?? "");
   const [password, setPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formError, setFormError] = useState<string | null>(null);
   const [roleId, setRoleId] = useState(String(defaultValues?.role_id ?? defaultValues?.role?.id ?? ""));
 
   useEffect(() => {
@@ -55,11 +62,36 @@ export function UserForm({
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setFormError(null);
+    if (mode === "edit") {
+      const issue = passwordIssue({
+        password,
+        confirmation: confirmPassword,
+        currentPassword,
+        requireCurrent: true,
+      });
+      if (issue === "too_short") {
+        setFormError(t("auth.passwordTooShort", {count: MIN_PASSWORD_LENGTH}));
+        return;
+      }
+      if (issue === "mismatch") {
+        setFormError(t("auth.passwordsMismatch"));
+        return;
+      }
+      if (issue === "current_required") {
+        setFormError(t("auth.currentPasswordRequired"));
+        return;
+      }
+    }
     const payload = {
       name: name.trim(),
-      email: email.trim(),
-      role_id: Number(roleId),
-      ...(password.trim() ? {password: password.trim()} : {}),
+      ...(impersonating
+        ? {}
+        : {
+            email: email.trim(),
+            role_id: Number(roleId),
+            ...(password.trim() ? {password: password.trim(), current_password: currentPassword} : {}),
+          }),
     };
     await onSubmit(payload);
   };
@@ -70,13 +102,14 @@ export function UserForm({
       className="mx-auto max-w-2xl"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <FormErrors errors={errors}/>
+        <FormErrors errors={formError ? [...(errors ?? []), formError] : errors}/>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Label label={t("users.form.name")}>
             <Input name="name" value={name} onChange={(e) => setName(e.target.value)} required/>
           </Label>
 
+          {!impersonating && (
           <Label label={t("users.form.email")}>
             <Input
               name="email"
@@ -86,8 +119,10 @@ export function UserForm({
               required
             />
           </Label>
+          )}
         </div>
 
+        {!impersonating && (
         <Label label={t("users.form.role")}>
           <Select
             name="role_id"
@@ -103,25 +138,45 @@ export function UserForm({
             ))}
           </Select>
         </Label>
+        )}
 
-        <Label
-          label={
-            mode === "create"
-              ? t("users.form.password")
-              : `${t("users.form.password")} (${t("common.optional")})`
-          }
-        >
-          <Input
-            name="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required={mode === "create"}
-          />
-        </Label>
+        {!impersonating && (mode === "create" ? (
+          <p className="text-sm text-gray-600">{t("users.form.inviteByEmail")}</p>
+        ) : (
+          <>
+            <Label label={`${t("settings.currentPassword")} (${t("common.optional")})`}>
+              <Input
+                name="current_password"
+                type="password"
+                value={currentPassword}
+                autoComplete="current-password"
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </Label>
+            <Label label={`${t("users.form.password")} (${t("common.optional")})`}>
+              <Input
+                name="password"
+                type="password"
+                value={password}
+                minLength={password ? MIN_PASSWORD_LENGTH : undefined}
+                autoComplete="new-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Label>
+            <Label label={t("settings.confirmNewPassword")}>
+              <Input
+                name="password_confirmation"
+                type="password"
+                value={confirmPassword}
+                autoComplete="new-password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </Label>
+          </>
+        ))}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          {mode === "edit" && onDelete ? (
+          {mode === "edit" && onDelete && !impersonating ? (
             <Buttons type="button" variant="danger" onClick={onDelete} loading={deleteLoading}>
               {t("users.form.deleteUser")}
             </Buttons>

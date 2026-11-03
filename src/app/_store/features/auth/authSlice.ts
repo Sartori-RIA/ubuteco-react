@@ -2,7 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {User} from "@/app/_types";
 import {
   fetchCurrentUser,
-  resetPassword,
   signIn,
   signOut,
   signUp,
@@ -92,11 +91,6 @@ const authSlice = createSlice({
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
         state.currentUserFetchPending = false;
-      })
-      .addCase(resetPassword.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.status = "authenticated";
-        state.error = null;
       })
       .addCase(signOut.fulfilled, (state) => {
         state.user = null;

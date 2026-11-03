@@ -30,4 +30,13 @@ describe("resolveApiErrorMessages", () => {
 
     expect(messages).toEqual(["Name não pode ficar em branco"]);
   });
+
+  it("maps the AI kill switch to the client message", () => {
+    const messages = resolveApiErrorMessages(
+      {errors: [{code: "ai_disabled", message: "AI is turned off"}]},
+      tPt
+    );
+
+    expect(messages).toEqual(["A IA não está disponível neste servidor."]);
+  });
 });

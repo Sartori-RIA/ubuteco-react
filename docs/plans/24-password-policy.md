@@ -1,6 +1,6 @@
 # Plan: Password policy (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [24-password-policy](../../../ubuteco_api/docs/plans/24-password-policy.md)  
 **Branch:** `feature/password-policy`  
@@ -41,10 +41,10 @@ The screens stop offering an 8-character password and stop treating a reset code
 
 ## Phase 1 — Forms
 
-- [ ] Settings: current password, new password, confirmation. Blank new password still means "leave it"
-- [ ] Signup, reset, and user form: `minLength` 12 and the same client check, without blocking a server error
-- [ ] Map the new API error codes in `resolve-api-errors`
-- [ ] Remove any copy that says the password was generated and written on the page
+- [x] Settings: current password, new password, confirmation. Blank new password still means "leave it"
+- [x] Signup, reset, and user form: `minLength` 12 and the same client check, without blocking a server error
+- [x] Map the new API error codes in `resolve-api-errors`
+- [x] Remove any copy that says the password was generated and written on the page
 
 **Acceptance:** a 9-character password does not submit. Settings without the current password does not submit when a new password is present. An API `password_pwned` or `password_denied` is visible. The reset screen does not start a session.
 
@@ -52,17 +52,17 @@ The screens stop offering an 8-character password and stop treating a reset code
 
 ## Phase 2 — Tests and i18n
 
-- [ ] Settings test: mismatch, too short, and current password required
-- [ ] Keys in `types.ts`, `en.ts`, `pt-BR.ts`, `es.ts`, and `fr.ts`
+- [x] Settings test: mismatch, too short, and current password required
+- [x] Keys in `types.ts`, `en.ts`, `pt-BR.ts`, `es.ts`, and `fr.ts`
 
 ---
 
 ## Definition of done
 
-- [ ] The four password forms follow the 12-character rule and the API errors, including a breached password
-- [ ] The reset screen sets a password and does not open a session
-- [ ] Changing a password asks for the current one
-- [ ] Lint, tests, and build pass
+- [x] The four password forms follow the 12-character rule and the API errors, including a breached password
+- [x] The reset screen sets a password and does not open a session
+- [x] Changing a password asks for the current one
+- [x] Lint, tests, and build pass
 
 ---
 

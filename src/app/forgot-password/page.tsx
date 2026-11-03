@@ -1,7 +1,6 @@
 "use client";
 
 import {FormEvent, useState} from "react";
-import {useRouter} from "next/navigation";
 import {AuthFooterLink, AuthShell} from "@/app/_components/AuthShell";
 import {BRAND_CTA} from "@/app/_components/marketing/brand-styles";
 import {Buttons, Input} from "@/app/_components";
@@ -10,7 +9,6 @@ import {useAppDispatch} from "@/app/_store/hooks";
 import {requestPasswordReset} from "@/app/_store/features/auth/authThunks";
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const t = useTranslations();
   const [email, setEmail] = useState("");
@@ -28,7 +26,6 @@ export default function ForgotPasswordPage() {
 
     if (requestPasswordReset.fulfilled.match(result)) {
       setSent(true);
-      router.push(`/reset-password?email=${encodeURIComponent(email.trim())}`);
       return;
     }
 

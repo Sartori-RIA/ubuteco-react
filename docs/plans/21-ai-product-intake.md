@@ -1,6 +1,6 @@
 # Plan: AI product intake — label photo & invoice upload (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md)  
 **Branch:** `feature/ai-product-intake`  

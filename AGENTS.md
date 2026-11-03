@@ -71,6 +71,7 @@ Angular `ubuteco_spa` is **abandoned** — do not reference or port from it.
 | Auth & roles (UX) | `docs/context/auth-and-roles.md` |
 | Catalog & inventory UI | `docs/context/catalog-and-inventory-ui.md` |
 | i18n & formatting | `docs/context/i18n-and-formatting.md` |
+| AI UI | `docs/context/ai-ui.md` |
 | Testing patterns | `docs/context/testing.md` |
 | Frontend map | `docs/context/frontend-map.md` |
 | Pages | `src/app/**/page.tsx` |

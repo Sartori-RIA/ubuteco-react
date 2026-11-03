@@ -1,6 +1,6 @@
 # Plan: Support impersonation (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [23-support-impersonation](../../../ubuteco_api/docs/plans/23-support-impersonation.md)  
 **Branch:** `feature/support-impersonation`  
@@ -40,10 +40,10 @@ A super admin opens a tenant as that user, sees a banner that cannot be missed, 
 
 ## Phase 1 — Session client
 
-- [ ] `src/app/_services/impersonation.service.ts`: start, list, leave
-- [ ] Store the support token without dropping the super-admin token
-- [ ] `apiFetch` sends the support token only while the banner session is active
-- [ ] MSW: start 201, 422 super-admin target, 403, leave 204
+- [x] `src/app/_services/impersonation.service.ts`: start, list, leave
+- [x] Store the support token without dropping the super-admin token
+- [x] `apiFetch` sends the support token only while the banner session is active
+- [x] MSW: start 201, 422 super-admin target, 403, leave 204
 
 **Acceptance:** leave puts the super-admin token back. The target password is never in the client state.
 
@@ -51,10 +51,10 @@ A super admin opens a tenant as that user, sees a banner that cannot be missed, 
 
 ## Phase 2 — Banner and entry
 
-- [ ] Reason dialog, minimum length matched to the API (10)
-- [ ] Banner in `SidebarLayout` for the whole app, including catalog and orders
-- [ ] Hide the settings password block, email field, and role field while impersonating
-- [ ] Platform user list shows the action only for a super admin
+- [x] Reason dialog, minimum length matched to the API (10)
+- [x] Banner in `SidebarLayout` for the whole app, including catalog and orders
+- [x] Hide the settings password block, email field, and role field while impersonating
+- [x] Platform user list shows the action only for a super admin
 
 **Acceptance:** a cash-register or admin user does not see "Entrar como". During a session the password field is absent. Sair returns to the platform screen.
 
@@ -62,18 +62,18 @@ A super admin opens a tenant as that user, sees a banner that cannot be missed, 
 
 ## Phase 3 — Tests and i18n
 
-- [ ] Banner renders the target and the leave button
-- [ ] Leave restores the previous session in the test store
-- [ ] Titles unchanged except the banner text. No new top-level route required if the flow lives on the platform organization page
+- [x] Banner renders the target and the leave button
+- [x] Leave restores the previous session in the test store
+- [x] Titles unchanged except the banner text. No new top-level route required if the flow lives on the platform organization page
 
 ---
 
 ## Definition of done
 
-- [ ] Super admin can enter as a tenant user and leave
-- [ ] The password is never shown or edited in that session
-- [ ] The banner stays until leave or expiry
-- [ ] Lint, tests, and build pass
+- [x] Super admin can enter as a tenant user and leave
+- [x] The password is never shown or edited in that session
+- [x] The banner stays until leave or expiry
+- [x] Lint, tests, and build pass
 
 ---
 

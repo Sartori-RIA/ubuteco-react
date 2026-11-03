@@ -16,17 +16,15 @@ export default function Page() {
 
   async function handleCreate(payload: {
     name: string;
-    email: string;
-    password?: string;
-    role_id: number;
+    email?: string;
+    role_id?: number;
   }) {
-    if (!payload.password) return;
+    if (!payload.email || payload.role_id == null) return;
     try {
       await dispatch(
         usersThunks.create({
           name: payload.name,
           email: payload.email,
-          password: payload.password,
           role_id: payload.role_id,
         })
       ).unwrap();

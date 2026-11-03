@@ -10,6 +10,19 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   delete_restriction: "api.errors.deleteRestriction",
   account_deletion_forbidden: "api.errors.accountDeletionForbidden",
   role_assignment_forbidden: "api.errors.roleAssignmentForbidden",
+  password_too_short: "api.errors.passwordTooShort",
+  password_denied: "api.errors.passwordDenied",
+  password_pwned: "api.errors.passwordPwned",
+  current_password_invalid: "api.errors.currentPasswordInvalid",
+  reset_token_invalid: "api.errors.resetTokenInvalid",
+  impersonation_forbidden: "api.errors.impersonationForbidden",
+  impersonation_target_invalid: "api.errors.impersonationTargetInvalid",
+  impersonation_reason_invalid: "api.errors.impersonationReasonInvalid",
+  impersonation_in_progress: "api.errors.impersonationInProgress",
+  ai_disabled: "api.errors.aiDisabled",
+  ai_rate_limited: "api.errors.aiRateLimited",
+  ai_unavailable: "api.errors.aiUnavailable",
+  ai_invalid_output: "api.errors.aiInvalidOutput",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */

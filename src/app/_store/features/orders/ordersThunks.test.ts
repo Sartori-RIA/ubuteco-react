@@ -8,6 +8,8 @@ import {ordersThunks} from "./ordersThunks";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthToken: () => "test-token",
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 describe("ordersThunks.fetchAll cache", () => {

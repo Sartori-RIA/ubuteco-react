@@ -1,13 +1,17 @@
 "use client"
 
 import Image from "next/image";
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faComments, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {AMBIENT_APP} from "@/app/_components/marketing/brand-styles";
 import {isMarketingShellPath} from "@/app/_lib/auth-routes";
-import {getAuthToken} from "@/app/_lib/auth-storage";
+import {getAuthToken, getSupportSession, subscribeSupportSession, SupportSessionState} from "@/app/_lib/auth-storage";
+import {clearSupportSession} from "@/app/_lib/auth-storage";
+import {leaveImpersonation} from "@/app/_services/impersonation.service";
+import {SupportSessionBanner} from "@/app/_components/SupportSessionBanner";
+import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
 import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
@@ -19,9 +23,15 @@ import {usePathname, useRouter} from "next/navigation";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useAiEnabled} from "@/app/_hooks/useAiEnabled";
+import {useInventoryAlerts} from "@/app/_hooks/useInventoryAlerts";
+import {canUseAssistant} from "@/app/_lib/auth-roles";
+import {AssistantDrawer} from "@/app/_components/assistant/AssistantDrawer";
+import {resetAssistant, setAssistantOpen} from "@/app/_store/features/assistant/assistantSlice";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [supportSession, setSupportSession] = useState<SupportSessionState | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -31,14 +41,38 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const pageTitle = usePageTitle();
   useDocumentTitle(pageTitle);
   const navGroups = getVisibleNavGroups(capabilitiesUser);
+  const inventoryAlerts = useInventoryAlerts();
+  const aiEnabled = useAiEnabled();
+  const showAssistant = canUseAssistant(user) && aiEnabled;
+  const userId = user?.id;
+  const organizationId = user?.organization_id;
   const authStatus = useAppSelector((state) => state.auth.status);
   const ready = useClientReady();
   const isAuthenticated =
     ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
 
+  useEffect(() => subscribeSupportSession(() => setSupportSession(getSupportSession())), []);
+
+  useEffect(() => {
+    dispatch(resetAssistant());
+  }, [dispatch, userId, organizationId]);
+
   if (isMarketingShellPath(pathname, {ready, authenticated: isAuthenticated})) {
     return <>{children}</>;
   }
+
+  const handleLeaveSupport = async () => {
+    if (!supportSession) return;
+    try {
+      await leaveImpersonation(supportSession.id);
+    } catch {
+      // Still return the operator to their own session.
+    }
+    const actor = clearSupportSession();
+    if (actor) dispatch(setAuthenticatedUser(actor));
+    setSupportSession(null);
+    router.push("/platform/organizations");
+  };
 
   const handleLogout = async () => {
     await dispatch(signOut());
@@ -51,7 +85,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
       : "text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800";
 
   return (
-    <div className={`flex h-screen ${AMBIENT_APP}`}>
+    <div className={`flex h-screen flex-col ${AMBIENT_APP}`}>
+      {supportSession && <SupportSessionBanner session={supportSession} onLeave={handleLeaveSupport}/>}
+      <div className="flex min-h-0 flex-1">
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -96,6 +132,14 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
                         >
                           <FontAwesomeIcon icon={item.icon} className="w-4 shrink-0 text-[15px]"/>
                           <span className="truncate">{t(item.labelKey)}</span>
+                          {item.link === "/inventory" && inventoryAlerts.total > 0 && (
+                            <span
+                              className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-amber-500 px-1.5 text-xs font-semibold text-amber-950"
+                              aria-label={t("inventory.alertsBadge", {count: inventoryAlerts.total})}
+                            >
+                              {inventoryAlerts.total}
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -130,6 +174,19 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             <h2 className="text-lg font-semibold text-foreground">{pageTitle}</h2>
           </div>
 
+          <div className="flex items-center gap-2">
+            {showAssistant && (
+              <Buttons
+                type="button"
+                variant="outline"
+                size="icon"
+                className="rounded-lg"
+                aria-label={t("assistant.open")}
+                onClick={() => dispatch(setAssistantOpen(true))}
+              >
+                <FontAwesomeIcon icon={faComments}/>
+              </Buttons>
+            )}
           <Link
             href="/settings"
             className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition hover:bg-surface-muted ${
@@ -148,7 +205,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
               {user?.name ?? user?.email ?? t("common.myAccount")}
             </span>
           </Link>
+          </div>
         </header>
+        {showAssistant && <AssistantDrawer/>}
 
         <main className="relative min-h-0 flex-1 overflow-auto p-6">
           <div
@@ -161,6 +220,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
           />
           <div className="relative">{children}</div>
         </main>
+      </div>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {clearAuthError} from "@/app/_store/features/auth/authSlice";
 import {signUp} from "@/app/_store/features/auth/authThunks";
+import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -30,7 +31,12 @@ export default function SignUpPage() {
     dispatch(clearAuthError());
     setLocalError(null);
 
-    if (password !== confirmPassword) {
+    const issue = passwordIssue({password, confirmation: confirmPassword});
+    if (issue === "too_short") {
+      setLocalError(t("auth.passwordTooShort", {count: MIN_PASSWORD_LENGTH}));
+      return;
+    }
+    if (issue === "mismatch") {
       setLocalError(t("auth.passwordsMismatch"));
       return;
     }
@@ -75,7 +81,7 @@ export default function SignUpPage() {
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
             {t("auth.password")}
           </label>
-          <Input id="password" type="password" required value={password}
+          <Input id="password" type="password" required minLength={MIN_PASSWORD_LENGTH} value={password}
                  onChange={(e) => setPassword(e.target.value)}/>
         </div>
         <div>

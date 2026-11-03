@@ -13,8 +13,11 @@ import {dashboardThunks} from "@/app/_store/features/dashboard/dashboardThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {
+  DailyBriefCard,
   DashboardDateRange,
   DashboardKpiCards,
+  ExpirySummaryCard,
+  LowStockSummaryCard,
   ItemsByTypePanel,
   KitchenPanel,
   RevenueChart,
@@ -54,6 +57,15 @@ function OrganizationDashboard() {
           </Link>
         )}
       </div>
+
+      {canAccessInventory && (
+        <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
+          <LowStockSummaryCard/>
+          <ExpirySummaryCard/>
+        </div>
+      )}
+
+      <DailyBriefCard/>
 
       <DashboardDateRange
         from={from}
