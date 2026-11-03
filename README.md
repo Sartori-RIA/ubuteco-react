@@ -8,7 +8,27 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![API](https://img.shields.io/badge/API-ubuteco__api-CC342D?logo=rubyonrails&logoColor=white)](https://github.com/Sartori-RIA/ubuteco_api)
 
-Staff UI for **uButeco** — orders, kitchen queue, catalog, and organization settings. Built with **Next.js** (App Router) and **Redux Toolkit**.
+Staff UI for **uButeco** — orders, kitchen queue, catalog, inventory, and organization settings. Built with **Next.js** (App Router) and **Redux Toolkit**.
+
+### Product surface
+
+Shipped screens. When a plan in [docs/plans/README.md](docs/plans/README.md) is marked completed, add its row here in the same change.
+
+| Area | Where |
+|------|--------|
+| Dashboard | `/` — KPIs, date range, daily brief, low-stock and expiry counts |
+| Orders, kitchen, tables | `/orders`, `/kitchen`, `/tables` |
+| Catalog | Beers, drinks, wines, dishes, foods, makers, and their styles |
+| Inventory | `/inventory` — stock, expiry, restock suggestions |
+| Receive a delivery | `/inventory/intake` — NF-e XML always; photo or PDF when the organization has AI on |
+| Label photo | New beer and new wine forms. The button is hidden while AI is off for the organization |
+| Catalog CSV | `/catalog/import` — admin only |
+| Assistant | Drawer in the app shell |
+| Settings | `/settings` — profile, password, appearance, regional settings, AI opt-in |
+| Support | Organization screen. A super admin can open a session as a staff user |
+| Auth | Sign-in, sign-up, forgot/reset password. New passwords follow the API policy (12+ characters) |
+
+Semantic menu search has no separate screen. The API uses embeddings when `VOYAGE_API_KEY` is set and otherwise stays on keyword search.
 
 > **Badges:** CI runs on every push/PR. Coverage is reported to [Codecov](https://codecov.io/gh/Sartori-RIA/ubuteco-react) (scoped to business-logic modules — see `vitest.config.ts`).
 
@@ -45,7 +65,8 @@ src/app/
   page.tsx                    # Dashboard (/)
   login/, signup/, …          # Public routes
   orders/, kitchen/, beers/…  # Feature routes (list / [id] / new / edit)
-  settings/                   # Profile, appearance, regional settings
+  inventory/, catalog/import/ # Stock, delivery intake, CSV import
+  settings/                   # Profile, password, appearance, regional settings, AI opt-in
   _components/                # Shared UI (Buttons, Card, AuthGuard, SidebarLayout, …)
   _hooks/                     # useAuthCapabilities, useMoneyFormat, useTranslations, …
   _lib/                       # Pure helpers (auth-roles, format, i18n, appearance)
@@ -74,7 +95,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). API defaults to port 3001 (see dev-setup).
+Open [http://localhost:3001](http://localhost:3001). The API defaults to port 3000 (see dev-setup).
 
 ```bash
 npm run build    # production build
