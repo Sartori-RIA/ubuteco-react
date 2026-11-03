@@ -629,6 +629,32 @@ export type MessageCatalog = {
       tagline: string;
     };
   };
+  assistant: {
+    title: string;
+    open: string;
+    close: string;
+    new: string;
+    untitled: string;
+    empty: string;
+    placeholder: string;
+    send: string;
+    thinking: string;
+    disclaimer: string;
+    delete: string;
+    deleteTitle: string;
+    deleteMessage: string;
+    starters: {
+      yesterday: string;
+      lowStock: string;
+      topSeller: string;
+    };
+    errors: {
+      disabled: string;
+      rateLimited: string;
+      unavailable: string;
+      generic: string;
+    };
+  };
   legal: {
     backToHome: string;
     lastUpdated: string;
