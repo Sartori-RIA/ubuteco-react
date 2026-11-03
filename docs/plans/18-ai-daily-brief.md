@@ -1,6 +1,6 @@
 # Plan: AI daily brief card (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md)  
 **Branch:** `feature/ai-daily-brief`  
@@ -39,19 +39,19 @@ Show the daily brief paragraph at the top of the organization dashboard, so the 
 
 ## Phase 1 — Service & state
 
-- [ ] `dashboardService.fetchBrief({refresh?})` → `GET /api/v1/dashboard/brief`
-- [ ] Type `DashboardBrief { text, source: "ai" | "template", generated_at }`
-- [ ] Add `brief` + `briefLoading` to `dashboardSlice`; separate thunk (not part of `fetchAll`, which depends on the date range)
-- [ ] MSW handler (ai + template variants)
+- [x] `dashboardService.fetchBrief({refresh?})` → `GET /api/v1/dashboard/brief`
+- [x] Type `DashboardBrief { text, source: "ai" | "template", generated_at }`
+- [x] Add `brief` + `briefLoading` to `dashboardSlice`; separate thunk (not part of `fetchAll`, which depends on the date range)
+- [x] MSW handler (ai + template variants)
 
 ---
 
 ## Phase 2 — Card
 
-- [ ] `src/app/dashboard/components/DailyBriefCard.tsx` using `Card`
-- [ ] Skeleton while loading; text as plain paragraphs (no HTML)
-- [ ] "AI-generated" badge + generated time via `formatDate` (org timezone)
-- [ ] Refresh button with cooldown
+- [x] `src/app/dashboard/components/DailyBriefCard.tsx` using `Card`
+- [x] Skeleton while loading; text as plain paragraphs (no HTML)
+- [x] "AI-generated" badge + generated time via `formatDate` (org timezone)
+- [x] Refresh button with cooldown
 
 **Acceptance:** renders template text when AI disabled; hidden on API error; refresh triggers one request.
 
@@ -59,16 +59,16 @@ Show the daily brief paragraph at the top of the organization dashboard, so the 
 
 ## Phase 3 — Tests & i18n
 
-- [ ] Component tests: ai source, template source, error hidden, refresh cooldown
-- [ ] i18n keys `dashboard.brief.*` in `pt-BR`, `en`, `es`, `fr`
+- [x] Component tests: ai source, template source, error hidden, refresh cooldown
+- [x] i18n keys `dashboard.brief.*` in `pt-BR`, `en`, `es`, `fr`
 
 ---
 
 ## Definition of done
 
-- [ ] Brief card visible on dashboard for allowed roles
-- [ ] Works with AI on (badge) and off (template)
-- [ ] Lint, tests, build pass
+- [x] Brief card visible on dashboard for allowed roles
+- [x] Works with AI on (badge) and off (template)
+- [x] Lint, tests, build pass
 
 ---
 

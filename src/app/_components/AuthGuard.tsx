@@ -12,7 +12,9 @@ import {
   canAccessPlatformRoutes,
   canManageUsers,
   hasOrganization,
+  isAdmin,
   isAdminOnlyPath,
+  isCatalogImportPath,
   isDashboardPath,
   isInventoryPath,
   isKitchenAllowedPath,
@@ -79,6 +81,11 @@ export default function AuthGuard({children}: {children: ReactNode}) {
     }
 
     if (user && isAdminOnlyPath(pathname) && !canManageUsers(user)) {
+      router.replace("/");
+      return;
+    }
+
+    if (user && isCatalogImportPath(pathname) && !isAdmin(user)) {
       router.replace("/");
       return;
     }

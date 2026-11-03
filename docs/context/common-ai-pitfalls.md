@@ -64,3 +64,12 @@ Lessons from real mistakes when using agents on this frontend. Read before large
 | Users / settings delete | [users-and-platform.md](../../../ubuteco_api/docs/context/users-and-platform.md) |
 | Dashboard charts | [dashboard.md](../../../ubuteco_api/docs/context/dashboard.md) |
 | Locale / money API fields | [i18n-and-money.md](../../../ubuteco_api/docs/context/i18n-and-money.md) |
+
+## AI UI
+
+| Pitfall | Correct approach |
+|---------|------------------|
+| Show assistant, explain, or photo/PDF intake while AI is off | Gate that UI with `useAiEnabled()`. See [ai-ui.md](./ai-ui.md). |
+| Hide the daily brief, restock numbers, or NF-e XML when AI is off | Those do not call a model. Leave them visible. |
+| Render model text as HTML | Model output is untrusted. Use text, never `dangerouslySetInnerHTML`. |
+| Fetch AI status with an extra request | Read `organization.ai_enabled` from the auth store. |

@@ -114,6 +114,13 @@ export function canAccessPlatformRoutes(user: User | null | undefined): boolean 
   return isSuperAdmin(user);
 }
 
+/** Catalog CSV import. Org admin only, including a direct URL. */
+const CATALOG_IMPORT_PATH = /^\/catalog\/import(\/|$)/;
+
+export function isCatalogImportPath(pathname: string): boolean {
+  return CATALOG_IMPORT_PATH.test(pathname);
+}
+
 /** Paths restricted to org admins (staff user management). */
 const ADMIN_ONLY_PATH = /^\/users(\/|$)/;
 
@@ -134,6 +141,11 @@ const DASHBOARD_ROLES = new Set(["ADMIN", "CASH_REGISTER"]);
 export function canAccessDashboard(user: User | null | undefined): boolean {
   const role = getRoleName(user);
   return role != null && DASHBOARD_ROLES.has(role);
+}
+
+/** Chat assistant. The screen also requires the organization AI flag. */
+export function canUseAssistant(user: User | null | undefined): boolean {
+  return canAccessDashboard(user);
 }
 
 export function isDashboardPath(pathname: string): boolean {

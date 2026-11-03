@@ -15,6 +15,10 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   password_pwned: "api.errors.passwordPwned",
   current_password_invalid: "api.errors.currentPasswordInvalid",
   reset_token_invalid: "api.errors.resetTokenInvalid",
+  ai_disabled: "api.errors.aiDisabled",
+  ai_rate_limited: "api.errors.aiRateLimited",
+  ai_unavailable: "api.errors.aiUnavailable",
+  ai_invalid_output: "api.errors.aiInvalidOutput",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */

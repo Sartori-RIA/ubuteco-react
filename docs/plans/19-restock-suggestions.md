@@ -1,6 +1,6 @@
 # Plan: Restock suggestions (frontend)
 
-**Status:** not started  
+**Status:** completed  
 **Project:** ubuteco-react  
 **Backend:** [19-restock-suggestions](../../../ubuteco_api/docs/plans/19-restock-suggestions.md)  
 **Branch:** `feature/restock-suggestions`  
@@ -40,17 +40,17 @@ On `/inventory`, show **what to buy and how much**, ranked by how soon each prod
 
 ## Phase 1 — Service
 
-- [ ] `fetchRestockSuggestions({coverDays, explain})` in `src/app/_services/inventory.ts`
-- [ ] Types `RestockSuggestion`, `RestockSuggestionsResponse`
-- [ ] MSW handler (with and without `explanation`)
+- [x] `fetchRestockSuggestions({coverDays, explain})` in `src/app/_services/inventory.ts`
+- [x] Types `RestockSuggestion`, `RestockSuggestionsResponse`
+- [x] MSW handler (with and without `explanation`)
 
 ---
 
 ## Phase 2 — Tab & table
 
-- [ ] Tabs on `src/app/inventory/page.tsx` (extract existing low stock table into a component first, no behaviour change)
-- [ ] `RestockSuggestionsTable` with sort by days left, low-confidence styling, empty state
-- [ ] Cover-days select; numbers via existing format helpers
+- [x] Tabs on `src/app/inventory/page.tsx` (extract existing low stock table into a component first, no behaviour change)
+- [x] `RestockSuggestionsTable` with sort by days left, low-confidence styling, empty state
+- [x] Cover-days select; numbers via existing format helpers
 
 **Acceptance:** admin and cash register see suggestions; waiter/kitchen blocked (existing guard).
 
@@ -58,32 +58,32 @@ On `/inventory`, show **what to buy and how much**, ranked by how soon each prod
 
 ## Phase 3 — Actions
 
-- [ ] "Adjust stock" → `StockAdjustmentPanel` with prefilled adjustment; refresh list after save
-- [ ] "Copy list" → clipboard text `Product — quantity`, translated header; toast on success
+- [x] "Adjust stock" → `StockAdjustmentPanel` with prefilled adjustment; refresh list after save
+- [x] "Copy list" → clipboard text `Product — quantity`, translated header; toast on success
 
 ---
 
 ## Phase 4 — AI explanation (optional)
 
-- [ ] "Explain" toggle visible only with `useAiEnabled()`
-- [ ] Explanation rendered as plain text, muted style, "AI" badge
-- [ ] If explain request fails → keep table, show inline notice
+- [x] "Explain" toggle visible only with `useAiEnabled()`
+- [x] Explanation rendered as plain text, muted style, "AI" badge
+- [x] If explain request fails → keep table, show inline notice
 
 ---
 
 ## Phase 5 — Tests & i18n
 
-- [ ] Tests: table render, low confidence, cover-days change refetches, prefilled adjust, AI toggle hidden when disabled
-- [ ] i18n keys `inventory.restock.*` in `pt-BR`, `en`, `es`, `fr`
-- [ ] Update `docs/context/catalog-and-inventory-ui.md`
+- [x] Tests: table render, low confidence, cover-days change refetches, prefilled adjust, AI toggle hidden when disabled
+- [x] i18n keys `inventory.restock.*` in `pt-BR`, `en`, `es`, `fr`
+- [x] Update `docs/context/catalog-and-inventory-ui.md`
 
 ---
 
 ## Definition of done
 
-- [ ] Restock tab live with actionable suggestions
-- [ ] Works without AI; explanation appears only when enabled
-- [ ] Lint, tests, build pass
+- [x] Restock tab live with actionable suggestions
+- [x] Works without AI; explanation appears only when enabled
+- [x] Lint, tests, build pass
 
 ---
 

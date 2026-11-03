@@ -30,8 +30,20 @@ async function fetchKitchen(params: DashboardFetchParams): Promise<DashboardKitc
   return await apiFetch<DashboardKitchen>(`v1/dashboard/kitchen${query}`);
 }
 
+export type DashboardBrief = {
+  text: string;
+  source: "ai" | "template";
+  generated_at: string;
+};
+
+async function fetchBrief(refresh = false): Promise<DashboardBrief> {
+  const query = refresh ? "?refresh=1" : "";
+  return await apiFetch<DashboardBrief>(`v1/dashboard/brief${query}`);
+}
+
 export const dashboardService = {
   fetchSummary,
   fetchSeries,
   fetchKitchen,
+  fetchBrief,
 };
