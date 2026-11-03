@@ -321,6 +321,7 @@ export type MessageCatalog = {
     detailTitle: string;
     type: string;
     file: string;
+    chooseFile: string;
     submit: string;
     template: string;
     headers: string;

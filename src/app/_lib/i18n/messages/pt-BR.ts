@@ -327,6 +327,7 @@ const ptBR: MessageCatalog = {
     detailTitle: "Status da importação",
     type: "Tipo de produto",
     file: "Arquivo CSV",
+    chooseFile: "Clique para anexar o CSV",
     submit: "Iniciar importação",
     template: "Baixar modelo em inglês",
     headers: "Colunas em inglês: {columns}",

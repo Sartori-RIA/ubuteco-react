@@ -35,6 +35,11 @@ describe("intakeFileError", () => {
     expect(intakeFileError(blank, "label")).toBe("fileType");
     expect(intakeFileError(blank, "invoice")).toBeNull();
   });
+
+  it("accepts a jpeg when the browser omits the type or reports image/jpg", () => {
+    expect(intakeFileError(file(100, "", "trapel.jpg"), "label")).toBeNull();
+    expect(intakeFileError(file(100, "image/jpg", "trapel.jpg"), "label")).toBeNull();
+  });
 });
 
 describe("extractLabel", () => {

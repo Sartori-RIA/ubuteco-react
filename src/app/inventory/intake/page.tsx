@@ -5,6 +5,8 @@ import {useState} from "react";
 import {Card} from "@/app/_components";
 import {useAiEnabled} from "@/app/_hooks/useAiEnabled";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
+import {ApiError} from "@/app/_services/api-fetch";
 import {intakeFileError, parseInvoice} from "@/app/_services/intake.service";
 import {InvoiceLine} from "@/app/_types/intake";
 import {InvoiceReview} from "@/app/inventory/intake/InvoiceReview";
@@ -28,8 +30,9 @@ export default function Page() {
     try {
       const payload = await parseInvoice(file);
       setLines(payload.lines);
-    } catch {
-      setError(t("intake.fileType"));
+    } catch (err) {
+      const messages = resolveApiErrorMessages(err instanceof ApiError ? {errors: err.items} : err, t);
+      setError(messages[0] ?? t("api.errors.generic"));
     } finally {
       setLoading(false);
     }

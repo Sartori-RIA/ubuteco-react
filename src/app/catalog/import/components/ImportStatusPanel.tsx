@@ -31,3 +31,8 @@ function statusCopy(record: CatalogImport, t: TranslateFn): string {
   if (record.status === "failed") return t("catalogImport.failed");
   return t("catalogImport.completed", {created: record.created_rows, failed: record.failed_rows});
 }
+
+export function importListStatus(record: CatalogImport, t: TranslateFn): string {
+  if (record.status === "queued") return t("catalogImport.queued");
+  return statusCopy(record, t);
+}

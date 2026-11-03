@@ -3,15 +3,22 @@ import {InvoiceLine, LabelDraftResponse} from "@/app/_types/intake";
 
 export const INTAKE_MAX_BYTES = 5 * 1024 * 1024;
 
-const IMAGE_TYPES = ["image/jpeg", "image/png"];
-const INVOICE_TYPES = ["application/xml", "text/xml", "text/plain", "application/pdf", "image/jpeg", "image/png"];
+const IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/pjpeg", "image/png"];
+const INVOICE_TYPES = ["application/xml", "text/xml", "text/plain", "application/pdf", ...IMAGE_TYPES];
+
+function namedImage(file: File): boolean {
+  return /\.(jpe?g|png)$/i.test(file.name);
+}
 
 export function intakeFileError(file: File, kind: "label" | "invoice"): "fileTooBig" | "fileType" | null {
   if (file.size > INTAKE_MAX_BYTES) return "fileTooBig";
   const allowed = kind === "label" ? IMAGE_TYPES : INVOICE_TYPES;
   const xmlName = file.name.toLowerCase().endsWith(".xml");
-  if (file.type && !allowed.includes(file.type) && !xmlName) return "fileType";
-  if (!file.type && kind === "label") return "fileType";
+  if (!file.type) {
+    if (kind === "invoice") return null;
+    return namedImage(file) ? null : "fileType";
+  }
+  if (!allowed.includes(file.type) && !xmlName) return "fileType";
   return null;
 }
 

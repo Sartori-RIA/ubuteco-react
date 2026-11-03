@@ -13,6 +13,7 @@ import {
   ImportInProgressError,
   listImports,
 } from "@/app/_services/catalog-import.service";
+import {importListStatus} from "@/app/catalog/import/components/ImportStatusPanel";
 
 const TYPES = ["beer", "drink", "wine", "food", "dish"] as const;
 
@@ -92,13 +93,16 @@ export default function CatalogImportPage() {
           {t("catalogImport.template")}
         </Buttons>
         <label className="block">
-          <span>{t("catalogImport.file")}</span>
-          <input
-            className="mt-1 block"
-            type="file"
-            accept=".csv,text/csv"
-            onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          />
+          <span className="block">{t("catalogImport.file")}</span>
+          <span className="mt-1 inline-flex h-10 cursor-pointer items-center rounded-2xl border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-muted">
+            <input
+              className="sr-only"
+              type="file"
+              accept=".csv,text/csv"
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+            {file ? file.name : t("catalogImport.chooseFile")}
+          </span>
         </label>
         {error ? <p role="alert">{error}</p> : null}
         {busyId ? (
@@ -117,7 +121,7 @@ export default function CatalogImportPage() {
             {imports.map((item) => (
               <li key={item.id}>
                 <Link href={`/catalog/import/${item.id}`}>
-                  {t(TYPE_KEYS[item.product_type as (typeof TYPES)[number]] ?? TYPE_KEYS.beer)} · {item.status}
+                  {t(TYPE_KEYS[item.product_type as (typeof TYPES)[number]] ?? TYPE_KEYS.beer)} · {importListStatus(item, t)}
                 </Link>
               </li>
             ))}

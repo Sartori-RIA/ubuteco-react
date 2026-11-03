@@ -3,6 +3,8 @@
 import {useState} from "react";
 import {useAiEnabled} from "@/app/_hooks/useAiEnabled";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
+import {ApiError} from "@/app/_services/api-fetch";
 import {extractLabel, intakeFileError} from "@/app/_services/intake.service";
 import {LabelDraftResponse} from "@/app/_types/intake";
 
@@ -30,8 +32,9 @@ export function LabelPhotoButton({productType, onDraft}: LabelPhotoButtonProps) 
     setLoading(true);
     try {
       onDraft(await extractLabel(file, productType));
-    } catch {
-      setError(t("intake.fileType"));
+    } catch (err) {
+      const messages = resolveApiErrorMessages(err instanceof ApiError ? {errors: err.items} : err, t);
+      setError(messages[0] ?? t("api.errors.generic"));
     } finally {
       setLoading(false);
     }

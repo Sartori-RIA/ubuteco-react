@@ -4,7 +4,7 @@
 import {render, screen} from "@testing-library/react";
 import {describe, expect, it} from "vitest";
 import {createTranslator} from "@/app/_lib/i18n";
-import {ImportStatusPanel} from "@/app/catalog/import/components/ImportStatusPanel";
+import {importListStatus, ImportStatusPanel} from "@/app/catalog/import/components/ImportStatusPanel";
 import type {CatalogImport} from "@/app/_services/catalog-import.service";
 
 const t = createTranslator("en");
@@ -56,5 +56,10 @@ describe("ImportStatusPanel", () => {
     );
     expect(screen.getByText("Line 3: Beer style was not found")).toBeInTheDocument();
     expect(screen.getByText(/1 created, 1 failed/)).toBeInTheDocument();
+  });
+
+  it("translates the status shown in the recent list", () => {
+    expect(importListStatus(record({status: "queued"}), t)).toBe("In queue");
+    expect(importListStatus(record({status: "failed", error_message: "stopped"}), t)).toBe("The import stopped.");
   });
 });

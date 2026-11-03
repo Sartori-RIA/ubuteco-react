@@ -327,6 +327,7 @@ const es: MessageCatalog = {
     detailTitle: "Estado de la importación",
     type: "Tipo de producto",
     file: "Archivo CSV",
+    chooseFile: "Haz clic para adjuntar el CSV",
     submit: "Iniciar importación",
     template: "Descargar plantilla en inglés",
     headers: "Columnas en inglés: {columns}",

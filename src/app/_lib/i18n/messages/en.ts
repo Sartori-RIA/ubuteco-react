@@ -326,6 +326,7 @@ const en: MessageCatalog = {
     detailTitle: "Import status",
     type: "Product type",
     file: "CSV file",
+    chooseFile: "Click to attach the CSV",
     submit: "Start import",
     template: "Download English template",
     headers: "English columns: {columns}",

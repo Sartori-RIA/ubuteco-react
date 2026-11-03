@@ -315,6 +315,7 @@ const fr: MessageCatalog = {
     detailTitle: "État de l'import",
     type: "Type de produit",
     file: "Fichier CSV",
+    chooseFile: "Cliquez pour joindre le CSV",
     submit: "Lancer l'import",
     template: "Télécharger le modèle en anglais",
     headers: "Colonnes en anglais : {columns}",
