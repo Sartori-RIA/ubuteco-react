@@ -13,4 +13,5 @@ export interface Organization extends BaseModel {
   locale?: string;
   default_currency?: string;
   timezone?: string;
+  ai_enabled?: boolean;
 }

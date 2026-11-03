@@ -45,7 +45,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 9 | [Frontend performance](./09-frontend-performance.md) | completed | P2 | — |
 | 14 | [Marketing landing page](./14-landing-page.md) | completed | P2 | — |
 | 15 | [Product expiry alerts](./15-product-expiry-alerts.md) | completed | P2 | [15-product-expiry-alerts](../../../ubuteco_api/docs/plans/15-product-expiry-alerts.md) |
-| 16 | [AI settings toggle](./16-ai-settings.md) | not started | P2 | [16-ai-foundation](../../../ubuteco_api/docs/plans/16-ai-foundation.md) |
+| 16 | [AI settings toggle](./16-ai-settings.md) | completed | P2 | [16-ai-foundation](../../../ubuteco_api/docs/plans/16-ai-foundation.md) |
 | 19 | [Restock suggestions](./19-restock-suggestions.md) | not started | P2 | [19-restock-suggestions](../../../ubuteco_api/docs/plans/19-restock-suggestions.md) |
 | 18 | [AI daily brief card](./18-ai-daily-brief.md) | not started | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
 | 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
@@ -66,7 +66,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 
 **Next up:** [19 Restock suggestions](./19-restock-suggestions.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
 
-**AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — every AI UI hides behind `useAiEnabled()`. [19 Restock](./19-restock-suggestions.md) and [18 Daily brief](./18-ai-daily-brief.md) also work with AI off. API plan 20 (semantic search) has no React plan in v1.
+**AI track (16–21):** [16 AI settings](./16-ai-settings.md) is in place — `useAiEnabled()` hides model UI only. [19 Restock](./19-restock-suggestions.md) and [18 Daily brief](./18-ai-daily-brief.md) also work with AI off. API plan 20 (semantic search) has no React plan in v1.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

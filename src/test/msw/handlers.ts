@@ -40,6 +40,17 @@ export const handlers = [
       ],
     });
   }),
+  http.patch(apiUrl("v1/organizations/:id"), async ({request}) => {
+    const body = await request.json() as {ai_enabled?: boolean};
+    return HttpResponse.json({
+      id: 1,
+      name: "Bar",
+      locale: "pt-BR",
+      default_currency: "BRL",
+      timezone: "America/Sao_Paulo",
+      ai_enabled: body.ai_enabled ?? false,
+    });
+  }),
   http.get(apiUrl("v1/users"), () => {
     return HttpResponse.json({
       data: [
