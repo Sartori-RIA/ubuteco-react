@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, {ReactNode, useEffect, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faComments, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {AMBIENT_APP} from "@/app/_components/marketing/brand-styles";
 import {isMarketingShellPath} from "@/app/_lib/auth-routes";
 import {getAuthToken, getSupportSession, subscribeSupportSession, SupportSessionState} from "@/app/_lib/auth-storage";
@@ -23,7 +23,11 @@ import {usePathname, useRouter} from "next/navigation";
 import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {signOut} from "@/app/_store/features/auth/authThunks";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
+import {useAiEnabled} from "@/app/_hooks/useAiEnabled";
 import {useInventoryAlerts} from "@/app/_hooks/useInventoryAlerts";
+import {canUseAssistant} from "@/app/_lib/auth-roles";
+import {AssistantDrawer} from "@/app/_components/assistant/AssistantDrawer";
+import {resetAssistant, setAssistantOpen} from "@/app/_store/features/assistant/assistantSlice";
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -38,12 +42,20 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   useDocumentTitle(pageTitle);
   const navGroups = getVisibleNavGroups(capabilitiesUser);
   const inventoryAlerts = useInventoryAlerts();
+  const aiEnabled = useAiEnabled();
+  const showAssistant = canUseAssistant(user) && aiEnabled;
+  const userId = user?.id;
+  const organizationId = user?.organization_id;
   const authStatus = useAppSelector((state) => state.auth.status);
   const ready = useClientReady();
   const isAuthenticated =
     ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
 
   useEffect(() => subscribeSupportSession(() => setSupportSession(getSupportSession())), []);
+
+  useEffect(() => {
+    dispatch(resetAssistant());
+  }, [dispatch, userId, organizationId]);
 
   if (isMarketingShellPath(pathname, {ready, authenticated: isAuthenticated})) {
     return <>{children}</>;
@@ -162,6 +174,19 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
             <h2 className="text-lg font-semibold text-foreground">{pageTitle}</h2>
           </div>
 
+          <div className="flex items-center gap-2">
+            {showAssistant && (
+              <Buttons
+                type="button"
+                variant="outline"
+                size="icon"
+                className="rounded-lg"
+                aria-label={t("assistant.open")}
+                onClick={() => dispatch(setAssistantOpen(true))}
+              >
+                <FontAwesomeIcon icon={faComments}/>
+              </Buttons>
+            )}
           <Link
             href="/settings"
             className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition hover:bg-surface-muted ${
@@ -180,7 +205,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
               {user?.name ?? user?.email ?? t("common.myAccount")}
             </span>
           </Link>
+          </div>
         </header>
+        {showAssistant && <AssistantDrawer/>}
 
         <main className="relative min-h-0 flex-1 overflow-auto p-6">
           <div

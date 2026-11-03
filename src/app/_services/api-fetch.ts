@@ -28,12 +28,14 @@ export class ApiError extends Error {
   status: number;
   data: string[];
   items: ApiErrorItem[];
+  payload: unknown;
 
   constructor(status: number, data: unknown) {
     super("API Error");
     this.status = status;
     this.items = extractApiErrorItems(data);
     this.data = normalizeErrors(data);
+    this.payload = data;
   }
 }
 
@@ -84,11 +86,11 @@ export async function apiFetch<T>(
         break
       case 403: {
         const data = await res.json().catch(() => ({}));
-        const code = extractApiErrorItems(data)[0]?.code;
-        if (code === "impersonation_forbidden") {
-          throw new ApiError(403, data);
-        }
-        handleForbidden()
+        const blocked = extractApiErrorItems(data).some((item) =>
+          item.code === "impersonation_forbidden" || item.code === "ai_disabled"
+        );
+        if (blocked) throw new ApiError(res.status, data);
+        handleForbidden();
         return undefined as T;
       }
       case 404:

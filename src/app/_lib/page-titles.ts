@@ -63,7 +63,10 @@ export function getDocumentTitle(pathname: string, t: TranslateFn): string {
 
 function resolveRouteTitle(pathname: string, t: TranslateFn): string {
   if (pathname === "/" || pathname === "") return t("nav.dashboard");
+  if (pathname === "/inventory/intake") return t("intake.title");
   if (pathname === "/settings") return t("nav.settings");
+  if (pathname === "/catalog/import") return t("catalogImport.title");
+  if (/^\/catalog\/import\/\d+$/.test(pathname)) return t("catalogImport.detailTitle");
 
   const parts = pathname.split("/").filter(Boolean);
   const [segment, second, third] = parts;

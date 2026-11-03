@@ -60,4 +60,18 @@ describe("getVisibleNavGroups", () => {
     );
     expect(links).toContain("/users");
   });
+
+  it("shows catalog import only for an org admin", () => {
+    const adminLinks = getVisibleNavGroups(userWithRole("ADMIN")).flatMap((group) =>
+      group.items.map((item) => item.link)
+    );
+    expect(adminLinks).toContain("/catalog/import");
+
+    for (const role of ["CASH_REGISTER", "WAITER", "SUPER_ADMIN"]) {
+      const links = getVisibleNavGroups(userWithRole(role)).flatMap((group) =>
+        group.items.map((item) => item.link)
+      );
+      expect(links).not.toContain("/catalog/import");
+    }
+  });
 });

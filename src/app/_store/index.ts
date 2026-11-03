@@ -14,6 +14,7 @@ import kitchenReducer from "@/app/_store/features/kitchen/kitchenSlice";
 
 import usersReducer from "@/app/_store/features/users/usersSlice";
 import dashboardReducer from "@/app/_store/features/dashboard/dashboardSlice";
+import assistantReducer from "@/app/_store/features/assistant/assistantSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     kitchen: kitchenReducer,
     users: usersReducer,
     dashboard: dashboardReducer,
+    assistant: assistantReducer,
     beers: beersReducer,
     beerStyles: beerStylesReducer,
     dishes: dishesReducer,

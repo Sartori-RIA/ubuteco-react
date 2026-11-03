@@ -56,7 +56,8 @@ Handle via `resolveApiErrorMessages` — e.g. `insufficient_stock` from order fl
 
 - Inventory link in sidebar when `canAccessInventory(user)`
 - Badge on that link is the sum of low-stock and expiring counts (`useInventoryAlerts`)
-- `/inventory` tabs: low stock and expiring (`fetchExpiring`)
+- `/inventory` tabs: low stock, expiring (`fetchExpiring`), and restock (`fetchRestockSuggestions`)
+- Restock "Explain" is shown only when `useAiEnabled()` is true. The sentence is plain text.
 
 ## AI pitfalls
 

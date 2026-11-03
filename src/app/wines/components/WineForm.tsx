@@ -10,6 +10,8 @@ import {useAppDispatch, useAppSelector} from "@/app/_store/hooks";
 import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {wineStylesThunks} from "@/app/_store/features/wine_styles/wineStylesThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
+import {LabelPhotoButton} from "@/app/_components/intake/LabelPhotoButton";
+import {LabelDraftResponse} from "@/app/_types/intake";
 
 interface WineFormProps {
   defaultValues?: Partial<Wine>;
@@ -31,6 +33,9 @@ export function WineForm({
   const dispatch = useAppDispatch();
   const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState({maker: "", style: ""});
+  const [highlighted, setHighlighted] = useState<Set<string>>(new Set());
   const [form, setForm] = useState<Partial<Wine>>({
     name: defaultValues?.name ?? "",
     description: defaultValues?.description ?? "",
@@ -49,7 +54,34 @@ export function WineForm({
   }, [dispatch])
 
   function setField<K extends keyof Wine>(key: K, value: Wine[K]) {
+    setHighlighted((current) => {
+      if (!current.has(key)) return current;
+      const next = new Set(current);
+      next.delete(key);
+      return next;
+    });
     setForm((prev) => ({...prev, [key]: value}));
+  }
+
+  function applyLabel(payload: LabelDraftResponse) {
+    const draft = payload.draft;
+    setForm((prev) => ({
+      ...prev,
+      name: draft.name,
+      description: draft.description,
+      abv: draft.abv ?? 0,
+      grapes: draft.grapes ?? "",
+      vintage_wine: draft.vintage_wine == null ? prev.vintage_wine : String(draft.vintage_wine),
+      maker_id: draft.maker_id ?? prev.maker_id,
+      wine_style_id: draft.wine_style_id ?? prev.wine_style_id,
+    }));
+    setHighlighted(new Set(["name", "description", "abv", "grapes", "vintage_wine", "maker_id", "wine_style_id"]));
+    setWarnings(payload.warnings);
+    setSuggestions({maker: draft.maker_name, style: draft.style_name});
+  }
+
+  function ring(key: string) {
+    return highlighted.has(key) ? "rounded-xl ring-2 ring-amber-400" : "";
   }
 
   return (
@@ -63,8 +95,16 @@ export function WineForm({
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
+          {!defaultValues?.id && <LabelPhotoButton productType="wine" onDraft={applyLabel}/>}
+          {warnings.includes("unknown_maker") && (
+            <p className="text-sm text-amber-800">{t("intake.unknownMaker", {name: suggestions.maker})}</p>
+          )}
+          {warnings.includes("unknown_style") && (
+            <p className="text-sm text-amber-800">{t("intake.unknownStyle", {name: suggestions.style})}</p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={ring("name")}>
             <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
@@ -72,6 +112,7 @@ export function WineForm({
                 name="name"
               />
             </Label>
+            </div>
 
             <div>
               {preview && (

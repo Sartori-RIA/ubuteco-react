@@ -3,12 +3,14 @@ import {
   canAccessInventory,
   canAccessOrganizations,
   canAccessDashboard,
+  canUseAssistant,
   canAccessOrgOperationalRoutes,
   canAccessPlatformRoutes,
   canDeleteOwnAccount,
   canManageOrganization,
   canManageUsers,
   isAdminOnlyPath,
+  isCatalogImportPath,
   isOrgOperationalPath,
   isOrganizationPath,
   isPlatformPath,
@@ -42,6 +44,10 @@ describe("organization access", () => {
   it("allows admin and cash register on dashboard", () => {
     expect(canAccessDashboard(userWithRole("ADMIN"))).toBe(true);
     expect(canAccessDashboard(userWithRole("CASH_REGISTER"))).toBe(true);
+    expect(canUseAssistant(userWithRole("ADMIN"))).toBe(true);
+    expect(canUseAssistant(userWithRole("CASH_REGISTER"))).toBe(true);
+    expect(canUseAssistant(userWithRole("WAITER"))).toBe(false);
+    expect(canUseAssistant(userWithRole("KITCHEN"))).toBe(false);
   });
 
   it("limits inventory to admin and cash register", () => {
@@ -82,6 +88,12 @@ describe("users admin access", () => {
     expect(isAdminOnlyPath("/users/new")).toBe(true);
     expect(isAdminOnlyPath("/users/42/edit")).toBe(true);
     expect(isAdminOnlyPath("/orders")).toBe(false);
+  });
+
+  it("matches the catalog import routes", () => {
+    expect(isCatalogImportPath("/catalog/import")).toBe(true);
+    expect(isCatalogImportPath("/catalog/import/4")).toBe(true);
+    expect(isCatalogImportPath("/beers")).toBe(false);
   });
 });
 

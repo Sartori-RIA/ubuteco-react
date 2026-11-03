@@ -31,7 +31,7 @@
 |----------|---------------------|
 | Primary UX | Dedicated section on `/inventory` **or** tab “Expiring” alongside low stock |
 | Nav badge | Show count on **Inventory** nav item when `items.length > 0` (admin/cash only) |
-| Dashboard card | One **Validade** card with separate expiring and expired counts; link opens `/inventory?tab=expiry` |
+| Dashboard cards | **Estoque baixo** (running low vs out of stock) and **Validade** (expiring vs expired). Expiry link opens `/inventory?tab=expiry` |
 | Visual urgency | Badge/chip: expiring (warning) vs expired (danger) — reuse design tokens from low stock |
 | Roles | Same as inventory: `canViewInventory()` / adjust roles from [auth-roles.ts](../../src/app/_lib/auth-roles.ts) |
 | Beer `valid_until` | Add to beer form/list in **same PR** (parity with food) |
@@ -94,7 +94,7 @@
 
 - [x] Staff with inventory access see expiring/expired products
 - [x] Nav reflects pending expiry alerts
-- [x] Dashboard shows expiring and expired counts for inventory roles
+- [x] Dashboard shows low-stock and expiry counts for inventory roles
 - [x] Beers support `valid_until` in UI like foods
 - [x] i18n for `pt-BR`, `en`, `es` (and `fr` if inventory strings exist there)
 

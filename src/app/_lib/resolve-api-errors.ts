@@ -19,6 +19,10 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   impersonation_target_invalid: "api.errors.impersonationTargetInvalid",
   impersonation_reason_invalid: "api.errors.impersonationReasonInvalid",
   impersonation_in_progress: "api.errors.impersonationInProgress",
+  ai_disabled: "api.errors.aiDisabled",
+  ai_rate_limited: "api.errors.aiRateLimited",
+  ai_unavailable: "api.errors.aiUnavailable",
+  ai_invalid_output: "api.errors.aiInvalidOutput",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */
