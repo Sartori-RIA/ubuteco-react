@@ -11,6 +11,8 @@ import {makersThunks} from "@/app/_store/features/makers/makersThunks";
 import {beerStylesThunks} from "@/app/_store/features/beer_styles/beerStylesThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {toDateInputValue} from "@/app/_lib/format-date";
+import {LabelPhotoButton} from "@/app/_components/intake/LabelPhotoButton";
+import {LabelDraftResponse} from "@/app/_types/intake";
 
 interface BeerFormProps {
   defaultValues?: Partial<Beer>;
@@ -32,6 +34,9 @@ export function BeerForm({
   const dispatch = useAppDispatch();
   const t = useTranslations();
   const [preview, setPreview] = useState<string | null>(null);
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState({maker: "", style: ""});
+  const [highlighted, setHighlighted] = useState<Set<string>>(new Set());
   const [form, setForm] = useState<Partial<Beer>>({
     name: defaultValues?.name ?? "",
     description: defaultValues?.description ?? "",
@@ -50,7 +55,33 @@ export function BeerForm({
 
 
   function setField<K extends keyof Beer>(key: K, value: Beer[K]) {
+    setHighlighted((current) => {
+      if (!current.has(key)) return current;
+      const next = new Set(current);
+      next.delete(key);
+      return next;
+    });
     setForm((prev) => ({...prev, [key]: value}));
+  }
+
+  function applyLabel(payload: LabelDraftResponse) {
+    const draft = payload.draft;
+    setForm((prev) => ({
+      ...prev,
+      name: draft.name,
+      description: draft.description,
+      abv: draft.abv ?? 0,
+      ibu: draft.ibu ?? 0,
+      maker_id: draft.maker_id ?? prev.maker_id,
+      beer_style_id: draft.beer_style_id ?? prev.beer_style_id,
+    }));
+    setHighlighted(new Set(["name", "description", "abv", "ibu", "maker_id", "beer_style_id"]));
+    setWarnings(payload.warnings);
+    setSuggestions({maker: draft.maker_name, style: draft.style_name});
+  }
+
+  function ring(key: string) {
+    return highlighted.has(key) ? "rounded-xl ring-2 ring-amber-400" : "";
   }
 
   return (
@@ -64,8 +95,16 @@ export function BeerForm({
         <Form action={action} formEncType="multipart/form-data" className="space-y-6 max-w-2xl">
 
           <FormErrors errors={errors}/>
+          {!defaultValues?.id && <LabelPhotoButton productType="beer" onDraft={applyLabel}/>}
+          {warnings.includes("unknown_maker") && (
+            <p className="text-sm text-amber-800">{t("intake.unknownMaker", {name: suggestions.maker})}</p>
+          )}
+          {warnings.includes("unknown_style") && (
+            <p className="text-sm text-amber-800">{t("intake.unknownStyle", {name: suggestions.style})}</p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={ring("name")}>
             <Label label={t("forms.fields.name")}>
               <Input
                 value={form.name ?? ""}
@@ -73,6 +112,7 @@ export function BeerForm({
                 name="name"
               />
             </Label>
+            </div>
 
             <div>
               {preview && (
@@ -100,6 +140,7 @@ export function BeerForm({
             </div>
           </div>
 
+          <div className={ring("description")}>
           <Label label={t("forms.fields.description")}>
             <Textarea
               rows={4}
@@ -108,8 +149,10 @@ export function BeerForm({
               onChange={(e) => setField("description", e.target.value)}
             />
           </Label>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={ring("ibu")}>
             <Label label={t("forms.fields.ibu")}>
               <Input
                 type="number"
@@ -119,7 +162,9 @@ export function BeerForm({
                 required
               />
             </Label>
+            </div>
 
+            <div className={ring("abv")}>
             <Label label={t("forms.fields.abv")}>
               <Input
                 type="number"
@@ -129,6 +174,7 @@ export function BeerForm({
                 required
               />
             </Label>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -162,6 +208,7 @@ export function BeerForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={ring("beer_style_id")}>
             <Label label={t("forms.fields.beerStyle")}>
               <Select
                 name="beer_style_id"
@@ -176,7 +223,9 @@ export function BeerForm({
                 ))}
               </Select>
             </Label>
+            </div>
 
+            <div className={ring("maker_id")}>
             <Label label={t("forms.fields.maker")}>
               <Select
                 name="maker_id"
@@ -191,6 +240,7 @@ export function BeerForm({
                 ))}
               </Select>
             </Label>
+            </div>
           </div>
 
           <div className="flex justify-end gap-2 pt-4">

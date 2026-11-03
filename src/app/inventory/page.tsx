@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {ReactNode, useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 import {useSearchParams} from "next/navigation";
@@ -125,7 +126,10 @@ function Page() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">{t("nav.inventory")}</h1>
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-2xl font-semibold text-foreground">{t("nav.inventory")}</h1>
+          <Link href="/inventory/intake" className="text-sm underline">{t("intake.receiveInvoice")}</Link>
+        </div>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{subtitle}</p>
       </div>
 

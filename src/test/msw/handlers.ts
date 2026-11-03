@@ -16,6 +16,42 @@ export const handlers = [
       generated_at: "2026-11-02T12:00:00Z",
     });
   }),
+  http.post(apiUrl("v1/catalog/intake/label"), () => {
+    return HttpResponse.json({
+      draft: {
+        name: "Loba IPA",
+        description: "Cítrica",
+        abv: 6.5,
+        ibu: 40,
+        maker_name: "Loba",
+        maker_id: null,
+        style_name: "IPA",
+        beer_style_id: null,
+      },
+      confidence: "low",
+      warnings: ["unknown_maker", "unknown_style"],
+    });
+  }),
+  http.post(apiUrl("v1/inventory/intake/nfe"), () => {
+    return HttpResponse.json({
+      lines: [
+        {
+          description: "Cerveja Lager",
+          ean: null,
+          quantity: 12,
+          unit: "UN",
+          unit_cost_cents: 850,
+          source: "xml",
+          match: {product_type: "beers", id: 1, name: "Cerveja Lager", confidence: "high"},
+        },
+      ],
+    });
+  }),
+  http.post(apiUrl("v1/inventory/intake/document"), () => {
+    return HttpResponse.json({
+      errors: [{code: "ai_invalid_output", message: "AI returned a response that could not be used"}],
+    }, {status: 502});
+  }),
   http.get(apiUrl("v1/inventory/low_stock"), () => {
     return HttpResponse.json({
       threshold: 5,
