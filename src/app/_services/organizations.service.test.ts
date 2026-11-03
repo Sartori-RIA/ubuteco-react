@@ -29,6 +29,20 @@ describe("organizationsService.update", () => {
     expect(result).toEqual(updated);
   });
 
+  it("PATCHes the AI opt-in flag", async () => {
+    const payload = {ai_enabled: true};
+    const updated = {id: 42, name: "Bar", ai_enabled: true};
+    vi.mocked(apiFetch).mockResolvedValue(updated);
+
+    const result = await organizationsService.update(42, payload);
+
+    expect(apiFetch).toHaveBeenCalledWith("v1/organizations/42", {
+      body: JSON.stringify({ai_enabled: true}),
+      method: "PATCH",
+    });
+    expect(result.ai_enabled).toBe(true);
+  });
+
   it("PATCHes multipart profile updates", async () => {
     const formData = new FormData();
     formData.set("name", "Bar");

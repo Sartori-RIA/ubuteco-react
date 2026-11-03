@@ -43,6 +43,10 @@ export type MessageCatalog = {
       deleteRestriction: string;
       accountDeletionForbidden: string;
       roleAssignmentForbidden: string;
+      aiDisabled: string;
+      aiRateLimited: string;
+      aiUnavailable: string;
+      aiInvalidOutput: string;
       invalidTransition: string;
     };
   };
@@ -154,6 +158,18 @@ export type MessageCatalog = {
     changeCurrencyTitle: string;
     changeCurrencyMessage: string;
     changeCurrencyConfirm: string;
+    ai: {
+      title: string;
+      hint: string;
+      body: string;
+      privacyLink: string;
+      on: string;
+      off: string;
+      confirmTitle: string;
+      confirmMessage: string;
+      confirm: string;
+      saveFailed: string;
+    };
     loadProfileFailed: string;
     saveProfileFailed: string;
     deleteEmailMismatch: string;
@@ -245,6 +261,8 @@ export type MessageCatalog = {
     viewLowStock: string;
     viewExpiry: string;
     tabLowStock: string;
+    statusRunningLow: string;
+    statusOutOfStock: string;
     tabExpiry: string;
     expirySubtitle: string;
     expiryEmpty: string;
@@ -254,6 +272,23 @@ export type MessageCatalog = {
     statusExpiring: string;
     statusExpired: string;
     alertsBadge: string;
+    restock: {
+      tab: string;
+      subtitle: string;
+      empty: string;
+      columnAvg: string;
+      columnDays: string;
+      columnSuggested: string;
+      lowConfidence: string;
+      coverDays: string;
+      explain: string;
+      explainFailed: string;
+      copyList: string;
+      copied: string;
+      copyHeader: string;
+      adjust: string;
+      aiBadge: string;
+    };
   };
   catalogImport: {
     title: string;
@@ -514,6 +549,13 @@ export type MessageCatalog = {
       avgPrep: string;
       hint: string;
     };
+    brief: {
+      title: string;
+      subtitle: string;
+      aiBadge: string;
+      refresh: string;
+      generatedAt: string;
+    };
     platform: {
       title: string;
       subtitle: string;
@@ -617,6 +659,58 @@ export type MessageCatalog = {
       privacy: string;
       tagline: string;
     };
+  };
+  assistant: {
+    title: string;
+    open: string;
+    close: string;
+    new: string;
+    untitled: string;
+    empty: string;
+    placeholder: string;
+    send: string;
+    thinking: string;
+    disclaimer: string;
+    delete: string;
+    deleteTitle: string;
+    deleteMessage: string;
+    starters: {
+      yesterday: string;
+      lowStock: string;
+      topSeller: string;
+    };
+    errors: {
+      disabled: string;
+      rateLimited: string;
+      unavailable: string;
+      generic: string;
+    };
+  };
+  intake: {
+    fillFromPhoto: string;
+    photoHint: string;
+    fileTooBig: string;
+    fileType: string;
+    unknownMaker: string;
+    unknownStyle: string;
+    receiveInvoice: string;
+    title: string;
+    uploadXml: string;
+    uploadPhoto: string;
+    review: string;
+    line: string;
+    product: string;
+    quantity: string;
+    include: string;
+    apply: string;
+    applied: string;
+    failed: string;
+    unmatched: string;
+    back: string;
+    search: string;
+    noMatch: string;
+    cost: string;
+    working: string;
   };
   legal: {
     backToHome: string;

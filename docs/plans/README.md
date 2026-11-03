@@ -45,11 +45,11 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 9 | [Frontend performance](./09-frontend-performance.md) | completed | P2 | — |
 | 14 | [Marketing landing page](./14-landing-page.md) | completed | P2 | — |
 | 15 | [Product expiry alerts](./15-product-expiry-alerts.md) | completed | P2 | [15-product-expiry-alerts](../../../ubuteco_api/docs/plans/15-product-expiry-alerts.md) |
-| 16 | [AI settings toggle](./16-ai-settings.md) | not started | P2 | [16-ai-foundation](../../../ubuteco_api/docs/plans/16-ai-foundation.md) |
-| 19 | [Restock suggestions](./19-restock-suggestions.md) | not started | P2 | [19-restock-suggestions](../../../ubuteco_api/docs/plans/19-restock-suggestions.md) |
-| 18 | [AI daily brief card](./18-ai-daily-brief.md) | not started | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
-| 17 | [AI assistant chat](./17-ai-assistant.md) | not started | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
-| 21 | [AI product intake](./21-ai-product-intake.md) | not started | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
+| 16 | [AI settings toggle](./16-ai-settings.md) | completed | P2 | [16-ai-foundation](../../../ubuteco_api/docs/plans/16-ai-foundation.md) |
+| 19 | [Restock suggestions](./19-restock-suggestions.md) | completed | P2 | [19-restock-suggestions](../../../ubuteco_api/docs/plans/19-restock-suggestions.md) |
+| 18 | [AI daily brief card](./18-ai-daily-brief.md) | completed | P2 | [18-ai-daily-brief](../../../ubuteco_api/docs/plans/18-ai-daily-brief.md) |
+| 17 | [AI assistant chat](./17-ai-assistant.md) | completed | P3 | [17-ai-assistant](../../../ubuteco_api/docs/plans/17-ai-assistant.md) |
+| 21 | [AI product intake](./21-ai-product-intake.md) | completed | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
 | 22 | [Catalog CSV import](./22-catalog-csv-import.md) | completed | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
@@ -65,9 +65,11 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | [02 Locale & currency](./02-locale-and-currency.md) | [#27](https://github.com/Sartori-RIA/ubuteco-react/pull/27) | `es`, `fr`, `fr-CA`, `en-CA`; CAD + LATAM pesos; Brazil/Canada/EU timezones; order status UX |
 | [10 Browser document titles](./10-document-titles.md) | [#31](https://github.com/Sartori-RIA/ubuteco-react/pull/31) | `useDocumentTitle`, `page-titles`, entity titles on detail/edit routes |
 
-**Next up:** [19 Restock suggestions](./19-restock-suggestions.md). **Last:** [03 Subscription plans](./03-subscription-plans.md).
+**Next up:** [03 Subscription plans](./03-subscription-plans.md). That one stays last.
 
-**AI track (16–21):** [16 AI settings](./16-ai-settings.md) first — every AI UI hides behind `useAiEnabled()`. [19 Restock](./19-restock-suggestions.md) and [18 Daily brief](./18-ai-daily-brief.md) also work with AI off. API plan 20 (semantic search) has no React plan in v1.
+**AI track (16–21):** [16](./16-ai-settings.md), [19](./19-restock-suggestions.md), [18](./18-ai-daily-brief.md), [17](./17-ai-assistant.md), and [21](./21-ai-product-intake.md) are in place. The brief card stays visible when AI is off. API plan 20 has no React plan in v1.
+
+**Catalog:** [22 Catalog CSV import](./22-catalog-csv-import.md) is in place.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

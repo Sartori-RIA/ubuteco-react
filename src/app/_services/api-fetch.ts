@@ -74,9 +74,14 @@ export async function apiFetch<T>(
       case 401:
         handleUnauthorized()
         break
-      case 403:
-        handleForbidden()
+      case 403: {
+        const data = await res.json().catch(() => null);
+        if (extractApiErrorItems(data).some((item) => item.code === "ai_disabled")) {
+          throw new ApiError(res.status, data);
+        }
+        handleForbidden();
         break;
+      }
       case 404:
       default:
         const data = await res.json()

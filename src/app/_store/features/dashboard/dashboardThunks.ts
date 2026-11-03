@@ -45,6 +45,20 @@ const fetchKitchen = createAsyncThunk(
   }
 );
 
+const fetchBrief = createAsyncThunk(
+  "dashboard/fetchBrief",
+  async (refresh: boolean | undefined, {rejectWithValue}) => {
+    try {
+      return await dashboardService.fetchBrief(Boolean(refresh));
+    } catch (err) {
+      if (err instanceof ApiError) {
+        return rejectWithValue(err.data);
+      }
+      return rejectWithValue(["Unexpected error"]);
+    }
+  }
+);
+
 const fetchAll = createAsyncThunk(
   "dashboard/fetchAll",
   async (params: DashboardFetchParams, {dispatch, rejectWithValue}) => {
@@ -73,5 +87,6 @@ export const dashboardThunks = {
   fetchSummary,
   fetchSeries,
   fetchKitchen,
+  fetchBrief,
   fetchAll,
 };

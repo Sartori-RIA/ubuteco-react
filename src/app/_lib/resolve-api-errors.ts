@@ -10,6 +10,10 @@ const API_ERROR_KEYS: Record<string, TranslationKey> = {
   delete_restriction: "api.errors.deleteRestriction",
   account_deletion_forbidden: "api.errors.accountDeletionForbidden",
   role_assignment_forbidden: "api.errors.roleAssignmentForbidden",
+  ai_disabled: "api.errors.aiDisabled",
+  ai_rate_limited: "api.errors.aiRateLimited",
+  ai_unavailable: "api.errors.aiUnavailable",
+  ai_invalid_output: "api.errors.aiInvalidOutput",
 };
 
 /** Prefer client i18n by API error code; fall back to server message. */

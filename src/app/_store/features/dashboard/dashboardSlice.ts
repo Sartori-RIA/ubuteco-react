@@ -1,3 +1,4 @@
+import type {DashboardBrief} from "@/app/_services/dashboard.service";
 import {DashboardKitchen, DashboardSeries, DashboardSummary} from "@/app/_types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {defaultDashboardRange} from "@/app/_lib/dashboard-date-range";
@@ -8,6 +9,9 @@ type DashboardState = {
   summary: DashboardSummary | null;
   series: DashboardSeries | null;
   kitchen: DashboardKitchen | null;
+  brief: DashboardBrief | null;
+  briefLoading: boolean;
+  briefFailed: boolean;
   from: string;
   to: string;
   loading: boolean;
@@ -20,6 +24,9 @@ const initialState: DashboardState = {
   summary: null,
   series: null,
   kitchen: null,
+  brief: null,
+  briefLoading: false,
+  briefFailed: false,
   from: initialRange.from,
   to: initialRange.to,
   loading: false,
@@ -67,6 +74,20 @@ const dashboardSlice = createSlice({
     builder.addAsyncThunk(dashboardThunks.fetchKitchen, {
       fulfilled: (state, action) => {
         state.kitchen = action.payload as DashboardKitchen;
+      },
+    });
+    builder.addAsyncThunk(dashboardThunks.fetchBrief, {
+      pending: (state) => {
+        state.briefLoading = true;
+      },
+      fulfilled: (state, action) => {
+        state.briefLoading = false;
+        state.briefFailed = false;
+        state.brief = action.payload as DashboardBrief;
+      },
+      rejected: (state) => {
+        state.briefLoading = false;
+        if (!state.brief) state.briefFailed = true;
       },
     });
   },

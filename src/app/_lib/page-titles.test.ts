@@ -23,6 +23,7 @@ describe("formatDocumentTitle", () => {
 describe("getPageTitle", () => {
   it("maps static routes", () => {
     expect(getPageTitle("/", t)).toBe("Dashboard");
+    expect(getPageTitle("/inventory/intake", t)).toBe("Receive a delivery");
     expect(getPageTitle("/orders", t)).toBe("Orders");
     expect(getPageTitle("/kitchen", t)).toBe("Kitchen");
     expect(getPageTitle("/login", t)).toBe("Sign in");

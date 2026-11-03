@@ -13,14 +13,23 @@ type Props = {
   productType: StockableProductType;
   productId: number;
   quantityStock: number;
+  initialAdjustment?: string;
+  initialReason?: string;
   onStockChanged: (quantity: number) => void;
 };
 
-export function StockAdjustmentPanel({productType, productId, quantityStock, onStockChanged}: Props) {
+export function StockAdjustmentPanel({
+  productType,
+  productId,
+  quantityStock,
+  initialAdjustment = "",
+  initialReason = "",
+  onStockChanged,
+}: Props) {
   const t = useTranslations();
   const {user} = useAuthCapabilities();
-  const [adjustment, setAdjustment] = useState("");
-  const [reason, setReason] = useState("");
+  const [adjustment, setAdjustment] = useState(initialAdjustment);
+  const [reason, setReason] = useState(initialReason);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
