@@ -52,6 +52,7 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 | 21 | [AI product intake](./21-ai-product-intake.md) | completed | P3 | [21-ai-product-intake](../../../ubuteco_api/docs/plans/21-ai-product-intake.md) |
 | 22 | [Catalog CSV import](./22-catalog-csv-import.md) | completed | P2 | [22-catalog-csv-import](../../../ubuteco_api/docs/plans/22-catalog-csv-import.md) |
 | 24 | [Password policy](./24-password-policy.md) | completed | P1 | [24-password-policy](../../../ubuteco_api/docs/plans/24-password-policy.md) |
+| 23 | [Support impersonation](./23-support-impersonation.md) | completed | P2 | [23-support-impersonation](../../../ubuteco_api/docs/plans/23-support-impersonation.md) |
 | 3 | [Subscription plans](./03-subscription-plans.md) | not started | **Last** | [API](../../../ubuteco_api/docs/plans/03-subscription-plans.md) |
 
 ## Recent merges (Jun 2026)
@@ -73,6 +74,8 @@ Ordered by priority. **#3 is deferred to the end** (see note above).
 **Catalog:** [22 Catalog CSV import](./22-catalog-csv-import.md) is in place.
 
 **Auth:** [24 Password policy](./24-password-policy.md) is in place.
+
+**Support:** [23 Support impersonation](./23-support-impersonation.md) is in place.
 
 Platform hardening (API): [05-platform-hardening](../../../ubuteco_api/docs/plans/05-platform-hardening.md).
 

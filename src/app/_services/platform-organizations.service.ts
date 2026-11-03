@@ -1,4 +1,4 @@
-import {Organization, PaginatedResponse} from "@/app/_types";
+import {Organization, PaginatedResponse, User} from "@/app/_types";
 import {apiFetch, apiFetchPaginated} from "@/app/_services/api-fetch";
 
 export type FetchPlatformOrganizationsParams = {
@@ -15,6 +15,10 @@ async function fetchAll(
   if (page > 1) qs.set("page", String(page));
   const query = qs.toString() ? `?${qs.toString()}` : "";
   return await apiFetchPaginated<Organization>(`v1/platform/organizations${query}`);
+}
+
+async function fetchUsers(id: number): Promise<PaginatedResponse<User>> {
+  return await apiFetchPaginated<User>(`v1/platform/organizations/${id}/users`);
 }
 
 async function show(id: number): Promise<Organization> {
@@ -37,6 +41,7 @@ async function updateForm(id: number, data: FormData): Promise<Organization> {
 
 export const platformOrganizationsService = {
   fetchAll,
+  fetchUsers,
   show,
   update,
   updateForm,

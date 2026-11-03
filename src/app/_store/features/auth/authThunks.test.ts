@@ -5,6 +5,9 @@ import {fetchCurrentUser} from "./authThunks";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthUser: () => ({id: 1}),
+  getSupportSession: () => null,
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 const show = vi.fn();

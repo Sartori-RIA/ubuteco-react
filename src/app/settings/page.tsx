@@ -11,7 +11,7 @@ import {formatRoleLabel} from "@/app/_lib/role-labels";
 import {resolveApiErrorMessages} from "@/app/_lib/resolve-api-errors";
 import {MIN_PASSWORD_LENGTH, passwordIssue} from "@/app/_lib/password-policy";
 import {formatMemberSince, userInitials} from "@/app/_lib/user-display";
-import {setAuthUser} from "@/app/_lib/auth-storage";
+import {getSupportSession, setAuthUser} from "@/app/_lib/auth-storage";
 import {usersService} from "@/app/_services/users.service";
 import {ApiError} from "@/app/_services/api-fetch";
 import {useAppDispatch} from "@/app/_store/hooks";
@@ -29,6 +29,7 @@ export default function SettingsPage() {
   const dispatch = useAppDispatch();
   const {user: sessionUser} = useAuthCapabilities();
   const t = useTranslations();
+  const impersonating = Boolean(getSupportSession());
 
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -103,10 +104,12 @@ export default function SettingsPage() {
     setSaving(true);
     setErrors(undefined);
 
-    const payload: {name: string; email: string; password?: string; current_password?: string} = {
+    const payload: {name: string; email?: string; password?: string; current_password?: string} = {
       name: name.trim(),
-      email: email.trim(),
     };
+    if (!impersonating) {
+      payload.email = email.trim();
+    }
     if (password.trim()) {
       payload.password = password;
       payload.current_password = currentPassword;
@@ -226,6 +229,7 @@ export default function SettingsPage() {
               className="!pl-4"
             />
           </Label>
+          {!impersonating && (
           <Label label={t("settings.email")}>
             <Input
               name="email"
@@ -237,6 +241,9 @@ export default function SettingsPage() {
               className="!pl-4"
             />
           </Label>
+          )}
+          {!impersonating && (
+          <>
           <Label label={t("settings.currentPassword")}>
             <Input
               name="current_password"
@@ -269,6 +276,8 @@ export default function SettingsPage() {
               className="!pl-4"
             />
           </Label>
+          </>
+          )}
           <div className="flex justify-end">
             <Buttons type="submit" loading={saving} disabled={loading}>
               {t("settings.saveChanges")}

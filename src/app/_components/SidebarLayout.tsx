@@ -7,7 +7,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faComments, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {AMBIENT_APP} from "@/app/_components/marketing/brand-styles";
 import {isMarketingShellPath} from "@/app/_lib/auth-routes";
-import {getAuthToken} from "@/app/_lib/auth-storage";
+import {getAuthToken, getSupportSession, subscribeSupportSession, SupportSessionState} from "@/app/_lib/auth-storage";
+import {clearSupportSession} from "@/app/_lib/auth-storage";
+import {leaveImpersonation} from "@/app/_services/impersonation.service";
+import {SupportSessionBanner} from "@/app/_components/SupportSessionBanner";
+import {setAuthenticatedUser} from "@/app/_store/features/auth/authSlice";
 import {getVisibleNavGroups} from "@/app/_lib/nav-config";
 import {useDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {usePageTitle, useTranslations} from "@/app/_hooks/useTranslations";
@@ -27,6 +31,7 @@ import {resetAssistant, setAssistantOpen} from "@/app/_store/features/assistant/
 
 export default function SidebarLayout({children}: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [supportSession, setSupportSession] = useState<SupportSessionState | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -46,6 +51,8 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   const isAuthenticated =
     ready && (Boolean(getAuthToken()) || authStatus === "authenticated");
 
+  useEffect(() => subscribeSupportSession(() => setSupportSession(getSupportSession())), []);
+
   useEffect(() => {
     dispatch(resetAssistant());
   }, [dispatch, userId, organizationId]);
@@ -53,6 +60,19 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
   if (isMarketingShellPath(pathname, {ready, authenticated: isAuthenticated})) {
     return <>{children}</>;
   }
+
+  const handleLeaveSupport = async () => {
+    if (!supportSession) return;
+    try {
+      await leaveImpersonation(supportSession.id);
+    } catch {
+      // Still return the operator to their own session.
+    }
+    const actor = clearSupportSession();
+    if (actor) dispatch(setAuthenticatedUser(actor));
+    setSupportSession(null);
+    router.push("/platform/organizations");
+  };
 
   const handleLogout = async () => {
     await dispatch(signOut());
@@ -65,7 +85,9 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
       : "text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800";
 
   return (
-    <div className={`flex h-screen ${AMBIENT_APP}`}>
+    <div className={`flex h-screen flex-col ${AMBIENT_APP}`}>
+      {supportSession && <SupportSessionBanner session={supportSession} onLeave={handleLeaveSupport}/>}
+      <div className="flex min-h-0 flex-1">
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -198,6 +220,7 @@ export default function SidebarLayout({children}: { children: ReactNode }) {
           />
           <div className="relative">{children}</div>
         </main>
+      </div>
       </div>
     </div>
   );

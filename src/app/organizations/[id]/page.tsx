@@ -9,6 +9,7 @@ import {useEntityDocumentTitle} from "@/app/_hooks/useDocumentTitle";
 import {canManageOrganization, isSuperAdmin} from "@/app/_lib/auth-roles";
 import {platformOrganizationsService} from "@/app/_services/platform-organizations.service";
 import {OrganizationProfilePage} from "@/app/organizations/components";
+import {OrganizationSupportUsers} from "@/app/organizations/components/OrganizationSupportUsers";
 
 function Page() {
   const params = useParams();
@@ -75,13 +76,18 @@ function Page() {
   }
 
   return (
-    <OrganizationProfilePage
-      organization={organization}
-      onOrganizationUpdated={setOrganization}
-      updateForm={platformOrganizationsService.updateForm}
-      updateOperational={platformOrganizationsService.update}
-      showRegionalSettings={!isSuperAdmin(user)}
-    />
+    <div className="space-y-6">
+      <OrganizationProfilePage
+        organization={organization}
+        onOrganizationUpdated={setOrganization}
+        updateForm={platformOrganizationsService.updateForm}
+        updateOperational={platformOrganizationsService.update}
+        showRegionalSettings={!isSuperAdmin(user)}
+      />
+      {isSuperAdmin(user) && organization.id != null && (
+        <OrganizationSupportUsers organizationId={organization.id} organizationName={organization.name ?? ""}/>
+      )}
+    </div>
   );
 }
 

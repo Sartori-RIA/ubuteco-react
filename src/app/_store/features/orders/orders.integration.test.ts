@@ -8,6 +8,8 @@ import {ordersThunks} from "@/app/_store/features/orders/ordersThunks";
 
 vi.mock("@/app/_lib/auth-storage", () => ({
   getAuthToken: () => "test-token",
+  getSupportToken: () => null,
+  clearSupportSession: vi.fn(),
 }));
 
 describe("orders add item integration (MSW + store)", () => {
