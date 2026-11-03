@@ -518,6 +518,13 @@ export type MessageCatalog = {
       avgPrep: string;
       hint: string;
     };
+    brief: {
+      title: string;
+      subtitle: string;
+      aiBadge: string;
+      refresh: string;
+      generatedAt: string;
+    };
     platform: {
       title: string;
       subtitle: string;

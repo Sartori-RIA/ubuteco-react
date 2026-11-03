@@ -544,6 +544,13 @@ const en: MessageCatalog = {
       avgPrep: "Avg prep time (range)",
       hint: "Prep time is measured from item creation until ready, for dishes completed in the selected range.",
     },
+    brief: {
+      title: "Daily brief",
+      subtitle: "Yesterday and today so far. This does not follow the date range below.",
+      aiBadge: "AI-generated",
+      refresh: "Refresh",
+      generatedAt: "Generated {time}",
+    },
     platform: {
       title: "Platform",
       subtitle: "Cross-organization tools for super admins.",

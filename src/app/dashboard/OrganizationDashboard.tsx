@@ -13,6 +13,7 @@ import {dashboardThunks} from "@/app/_store/features/dashboard/dashboardThunks";
 import {useTranslations} from "@/app/_hooks/useTranslations";
 import {useAuthCapabilities} from "@/app/_hooks/useAuthCapabilities";
 import {
+  DailyBriefCard,
   DashboardDateRange,
   DashboardKpiCards,
   ExpirySummaryCard,
@@ -63,6 +64,8 @@ function OrganizationDashboard() {
           <ExpirySummaryCard/>
         </div>
       )}
+
+      <DailyBriefCard/>
 
       <DashboardDateRange
         from={from}
