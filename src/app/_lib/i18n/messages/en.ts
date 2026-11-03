@@ -265,6 +265,8 @@ const en: MessageCatalog = {
     viewLowStock: "View low stock",
     viewExpiry: "View expiry",
     tabLowStock: "Low stock",
+    statusRunningLow: "Running low",
+    statusOutOfStock: "Out of stock",
     tabExpiry: "Expiring",
     expirySubtitle: "Beers and foods expiring within {days} days, and those already expired",
     expiryEmpty: "No products are expiring or expired.",

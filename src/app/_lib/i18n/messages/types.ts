@@ -260,6 +260,8 @@ export type MessageCatalog = {
     viewLowStock: string;
     viewExpiry: string;
     tabLowStock: string;
+    statusRunningLow: string;
+    statusOutOfStock: string;
     tabExpiry: string;
     expirySubtitle: string;
     expiryEmpty: string;

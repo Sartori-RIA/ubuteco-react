@@ -16,6 +16,7 @@ import {
   DashboardDateRange,
   DashboardKpiCards,
   ExpirySummaryCard,
+  LowStockSummaryCard,
   ItemsByTypePanel,
   KitchenPanel,
   RevenueChart,
@@ -57,7 +58,8 @@ function OrganizationDashboard() {
       </div>
 
       {canAccessInventory && (
-        <div className="max-w-md">
+        <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
+          <LowStockSummaryCard/>
           <ExpirySummaryCard/>
         </div>
       )}
