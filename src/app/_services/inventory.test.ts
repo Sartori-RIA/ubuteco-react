@@ -1,6 +1,12 @@
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import {apiFetch} from "@/app/_services/api-fetch";
-import {expiryStatusCounts, fetchExpiring, inventoryAlertTotal, lowStockCounts} from "@/app/_services/inventory";
+import {
+  expiryStatusCounts,
+  fetchExpiring,
+  fetchRestockSuggestions,
+  inventoryAlertTotal,
+  lowStockCounts,
+} from "@/app/_services/inventory";
 
 vi.mock("@/app/_services/api-fetch", () => ({
   apiFetch: vi.fn(),
@@ -17,6 +23,28 @@ describe("fetchExpiring", () => {
     await fetchExpiring();
 
     expect(apiFetch).toHaveBeenCalledWith("v1/inventory/expiring");
+  });
+});
+
+describe("fetchRestockSuggestions", () => {
+  beforeEach(() => {
+    vi.mocked(apiFetch).mockReset();
+  });
+
+  it("requests suggestions for the cover window", async () => {
+    vi.mocked(apiFetch).mockResolvedValue({cover_days: 7, window_days: 28, items: []});
+
+    await fetchRestockSuggestions(7);
+
+    expect(apiFetch).toHaveBeenCalledWith("v1/inventory/restock_suggestions?cover_days=7");
+  });
+
+  it("asks for an explanation when requested", async () => {
+    vi.mocked(apiFetch).mockResolvedValue({cover_days: 14, window_days: 28, items: []});
+
+    await fetchRestockSuggestions(14, true);
+
+    expect(apiFetch).toHaveBeenCalledWith("v1/inventory/restock_suggestions?cover_days=14&explain=1");
   });
 });
 
